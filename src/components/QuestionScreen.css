@@ -1,0 +1,33 @@
+/* QuestionScreen.css - Dedicated styles for the question card and quiz mode */
+
+.question-screen {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-light, #f4f6f8);
+}
+
+.question-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  padding: 2rem 1.5rem 2rem 1.5rem;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  height: 420px;
+  min-height: 420px;
+  max-height: 420px;
+}
+
+@media (max-width: 600px) {
+  .question-card {
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    max-width: 98vw;
+  }
+}

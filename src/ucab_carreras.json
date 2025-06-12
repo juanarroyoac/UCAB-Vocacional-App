@@ -1,0 +1,189 @@
+[
+  {
+    "carrera": "Administración de Empresas",
+    "facultad": "Ciencias Económicas y Sociales",
+    "perfil_del_egresado": "Profesional con visión estratégica y emprendedora, capaz de planificar, organizar, dirigir y controlar los recursos de una organización para alcanzar sus objetivos. Posee un alto sentido de la ética, liderazgo y capacidad para influir en procesos gerenciales, económicos y sociales en pro del desarrollo.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Gerencia general, consultoría de negocios, gestión de finanzas, mercadeo y ventas, administración de la cadena de suministro y logística, gestión del talento humano. Puede desempeñarse en empresas privadas, públicas, ONGs y desarrollar emprendimientos propios.",
+    "palabras_clave_intereses": ["estrategia", "emprendimiento", "organización", "finanzas", "gestión", "optimización"],
+    "aptitudes_clave": ["toma_de_decisiones", "planificacion_estrategica", "resolucion_problemas", "pensamiento_analitico"],
+    "materias_representativas": ["Gerencia Estratégica", "Finanzas Corporativas", "Mercadeo", "Modelos de Decisión Gerencial"],
+    "ambiente_trabajo": ["corporativo", "orientado_a_objetivos", "dinamico", "oficina", "colaborativo"]
+  },
+  {
+    "carrera": "Contaduría Pública",
+    "facultad": "Ciencias Económicas y Sociales",
+    "perfil_del_egresado": "Profesional experto en la creación, análisis e interpretación de información financiera para la toma de decisiones. Actúa con fe pública en la revisión de estados financieros y está capacitado para diseñar y gestionar sistemas de información contable, fiscal y de auditoría.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Auditoría externa e interna, consultoría fiscal y tributaria, contraloría, finanzas corporativas, gestión de costos y presupuestos. Puede trabajar en firmas de contadores, empresas de todos los sectores y ejercer de forma independiente.",
+    "palabras_clave_intereses": ["números", "análisis", "finanzas", "normativa", "detalle", "exactitud"],
+    "aptitudes_clave": ["atencion_al_detalle", "razonamiento_numerico", "integridad_etica", "organizacion"],
+    "materias_representativas": ["Contabilidad Financiera Avanzada", "Auditoría de Estados Financieros", "Legislación Tributaria", "Normas Internacionales de Información Financiera (NIIF)"],
+    "ambiente_trabajo": ["estructurado", "oficina", "orientado_al_detalle", "trabajo_individual_y_equipo", "regulado"]
+  },
+  {
+    "carrera": "Relaciones Industriales",
+    "facultad": "Ciencias Económicas y Sociales",
+    "perfil_del_egresado": "Experto en la gestión estratégica del talento humano. Diseña e implementa procesos de captación, desarrollo, compensación y retención de personal. Es un mediador clave en las relaciones entre la organización y sus colaboradores, promoviendo un clima organizacional positivo.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Gerencia de recursos humanos, análisis de compensación y beneficios, reclutamiento y selección, capacitación y desarrollo organizacional, consultoría en gestión del cambio, especialista en relaciones laborales y negociación colectiva.",
+    "palabras_clave_intereses": ["personas", "negociación", "talento", "organización", "bienestar", "comunicación"],
+    "aptitudes_clave": ["inteligencia_emocional", "habilidades_de_negociacion", "comunicacion_asertiva", "empatia", "resolucion_de_conflictos"],
+    "materias_representativas": ["Gestión del Talento Humano", "Derecho Laboral", "Psicología Organizacional", "Compensación y Beneficios"],
+    "ambiente_trabajo": ["corporativo", "interpersonal", "mediacion", "oficina", "centrado_en_personas"]
+  },
+  {
+    "carrera": "Sociología",
+    "facultad": "Ciencias Económicas y Sociales",
+    "perfil_del_egresado": "Analista crítico de la realidad social. Utiliza herramientas de investigación cuantitativa y cualitativa para observar, interpretar y explicar las estructuras, relaciones y procesos de la sociedad. Es capaz de diagnosticar problemas sociales y proponer líneas de acción para políticas públicas y proyectos de desarrollo.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Investigación social y de mercados, planificación y evaluación de políticas públicas, gestión de proyectos de desarrollo social en ONGs, análisis de opinión pública, consultoría para organismos nacionales e internacionales, docencia e investigación académica.",
+    "palabras_clave_intereses": ["sociedad", "investigación", "cultura", "análisis crítico", "problemas sociales", "gente", "historia", "política"],
+    "aptitudes_clave": ["pensamiento_critico", "investigacion_cualitativa_y_cuantitativa", "capacidad_analitica", "observacion", "redaccion_academica"],
+    "materias_representativas": ["Teoría Sociológica Clásica y Contemporánea", "Metodología de la Investigación Social", "Estadística Aplicada a las Ciencias Sociales", "Sociología de Venezuela"],
+    "ambiente_trabajo": ["academico", "investigativo", "trabajo_de_campo", "analitico", "oficina_y_comunidad"]
+  },
+  {
+    "carrera": "Economía",
+    "facultad": "Ciencias Económicas y Sociales",
+    "perfil_del_egresado": "Profesional con una sólida formación teórica y analítica para comprender y modelar los fenómenos económicos. Capaz de analizar el entorno micro y macroeconómico, evaluar políticas económicas y realizar proyecciones para guiar la toma de decisiones en el sector público y privado.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Análisis financiero y de inversiones, banca y mercados de capitales, planificación económica en el sector público, consultoría económica para empresas, investigación en organismos económicos nacionales e internacionales, análisis de datos económicos.",
+    "palabras_clave_intereses": ["análisis", "finanzas", "política", "mercados", "números", "tendencias globales", "historia", "estadística"],
+    "aptitudes_clave": ["razonamiento_cuantitativo", "pensamiento_abstracto", "modelado_estadistico", "capacidad_analitica", "investigacion"],
+    "materias_representativas": ["Microeconomía", "Macroeconomía", "Econometría", "Historia del Pensamiento Económico"],
+    "ambiente_trabajo": ["analitico", "corporativo", "gubernamental", "academico", "orientado_a_datos"]
+  },
+  {
+    "carrera": "Derecho",
+    "facultad": "Derecho",
+    "perfil_del_egresado": "Abogado con un profundo conocimiento del ordenamiento jurídico y un fuerte compromiso con la justicia, la ética y el Estado de Derecho. Posee habilidades de argumentación, litigio, negociación y redacción para representar y asesorar a personas y organizaciones en diversas áreas legales.",
+    "duracion_semestres": 10,
+    "campo_laboral": "Ejercicio libre de la profesión (litigio), asesoría jurídica corporativa (abogado in-house), fiscalía, judicatura, registrador o notario público, diplomacia, consultoría legal en áreas como derecho mercantil, tributario, laboral, penal o administrativo.",
+    "palabras_clave_intereses": ["justicia", "debate", "lectura", "argumentación", "leyes", "defensa", "orden", "negociación"],
+    "aptitudes_clave": ["argumentacion_juridica", "oratoria", "capacidad_analitica", "lectura_critica", "etica_profesional"],
+    "materias_representativas": ["Derecho Constitucional", "Derecho Civil (Obligaciones y Contratos)", "Derecho Penal", "Derecho Procesal"],
+    "ambiente_trabajo": ["formal", "estructurado", "competitivo", "despachos_y_tribunales", "alta_presion"]
+  },
+  {
+    "carrera": "Psicología",
+    "facultad": "Humanidades y Educación",
+    "perfil_del_egresado": "Profesional que comprende la conducta y los procesos mentales del ser humano. Está capacitado para evaluar, diagnosticar e intervenir en problemáticas individuales y grupales en diversos contextos, como el clínico, educativo, social y organizacional, promoviendo el bienestar y la salud mental.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Psicología clínica (psicoterapia), psicología educativa y orientación vocacional, psicología organizacional (recursos humanos, selección), psicología social y comunitaria, neuropsicología, investigación del comportamiento, desarrollo de programas de prevención y salud mental.",
+    "palabras_clave_intereses": ["mente humana", "ayuda a otros", "comportamiento", "salud mental", "empatía", "investigación"],
+    "aptitudes_clave": ["escucha_activa", "empatia", "capacidad_analitica", "comunicacion_asertiva"],
+    "materias_representativas": ["Psicología Clínica", "Teorías de la Personalidad", "Psicopatología", "Neurociencias"],
+    "ambiente_trabajo": ["consultorio", "entorno_educativo", "confidencial", "interpersonal", "centrado_en_personas"]
+  },
+  {
+    "carrera": "Comunicación Social",
+    "facultad": "Humanidades y Educación",
+    "perfil_del_egresado": "Profesional versátil con capacidad para crear, gestionar y analizar procesos comunicativos en múltiples plataformas. Domina la narrativa escrita, audiovisual y digital para informar, persuadir y entretener, adaptándose a contextos locales y globales con una perspectiva crítica y ética.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Periodismo (prensa, radio, TV, digital), comunicación corporativa y relaciones públicas, publicidad y mercadeo, producción audiovisual y cinematográfica, gestión de redes sociales y marketing digital, investigación de la comunicación.",
+    "palabras_clave_intereses": ["creatividad", "escritura", "redes sociales", "audiovisual", "contar historias", "gente", "cultura", "actualidad"],
+    "aptitudes_clave": ["creatividad", "habilidades_de_comunicacion_oral_y_escrita", "pensamiento_critico", "adaptabilidad_tecnologica", "storytelling"],
+    "materias_representativas": ["Periodismo Interpretativo", "Comunicación Corporativa", "Guionismo", "Producción Audiovisual"],
+    "ambiente_trabajo": ["creativo", "dinamico", "orientado_a_plazos", "agencias", "medios_de_comunicacion", "colaborativo"]
+  },
+  {
+    "carrera": "Educación",
+    "facultad": "Humanidades y Educación",
+    "perfil_del_egresado": "Docente, gerente e investigador capaz de diseñar, ejecutar y evaluar procesos de enseñanza-aprendizaje. Adapta las estrategias pedagógicas a las necesidades de los estudiantes y del entorno, con un fuerte compromiso con la innovación educativa y la formación integral de las personas.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Docencia en niveles de educación inicial, primaria o secundaria (según la mención), coordinación académica, dirección de instituciones educativas, diseño curricular y de materiales didácticos, consultoría pedagógica, investigación educativa y formación de formadores.",
+    "palabras_clave_intereses": ["enseñar", "vocación de servicio", "paciencia", "psicología", "creatividad", "planificación", "niños y jóvenes", "impacto social"],
+    "aptitudes_clave": ["paciencia", "pedagogia", "liderazgo_en_el_aula", "creatividad", "planificacion"],
+    "materias_representativas": ["Didáctica General", "Psicología del Desarrollo", "Evaluación de los Aprendizajes", "Gerencia Educativa"],
+    "ambiente_trabajo": ["entorno_educativo", "colaborativo", "estructurado", "centrado_en_personas", "vocacional"]
+  },
+  {
+    "carrera": "Filosofía",
+    "facultad": "Humanidades y Educación",
+    "perfil_del_egresado": "Pensador crítico con una profunda capacidad de análisis, argumentación y abstracción. Investiga los problemas fundamentales de la existencia, el conocimiento, la verdad y la moral, aplicando su rigor lógico para dialogar con diversas disciplinas y aportar claridad conceptual en debates complejos.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Docencia e investigación académica, consultoría ética para empresas y comités de bioética, crítica cultural, edición y corrección de estilo en el mundo editorial, asesoría en argumentación y lógica para diversas profesiones, desarrollo de políticas públicas.",
+    "palabras_clave_intereses": ["pensamiento abstracto", "lectura", "debate", "lógica", "preguntas fundamentales", "crítica", "historia de las ideas", "escritura"],
+    "aptitudes_clave": ["pensamiento_critico", "razonamiento_logico", "capacidad_de_abstraccion", "argumentacion", "interpretacion_de_textos"],
+    "materias_representativas": ["Metafísica", "Ética", "Lógica", "Historia de la Filosofía"],
+    "ambiente_trabajo": ["academico", "reflexivo", "trabajo_individual", "intelectual", "editorial"]
+  },
+  {
+    "carrera": "Letras",
+    "facultad": "Humanidades y Educación",
+    "perfil_del_egresado": "Profesional experto en el estudio de la lengua y la literatura. Analiza críticamente textos literarios, investiga fenómenos lingüísticos y culturales, y posee una alta competencia en la producción y corrección de textos para diversos fines.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Edición y corrección de estilo en editoriales y medios, creación de contenido, investigación literaria, docencia en lengua y literatura, gestión cultural, redacción creativa y publicitaria.",
+    "palabras_clave_intereses": ["literatura", "lectura", "escritura", "idiomas", "cultura", "arte", "análisis", "historia"],
+    "aptitudes_clave": ["lectura_critica", "redaccion_avanzada", "investigacion_documental", "capacidad_analitica", "sensibilidad_estetica"],
+    "materias_representativas": ["Teoría Literaria", "Lingüística", "Literatura Venezolana y Latinoamericana", "Latín"],
+    "ambiente_trabajo": ["academico", "editorial", "cultural", "creativo", "trabajo_individual"]
+  },
+  {
+    "carrera": "Ingeniería Civil",
+    "facultad": "Ingeniería",
+    "perfil_del_egresado": "Profesional que planifica, diseña, construye y mantiene obras de infraestructura como edificaciones, vías de comunicación, puentes y sistemas hidráulicos. Aplica conocimientos científicos y técnicos para desarrollar proyectos sostenibles, seguros y eficientes.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Construcción y supervisión de obras, cálculo y diseño estructural, ingeniería de transporte y vialidad, geotecnia e ingeniería de fundaciones, gerencia de proyectos de construcción, consultoría e inspección de obras para el sector público y privado.",
+    "palabras_clave_intereses": ["construcción", "diseño", "matemáticas", "estructuras", "planificación"],
+    "aptitudes_clave": ["vision_espacial", "razonamiento_numerico", "resolucion_problemas_complejos", "fisica_aplicada"],
+    "materias_representativas": ["Análisis Estructural", "Mecánica de Suelos", "Ingeniería de Materiales", "Hidráulica"],
+    "ambiente_trabajo": ["trabajo_de_campo_y_oficina", "orientado_a_proyectos", "colaborativo", "tecnico", "regulado"]
+  },
+  {
+    "carrera": "Ingeniería en Telecomunicaciones",
+    "facultad": "Ingeniería",
+    "perfil_del_egresado": "Experto en el diseño, implementación, operación y gestión de sistemas de comunicación. Domina las tecnologías de redes de datos, telefonía, comunicaciones móviles, satelitales y de fibra óptica, siendo clave para la conectividad y la transformación digital de la sociedad.",
+    "duracion_semestres": 9,
+    "campo_laboral": "Empresas de servicios de telecomunicaciones (internet, telefonía móvil), diseño e implementación de redes corporativas, administración de infraestructura de TI, seguridad de redes (ciberseguridad), desarrollo de aplicaciones y servicios telemáticos, consultoría en tecnología.",
+    "palabras_clave_intereses": ["tecnología", "programación", "computadoras", "software", "datos"],
+    "aptitudes_clave": ["razonamiento_logico", "resolucion_problemas_complejos", "capacidad_de_abstraccion", "aprendizaje_autonomo"],
+    "materias_representativas": ["Redes de Comunicación", "Sistemas de Transmisión", "Procesamiento Digital de Señales", "Antenas y Propagación"],
+    "ambiente_trabajo": ["tecnologico", "dinamico", "resolucion_de_problemas", "oficina_y_data_center", "innovador"]
+  },
+  {
+    "carrera": "Ingeniería Industrial",
+    "facultad": "Ingeniería",
+    "perfil_del_egresado": "Optimizador de sistemas y procesos. Integra recursos humanos, materiales y tecnológicos para mejorar la productividad y la calidad en organizaciones de manufactura y servicios. Utiliza herramientas de gestión, logística y control de calidad para hacer las operaciones más eficientes.",
+    "duracion_semestres": 8,
+    "campo_laboral": "Gerencia de operaciones y logística, ingeniería de calidad y control de procesos, gestión de la cadena de suministro, planificación y control de la producción, mejora continua de procesos (Lean, Six Sigma), consultoría de negocios, seguridad y salud laboral.",
+    "palabras_clave_intereses": ["eficiencia", "procesos", "optimización", "logística", "calidad", "sistemas", "gestión", "resolución de problemas"],
+    "aptitudes_clave": ["resolucion_problemas_complejos", "pensamiento_sistemico", "liderazgo", "razonamiento_numerico", "planificacion"],
+    "materias_representativas": ["Investigación de Operaciones", "Control de Calidad", "Logística y Cadena de Suministro", "Ingeniería de Procesos"],
+    "ambiente_trabajo": ["colaborativo", "orientado_a_objetivos", "oficina_y_planta", "dinamico", "analitico"]
+  },
+  {
+    "carrera": "Ingeniería Informática",
+    "facultad": "Ingeniería",
+    "perfil_del_egresado": "Profesional que diseña, desarrolla, implementa y mantiene soluciones de software y sistemas telemáticos. Combina una sólida base en ciencias de la computación con un enfoque de ingeniería para crear aplicaciones, gestionar bases de datos y administrar redes de forma eficiente y segura.",
+    "duracion_semestres": 10,
+    "campo_laboral": "Desarrollo de software (backend, frontend, móvil), arquitectura de software, administración de bases de datos, ingeniería de ciberseguridad, gestión de proyectos de TI, computación en la nube (Cloud Computing), inteligencia artificial y ciencia de datos.",
+    "palabras_clave_intereses": ["tecnología", "programación", "computadoras", "software", "datos"],
+    "aptitudes_clave": ["razonamiento_logico", "resolucion_problemas_complejos", "capacidad_de_abstraccion", "aprendizaje_autonomo"],
+    "materias_representativas": ["Algoritmos y Estructuras de Datos", "Bases de Datos", "Ingeniería de Software", "Sistemas Operativos"],
+    "ambiente_trabajo": ["tecnologico", "innovador", "colaborativo", "resolucion_de_problemas", "flexible"]
+  },
+  {
+    "carrera": "Arquitectura",
+    "facultad": "Ingeniería",
+    "perfil_del_egresado": "Profesional creativo y técnico que concibe, diseña y supervisa la construcción de espacios habitables y funcionales, desde edificios hasta ciudades. Integra la estética, la funcionalidad, la tecnología y el contexto sociocultural y ambiental para crear proyectos sostenibles y con valor espacial.",
+    "duracion_semestres": 10,
+    "campo_laboral": "Diseño arquitectónico en estudios privados, urbanismo y planificación urbana, restauración y rehabilitación de edificaciones, arquitectura paisajista, diseño de interiores, supervisión y construcción de obras, visualización arquitectónica 3D, investigación y docencia.",
+    "palabras_clave_intereses": ["diseño", "creatividad", "arte", "espacios", "estética"],
+    "aptitudes_clave": ["vision_espacial", "creatividad", "pensamiento_de_diseno", "habilidades_graficas"],
+    "materias_representativas": ["Taller de Diseño Arquitectónico", "Historia de la Arquitectura", "Sistemas Constructivos", "Urbanismo"],
+    "ambiente_trabajo": ["creativo", "estudio_de_diseno", "colaborativo", "orientado_a_proyectos", "trabajo_de_campo_y_oficina"]
+  },
+  {
+    "carrera": "Teología",
+    "facultad": "Teología",
+    "perfil_del_egresado": "Profesional que estudia e interpreta de manera sistemática y crítica la revelación divina y la fe religiosa, particularmente la cristiana. Investiga las fuentes, la historia y las doctrinas para dialogar con la cultura y la sociedad contemporánea.",
+    "duracion_semestres": 10,
+    "campo_laboral": "Sacerdocio, vida religiosa, docencia en religión y teología, investigación académica, pastoral en parroquias, diócesis y movimientos, consultoría en temas éticos y religiosos, diálogo ecuménico e interreligioso.",
+    "palabras_clave_intereses": ["espiritualidad", "fe", "historia", "filosofía", "ayuda a otros", "comunidad", "lectura", "reflexion"],
+    "aptitudes_clave": ["pensamiento_critico", "interpretacion_de_textos", "capacidad_hermeneutica", "reflexion_filosofica", "consejeria"],
+    "materias_representativas": ["Teología Fundamental", "Estudio de las Sagradas Escrituras (Exégesis)", "Teología Moral", "Historia de la Iglesia"],
+    "ambiente_trabajo": ["academico", "pastoral", "comunitario", "reflexivo", "vocacional"]
+  }
+]

@@ -1,76 +1,75 @@
-import React from 'react';
+// src/components/Question.jsx
+// Componente dinámico para mostrar una pregunta y sus opciones de respuesta.
 
-const Question = ({
-  question,
-  index,
-  total,
-  value,
-  onChange,
-  onNext,
-  onPrev,
-  isFirst,
-  isLast
-}) => {
+function Question({ question, onAnswer, questionNumber, totalQuestions, onBack }) {
+
+  const handleLikertClick = (value) => {
+    onAnswer(question.id, value);
+  };
+
+  const handleYesNoClick = (value) => {
+    // Usaremos 1 para "Sí" y 0 para "No"
+    onAnswer(question.id, value);
+  };
+
+  // Calcular el porcentaje de progreso
+  const progressPercent = Math.max(0, Math.min(100, (questionNumber / totalQuestions) * 100));
+
   return (
-    <div className="question-container">
-      <div className="progress-indicator">
-        Pregunta {index + 1} / {total}
-      </div>
-      <h2 className="question-title">{question.text}</h2>
-      <div className="question-body">
-        {question.type === 'closed' ? (
-          <div className="options-list">
-            {question.options.map((opt, i) => (
-              <label key={i} className="option-label">
-                <input
-                  type={question.multiple ? 'checkbox' : 'radio'}
-                  name={`q${index}`}
-                  value={opt}
-                  checked={question.multiple ? value?.includes(opt) : value === opt}
-                  onChange={e => {
-                    if (question.multiple) {
-                      if (e.target.checked) {
-                        onChange([...(value || []), opt]);
-                      } else {
-                        onChange((value || []).filter(v => v !== opt));
-                      }
-                    } else {
-                      onChange(opt);
-                    }
-                  }}
-                />
-                {opt}
-              </label>
-            ))}
+    <div className="screen" style={{ minHeight: '300px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: '80px' }}>
+        <div className="question-main-content" style={{ marginBottom: '0', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h2 className="question-text" style={{ marginBottom: '16px' }}>{question.text}</h2>
+          <div className="options-container">
+            {question.type === 'likert' && (
+              <>
+                <div className="likert-scale">
+                  <button onClick={() => handleLikertClick(1)}>1</button>
+                  <button onClick={() => handleLikertClick(2)}>2</button>
+                  <button onClick={() => handleLikertClick(3)}>3</button>
+                  <button onClick={() => handleLikertClick(4)}>4</button>
+                  <button onClick={() => handleLikertClick(5)}>5</button>
+                </div>
+                <div className="likert-scale-label">
+                  <span>
+                    Totalmente en<br />desacuerdo
+                  </span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span>
+                    Totalmente de<br />acuerdo
+                  </span>
+                </div>
+              </>
+            )}
+            {question.type === 'yes-no' && (
+              <div className="yes-no-scale">
+                <button onClick={() => handleYesNoClick(1)}>Sí</button>
+                <button onClick={() => handleYesNoClick(0)}>No</button>
+              </div>
+            )}
           </div>
-        ) : (
-          <textarea
-            className="open-answer"
-            value={value || ''}
-            onChange={e => onChange(e.target.value)}
-            rows={4}
-            placeholder="Escribe tu respuesta aquí..."
-          />
-        )}
+        </div>
       </div>
-      <div className="question-nav">
-        {!isFirst && (
-          <button className="secondary-btn" onClick={onPrev}>
-            Anterior
-          </button>
-        )}
-        {!isLast ? (
-          <button className="primary-btn" onClick={onNext} disabled={question.type === 'closed' ? !value || (Array.isArray(value) && value.length === 0) : !value}>
-            Siguiente
-          </button>
-        ) : (
-          <button className="primary-btn" onClick={onNext} disabled={question.type === 'closed' ? !value || (Array.isArray(value) && value.length === 0) : !value}>
-            Finalizar Prueba
-          </button>
-        )}
+      <div className="progress-bar-container">
+        <button
+          className="back-arrow"
+          onClick={onBack}
+          disabled={questionNumber <= 1}
+          aria-label="Pregunta anterior"
+        >
+          <span style={{fontWeight: 'bold', fontSize: '1.4rem', lineHeight: 1}}>&laquo;</span>
+        </button>
+        <div className="progress-bar-gradient">
+          <div
+            className="progress-bar-gradient-inner"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Question;

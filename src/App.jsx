@@ -1,64 +1,87 @@
-import React, { useState } from 'react';
+// src/App.jsx - Versión 4 sin preguntas abiertas
+
+import { useState } from 'react';
+import { closedQuestions } from './questions.js';
+import { calculateResults } from './scoring.js';
+import careersData from './ucab_carreras.json';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+
+import WelcomeScreen from './components/WelcomeScreen';
+import HomePage from './components/HomePage';
+import UcabHomePage from './components/UcabHomePage';
+import Question from './components/Question';
+import ResultsScreen from './components/ResultsScreen';
+
 import './App.css';
-import { WelcomeScreen, DataCaptureForm, Question, ResultsScreen } from './components';
-import { questions } from './questions';
 
-function App() {
-  const [step, setStep] = useState(0); // 0: welcome, 1: datos, 2: preguntas, 3: resultados
-  const [userData, setUserData] = useState({});
-  const [answers, setAnswers] = useState([]);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
 
-  const handleStart = () => setStep(1);
-  const handleDataContinue = (data) => {
-    setUserData(data);
-    setStep(2);
+function AppRoutes() {
+  const [answers, setAnswers] = useState({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [results, setResults] = useState(null);
+  const navigate = useNavigate();
+
+  const handleStartTest = () => {
+    setAnswers({});
+    setCurrentQuestionIndex(0);
+    setResults(null);
+    navigate('/test');
   };
-  const handleAnswerChange = (value) => {
-    const updated = [...answers];
-    updated[currentQuestion] = value;
-    setAnswers(updated);
-  };
-  const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+
+  const handleAnswer = async (questionId, answerValue) => {
+    setAnswers(prev => ({ ...prev, [questionId]: answerValue }));
+    if (currentQuestionIndex + 1 < closedQuestions.length) {
+      setCurrentQuestionIndex(prev => prev + 1);
     } else {
-      setStep(3);
+      // Last question answered
+      const calculatedResults = await calculateResults({ ...answers, [questionId]: answerValue }, careersData);
+      setResults(calculatedResults);
+      navigate('/results');
     }
   };
-  const handlePrev = () => {
-    if (currentQuestion > 0) setCurrentQuestion(currentQuestion - 1);
-  };
-  React.useEffect(() => {
-    if (step !== 2) setCurrentQuestion(0);
-  }, [step]);
 
-  // Cambia la clase de la tarjeta principal según el paso
-  let mainContentClass = 'main-content';
-  if (step === 0) mainContentClass += ' welcome-content';
-  else if (step === 3) mainContentClass += ' report-content';
+  const handleBack = () => {
+    setCurrentQuestionIndex(idx => Math.max(0, idx - 1));
+  };
+
+  const handleRestart = () => {
+    setAnswers({});
+    setCurrentQuestionIndex(0);
+    setResults(null);
+    navigate('/');
+  };
 
   return (
-    <div className="app-root">
-      <div className={mainContentClass}>
-        {step === 0 && <WelcomeScreen onStart={handleStart} />}
-        {step === 1 && <DataCaptureForm onContinue={handleDataContinue} />}
-        {step === 2 && (
-          <Question
-            question={questions[currentQuestion]}
-            index={currentQuestion}
-            total={questions.length}
-            value={answers[currentQuestion]}
-            onChange={handleAnswerChange}
-            onNext={handleNext}
-            onPrev={handlePrev}
-            isFirst={currentQuestion === 0}
-            isLast={currentQuestion === questions.length - 1}
-          />
-        )}
-        {step === 3 && <ResultsScreen />}
+    <Routes>
+      <Route path="/" element={<UcabHomePage />} />
+      <Route path="/intro" element={<WelcomeScreen onStart={handleStartTest} />} />
+      <Route path="/test" element={
+        <div className="question-screen">
+          <div className="question-card">
+            {closedQuestions[currentQuestionIndex] && (
+              <Question
+                question={closedQuestions[currentQuestionIndex]}
+                onAnswer={handleAnswer}
+                questionNumber={currentQuestionIndex + 1}
+                totalQuestions={closedQuestions.length}
+                onBack={handleBack}
+              />
+            )}
+          </div>
+        </div>
+      } />
+      <Route path="/results" element={<ResultsScreen results={results} answers={answers} onRestart={handleRestart} />} />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <AppRoutes />
       </div>
-    </div>
+    </Router>
   );
 }
 
