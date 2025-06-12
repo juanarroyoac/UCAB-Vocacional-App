@@ -1,80 +1,7 @@
-/* Modern SaaS-like Data Capture Form */
-.data-capture-form {
-  background: white;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0, 51, 160, 0.08), 0 1.5px 6px rgba(0,0,0,0.04);
-  padding: 2.2rem 2rem 1.5rem 2rem;
-  max-width: 370px;
-  margin: 1.5rem auto 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  align-items: stretch;
-  border: 1.5px solid #e9ecef;
-}
+/* src/App.css - Versión unificada y corregida */
 
-.data-capture-form h2 {
-  font-family: var(--font-secondary);
-  color: var(--ucab-blue);
-  font-size: 1.25rem;
-  margin-bottom: 0.7rem;
-  text-align: left;
-}
-
-.data-capture-form label {
-  font-family: var(--font-primary);
-  color: #222;
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.data-capture-form input[type="text"],
-.data-capture-form input[type="email"] {
-  border: 1.5px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.7rem 1rem;
-  font-size: 1rem;
-  font-family: var(--font-primary);
-  background: #f8fafc;
-  transition: border 0.2s;
-  outline: none;
-}
-.data-capture-form input:focus {
-  border: 1.5px solid var(--ucab-blue);
-  background: #fff;
-}
-
-.data-capture-form .disclaimer {
-  margin-top: 0.2rem;
-  margin-bottom: 0.5rem;
-  color: #888;
-  font-size: 0.92rem;
-  line-height: 1.3;
-  text-align: left;
-}
-
-.data-capture-form .primary-btn {
-  background: linear-gradient(90deg, #0033A0 0%, #DFAF3F 100%);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.85rem 0;
-  font-size: 1.08rem;
-  font-family: var(--font-secondary);
-  font-weight: 600;
-  margin-top: 0.7rem;
-  box-shadow: 0 2px 8px rgba(0,51,160,0.07);
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
-}
-.data-capture-form .primary-btn:hover {
-  background: linear-gradient(90deg, #002266 0%, #DFAF3F 100%);
-  transform: translateY(-2px) scale(1.03);
-}
-/* src/App.css */
+/* --- Variables Globales y Fuentes --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap');
 
 :root {
   --font-primary: 'Inter', sans-serif;
@@ -85,31 +12,54 @@
   --text-dark: #212529;
   --text-light: #f8f9fa;
   --border-color: #dee2e6;
+  --soft-red: #FF6B6B;
+}
+
+/* --- Estilos Base y Reglas Full-Screen (CORRECCIÓN CLAVE) --- */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   font-family: var(--font-primary);
   background-color: var(--background-light);
   color: var(--text-dark);
-  min-height: 100vh;
-  overflow-y: auto;
 }
 
+.App {
+  height: 100%;
+  width: 100%;
+}
+
+
+/* --- Estilos para Componentes de la App (Formulario, Preguntas, etc.) --- */
+
+/* Data Capture Form */
+.data-capture-form {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 51, 160, 0.08), 0 1.5px 6px rgba(0,0,0,0.04);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  max-width: 370px;
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  border: 1.5px solid #e9ecef;
+}
+/* ... (otros estilos del formulario que ya tenías) ... */
+
+
+/* Pantalla de Preguntas */
 .question-screen {
   position: fixed;
   inset: 0;
-  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--background-light, #f4f6f8);
-  overflow-y: auto;
-  overflow-x: auto;
-  width: 100vw;
-  height: 100dvh;
-  min-width: 0;
-  min-height: 0;
+  background: var(--background-light);
 }
 
 .question-card {
@@ -117,476 +67,273 @@ body {
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   width: 420px;
-  height: 420px;
-  min-width: 420px;
-  min-height: 420px;
-  max-width: 420px;
-  max-height: 420px;
+  padding: 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  position: relative;
-  overflow: hidden;
-}
-
-@media (max-width: 600px) {
-  .question-card {
-    width: 98vw;
-    min-width: 0;
-    max-width: 98vw;
-    height: 340px;
-    min-height: 340px;
-    max-height: 340px;
-    padding: 1rem 0.5rem 1rem 0.5rem;
-  }
-  .question-screen {
-    padding: 0;
-    width: 100vw;
-    min-width: 0;
-  }
-}
-.card-content-wrapper.fixed-card {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 70px; /* space for button */
-}
-
-.fixed-bottom-btn {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 24px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  z-index: 2;
-}
-
-/* Default App styles - Full screen centered (for welcome and results) */
-.App {
-  width: 100%;
-  max-width: 420px;
-  height: auto;
-  background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  padding: 1.2rem 1.2rem 1.5rem 1.2rem;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-
-/* Override for quiz questions - move to right side */
-.App.quiz-mode {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  max-width: 420px;
-  width: 100%;
-  height: auto;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  padding: 1.2rem;
-  background-color: white;
-}
-
-/* Welcome screen and results use full screen */
-.App.full-screen {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  transform: none !important;
-  max-width: none !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding: 2rem 1rem !important;
-  background: var(--background-light) !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-}
-
-.screen {
-  animation: fadeIn 0.5s ease-in-out;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 100%;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.logo {
-  max-width: 90px;
-  margin-bottom: 1rem;
-}
-
-h1 {
-  font-family: var(--font-secondary);
-  color: var(--ucab-blue);
-  font-weight: 600;
-  font-size: 1.25rem;
-  margin-bottom: 0.7rem;
 }
 
 h2.question-text {
   font-family: var(--font-secondary);
-  font-size: 1.05rem;
-  min-height: 0;
-  margin: 5.0rem auto 5.0rem auto;
-  max-width: 99%;
-  width: 370px;
-  text-align: center;
-  border: none;
-  background: none;
-}
-
-p {
+  font-size: 1.25rem; /* Aumentado para legibilidad */
   line-height: 1.4;
-  max-width: 340px;
-  margin: 0.7rem auto 0.7rem auto;
-  font-size: 0.98rem;
+  text-align: center;
+  margin: 2rem 1rem;
+  min-height: 100px; /* Espacio para que el texto no salte */
 }
 
-button {
-  font-family: var(--font-primary);
-  background-color: var(--ucab-blue);
-  color: var(--text-light);
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin: 0.3rem;
-}
-
-button:hover {
-  background-color: #002266;
-  transform: translateY(-2px);
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Remove margin to bring question text and buttons together */
-.options-container {
-  margin-top: 0;
-  border: none;
-  background: none;
-}
-
-/* Remove any margin or padding above the likert/yes-no scale to bring it closer to the question */
 .likert-scale, .yes-no-scale {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  border: none;
-  background: none;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
+/* ... (otros estilos de las preguntas que ya tenías) ... */
 
-.likert-scale button {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #e9ecef;
-  color: var(--text-dark);
-  font-size: 0.98rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
 
-.likert-scale button:hover {
-  background-color: var(--ucab-gold);
-  color: white;
-}
+/* --- NUEVOS ESTILOS PARA LA PANTALLA DE RESULTADOS (WRAPPED) --- */
 
-.yes-no-scale button {
-  min-width: 70px;
-  font-size: 0.95rem;
-  padding: 7px 0;
-}
-
-.textarea-answer {
-  width: 95%;
-  max-width: 320px;
-  height: 60px;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  font-family: var(--font-primary);
-  font-size: 0.97rem;
-  margin-bottom: 0.7rem;
-}
-
-/* Bottom bar for progress and navigation */
-.card-bottom-bar {
+.results-story-container {
   width: 100%;
-  background: rgba(255,255,255,0.85);
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  padding-bottom: 0.5rem;
-  padding-top: 0.7rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.card-content-wrapper {
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 320px;
-}
-
-.progress-bar-container {
-  width: 100%;
-  padding: 0.7rem 1.2rem 1.2rem 1.2rem;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  z-index: 2;
-  gap: 0.7rem;
-  background: transparent;
-}
-
-.back-arrow {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-right: 0;
-  font-size: 1.6rem;
-  color: var(--ucab-blue);
-  display: flex;
-  align-items: center;
-  transition: color 0.2s, transform 0.2s;
-  padding: 0.2rem 0.5rem 0.2rem 0.2rem;
-  border-radius: 50%;
-}
-
-.back-arrow:disabled {
-  color: #b0b8c1;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.back-arrow:hover:not(:disabled) {
-  color: var(--ucab-gold);
-  background: #f4f6f8;
-  transform: scale(1.12);
-}
-
-.progress-bar-gradient {
-  flex: 1;
-  height: 10px;
-  border-radius: 999px;
-  background: #e9ecef; /* gris claro para el fondo */
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.07);
-  margin-top: 0.5rem;
-}
-
-.progress-bar-gradient-inner {
   height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #0033A0 0%, #1CB56A 50%, #DFAF3F 100%);
-  transition: width 0.4s cubic-bezier(.4,1.3,.6,1);
-  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
-}
-
-.likert-scale-label {
+  /* Fondo oscuro y degradado para el look premium */
+  background: linear-gradient(145deg, #001f54, #023059, #034078);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
   display: flex;
-  justify-content: space-between;
-  margin-top: 0.10rem;
-  font-size: 0.78rem;
-  color: #222;
-  width: 100%;
-  max-width: 340px;
-  margin-left: auto;
-  margin-right: auto;
-  font-family: var(--font-secondary);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  pointer-events: none;
-}
-
-.likert-scale-label span:first-child {
-  text-align: left;
-  min-width: 90px;
-  margin-left: 18px;
-  margin-top: 0.04rem;
-  display: block;
-  line-height: 1.15;
-}
-
-.likert-scale-label span:last-child {
-  text-align: right;
-  min-width: 90px;
-  margin-right: 18px;
-  margin-top: 0.04rem;
-  display: block;
-  line-height: 1.15;
-}
-
-/* Results specific styles for full screen mode */
-.App.full-screen .logo {
-  margin-bottom: 1.2rem;
-  max-width: 110px;
-}
-
-.App.full-screen h1 {
-  margin-bottom: 0.5rem;
-  font-size: 2.1rem;
-  color: var(--ucab-blue);
-  text-align: center;
-}
-
-.results-intro {
-  margin-bottom: 2rem;
-  font-size: 1.15rem;
-  color: #222;
-  text-align: center;
-  max-width: 800px;
-}
-
-.results-table {
-  width: 100%;
-  max-width: 100%;
-  table-layout: auto;
-  border-collapse: collapse;
-  margin: 0 auto 2rem auto;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
+  position: relative; /* Clave para el posicionamiento de los slides */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* Mejora la experiencia en móviles */
 }
 
-.results-table th, .results-table td {
-  border: none;
-  padding: 1rem 0.7rem;
-  background: transparent;
-  box-shadow: none;
-  vertical-align: top;
-  font-size: 1rem;
-  text-align: left;
+/* Estado de Carga */
+.results-story-container.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
-.results-table th {
-  font-family: var(--font-secondary);
-  font-size: 1.08rem;
-  color: white;
-  font-weight: 600;
-  background: var(--ucab-blue);
+.loader-text {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
-.results-table tr:nth-child(even) td {
-  background: #f9f9f9;
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #fff;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
 }
 
-.results-table tr:hover td {
-  background: #f1f1f1;
-}
-
-.results-table td strong {
-  color: var(--ucab-gold);
-}
-
-.answers-recap-full {
-  margin-top: 2rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 800px;
-  box-sizing: border-box;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.answers-recap-full h3 {
-  color: var(--ucab-blue);
-  font-family: var(--font-secondary);
-  margin-bottom: 1rem;
-}
-
-.answers-recap-full p {
-  margin-bottom: 1rem;
-  text-align: left;
-}
-
-.answers-recap-full button {
-  margin-top: 1.5rem;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .App.full-screen {
-    padding: 1rem 0.5rem !important;
-  }
-  
-  .results-table {
-    font-size: 14px;
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  
-  .results-table thead, .results-table tbody, .results-table th, .results-table td, .results-table tr {
-    display: block;
-  }
-  
-  .results-table thead tr {
+/* Logo de la UCAB en la pantalla de resultados */
+.results-story-container .logo {
     position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-  
-  .results-table tr {
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 8px;
-    background: white;
-  }
-  
-  .results-table td {
-    border: none;
-    padding: 5px 0;
-    text-align: left;
-    white-space: normal;
-  }
-  
-  .results-table td:before {
-    content: attr(data-label) ": ";
-    font-weight: bold;
-    color: var(--ucab-blue);
-  }
+    top: 20px;
+    left: 20px;
+    width: 60px;
+    height: auto;
+    z-index: 10;
+    opacity: 0.8;
+}
+
+/* Barra de Progreso de las Stories */
+.progress-bar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+  z-index: 5;
+}
+
+.progress-segment {
+  flex: 1;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.progress-segment.active {
+  background-color: rgba(255, 255, 255, 0.9);
+  animation: fillProgress 5s linear forwards; /* Duración de cada slide */
+}
+
+.progress-segment.visited {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Estructura y Estilos de cada Slide */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.03);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s;
+  box-sizing: border-box;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.slide-content {
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Tipografía de los Slides */
+.slide-supertitle {
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  font-weight: bold;
+  color: #a9d6e5;
+  margin-bottom: 0.5rem;
+}
+
+h1.slide-title, h1.slide-title-career {
+  font-family: var(--font-secondary);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.1;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+p.slide-description, .career-details {
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  max-width: 600px;
+  margin: 1rem auto 0 auto;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.career-details {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+/* Tarjeta Final de Resumen */
+.summary-card {
+    background: rgba(255,255,255, 0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(4px);
+}
+
+.summary-title {
+    font-size: 1.5rem;
+    font-family: var(--font-secondary);
+    margin-bottom: 1.5rem;
+}
+.summary-archetype, .summary-item {
+    margin-bottom: 1.5rem;
+}
+.summary-archetype p, .summary-item h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    color: #a9d6e5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.summary-archetype h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-family: var(--font-secondary);
+}
+.summary-item ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.summary-chart-container {
+    width: 100%;
+    height: 250px;
+    margin: 1rem auto;
+}
+
+/* Botón de Reinicio en la pantalla de resultados */
+.restart-button {
+  background-color: var(--soft-red);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 2rem;
+}
+
+.restart-button:hover {
+  background-color: #ff4757;
+  transform: scale(1.05);
+}
+
+
+/* --- Animaciones --- */
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s 0.2s ease-out forwards;
+  opacity: 0;
+}
+.animate-pop-in {
+  animation: popIn 0.8s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+}
+.animate-fade-in-delay-1 {
+  animation: fadeIn 0.8s 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fillProgress {
+    from { width: 0%; }
+    to { width: 100%; }
 }

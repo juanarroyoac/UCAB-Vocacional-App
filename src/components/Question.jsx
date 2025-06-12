@@ -1,73 +1,166 @@
 // src/components/Question.jsx
 // Componente dinámico para mostrar una pregunta y sus opciones de respuesta.
 
-function Question({ question, onAnswer, questionNumber, totalQuestions, onBack }) {
 
-  const handleLikertClick = (value) => {
-    onAnswer(question.id, value);
+import React from "react";
+
+const likertLabels = [
+  "Totalmente en desacuerdo",
+  "En desacuerdo",
+  "Neutral",
+  "De acuerdo",
+  "Totalmente de acuerdo"
+];
+
+function Question({ question, index, total, onAnswer, onBack, answer, onFinish, isLast }) {
+  const handleAnswer = (val) => {
+    onAnswer(val);
+    if (isLast) onFinish && onFinish();
   };
-
-  const handleYesNoClick = (value) => {
-    // Usaremos 1 para "Sí" y 0 para "No"
-    onAnswer(question.id, value);
-  };
-
-  // Calcular el porcentaje de progreso
-  const progressPercent = Math.max(0, Math.min(100, (questionNumber / totalQuestions) * 100));
 
   return (
-    <div className="screen" style={{ minHeight: '300px', display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: '80px' }}>
-        <div className="question-main-content" style={{ marginBottom: '0', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <h2 className="question-text" style={{ marginBottom: '16px' }}>{question.text}</h2>
-          <div className="options-container">
-            {question.type === 'likert' && (
-              <>
-                <div className="likert-scale">
-                  <button onClick={() => handleLikertClick(1)}>1</button>
-                  <button onClick={() => handleLikertClick(2)}>2</button>
-                  <button onClick={() => handleLikertClick(3)}>3</button>
-                  <button onClick={() => handleLikertClick(4)}>4</button>
-                  <button onClick={() => handleLikertClick(5)}>5</button>
-                </div>
-                <div className="likert-scale-label">
-                  <span>
-                    Totalmente en<br />desacuerdo
-                  </span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span>
-                    Totalmente de<br />acuerdo
-                  </span>
-                </div>
-              </>
-            )}
-            {question.type === 'yes-no' && (
-              <div className="yes-no-scale">
-                <button onClick={() => handleYesNoClick(1)}>Sí</button>
-                <button onClick={() => handleYesNoClick(0)}>No</button>
-              </div>
-            )}
-          </div>
+    <div className="quiz-bg">
+      <div className="quiz-card">
+        <div className="quiz-header">
+          <button className="back-btn" onClick={onBack} aria-label="Atrás">
+            ←
+          </button>
+          <span className="progress-text">
+            Pregunta {index + 1} de {total}
+          </span>
         </div>
-      </div>
-      <div className="progress-bar-container">
-        <button
-          className="back-arrow"
-          onClick={onBack}
-          disabled={questionNumber <= 1}
-          aria-label="Pregunta anterior"
-        >
-          <span style={{fontWeight: 'bold', fontSize: '1.4rem', lineHeight: 1}}>&laquo;</span>
-        </button>
-        <div className="progress-bar-gradient">
+        <h2 className="question-title">{question.text}</h2>
+        <div className="answers">
+          {question.type === "likert" ? (
+            likertLabels.map((label, i) => (
+              <button
+                key={i}
+                className={`answer-btn${answer === i + 1 ? " selected" : ""}`}
+                onClick={() => handleAnswer(i + 1)}
+                tabIndex={0}
+              >
+                {label}
+              </button>
+            ))
+          ) : (
+            ["Sí", "No"].map((label, i) => (
+              <button
+                key={label}
+                className={`answer-btn${answer === (i === 0 ? 1 : 0) ? " selected" : ""}`}
+                onClick={() => handleAnswer(i === 0 ? 1 : 0)}
+                tabIndex={0}
+              >
+                {label}
+              </button>
+            ))
+          )}
+        </div>
+        <div className="progress-bar-wrap">
           <div
-            className="progress-bar-gradient-inner"
-            style={{ width: `${progressPercent}%` }}
+            className="progress-bar"
+            style={{ width: `${((index + 1) / total) * 100}%` }}
           />
         </div>
       </div>
+      <style>{`
+        .quiz-bg {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--color-bg);
+        }
+        .quiz-card {
+          background: #fff;
+          border-radius: 1.5rem;
+          box-shadow: 0 4px 32px 0 rgba(0,90,156,0.08);
+          padding: 2.2rem 1.5rem 2.5rem 1.5rem;
+          max-width: 420px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .quiz-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1.2rem;
+        }
+        .back-btn {
+          background: var(--color-primary-light);
+          color: var(--color-primary-dark);
+          border: none;
+          border-radius: 50%;
+          width: 2.2rem;
+          height: 2.2rem;
+          font-size: 1.3rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .back-btn:hover {
+          background: var(--color-primary);
+          color: #fff;
+        }
+        .progress-text {
+          font-size: 1rem;
+          color: var(--color-primary);
+          font-weight: 500;
+        }
+        .question-title {
+          font-size: 1.3rem;
+          color: var(--color-primary-dark);
+          margin: 0 0 1.5rem 0;
+          text-align: center;
+        }
+        .answers {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 2.2rem;
+        }
+        .answer-btn {
+          background: var(--color-primary-light);
+          color: var(--color-primary-dark);
+          border: none;
+          border-radius: 1.2rem;
+          padding: 1rem 0.5rem;
+          font-size: 1.05rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+          outline: none;
+        }
+        .answer-btn.selected, .answer-btn:focus {
+          background: var(--color-accent);
+          color: #fff;
+        }
+        .answer-btn:hover {
+          background: var(--color-primary);
+          color: #fff;
+        }
+        .progress-bar-wrap {
+          width: 100%;
+          height: 8px;
+          background: var(--color-neutral);
+          border-radius: 4px;
+          margin-top: 1.2rem;
+          overflow: hidden;
+        }
+        .progress-bar {
+          height: 100%;
+          background: linear-gradient(90deg, var(--color-primary) 80%, #FFE066 100%);
+          border-radius: 4px;
+          transition: width 0.3s;
+        }
+        @media (max-width: 500px) {
+          .quiz-card {
+            padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+            max-width: 98vw;
+          }
+        }
+      `}</style>
     </div>
   );
 }
