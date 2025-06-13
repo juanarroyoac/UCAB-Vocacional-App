@@ -2,7 +2,8 @@
 // Muestra las carreras más afines al estudiante en un formato de "stories" similar a Spotify Wrapped.
 
 import './ResultsScreen.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import careersData from '../ucab_carreras.json';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -17,6 +18,24 @@ const LoadingSpinner = () => (
   </div>
 );
 
+// --- COMPONENTE DE ERROR ---
+// Este componente se mostrará si los resultados no se cargan correctamente.
+const ErrorDisplay = ({ onRestart }) => (
+    <div className="results-story-container loading">
+        <div className="slide-content" style={{ textAlign: 'center', color: 'white' }}>
+            <h1 className="slide-title">Error en los Resultados</h1>
+            <p className="slide-description" style={{margin: '1rem 0'}}>
+                No se pudieron generar las diapositivas porque los datos recibidos estaban incompletos.
+                <br/>
+                Por favor, asegúrate de que el análisis vocacional se completó y proporcionó un perfil, intereses y una lista de carreras.
+            </p>
+            <button className="restart-button" onClick={onRestart} style={{marginTop: '2rem'}}>
+                Volver a Empezar
+            </button>
+        </div>
+    </div>
+);
+
 
 // --- COMPONENTE PRINCIPAL DE RESULTADOS ---
 function ResultsScreen({ results, isLoading, onRestart, user }) {
@@ -29,120 +48,154 @@ function ResultsScreen({ results, isLoading, onRestart, user }) {
   // Asegura que careers sea siempre un array
   const safeCareers = Array.isArray(results?.careers) ? results.careers : [];
 
+  // Helper para buscar datos originales de la carrera
+  const getCareerData = (careerName) => careersData.find(c => c.carrera === careerName) || {};
+
   // Generamos los slides dinámicamente a partir de los resultados
   const slides = [
-    // 1. Slide de Bienvenida
-    {
-      type: 'intro',
+    results?.main_interests && {
+      type: 'interests',
       content: {
         supertitle: `¡Hola, ${user?.name || 'futuro ucabista'}!`,
-        title: 'Hemos analizado tus resultados.',
-        description: 'Prepárate para descubrir tu vocación.'
+        title: 'Tus intereses principales',
+        description: results.main_interests
       }
     },
-    // 2. Slide de Arquetipo
-    {
-      type: 'archetype',
+    results?.personality_profile && {
+      type: 'profile',
       content: {
-        supertitle: 'Tu Perfil Vocacional',
-        title: results?.personality,
-        description: results?.description
+        supertitle: 'Tu Perfil de Personalidad',
+        title: 'Así eres tú',
+        description: results.personality_profile
       }
     },
-    // 3. Slides de Carreras (Top 3)
-    ...safeCareers.slice(0, 3).map((career, index) => ({
+    safeCareers[2] && {
       type: 'career',
       content: {
-        supertitle: `Tu Opción #${index + 1}`,
-        title: career.name,
-        details: `${career.faculty} • ${career.score}% de Afinidad`,
-        reason: career.reason,
-        url: `https://www.ucab.edu.ve/carreras/${slugify(career.name)}`
+        supertitle: 'Tu Opción #3',
+        title: safeCareers[2].name,
+        details: `${getCareerData(safeCareers[2].name).facultad || ''}`,
+        reason: safeCareers[2].fun_overview || getCareerData(safeCareers[2].name).fun_overview || '',
+        url: safeCareers[2].url || getCareerData(safeCareers[2].name).url || `https://www.ucab.edu.ve/carreras/${slugify(safeCareers[2].name)}`
       }
-    })),
-    // 4. Slide de Resumen y Gráfico
-    {
-        type: 'summary_chart',
-        content: {
-            supertitle: 'Tu Afinidad en Detalle',
-            title: 'Tus 3 carreras principales',
-            chartData: {
-                labels: safeCareers.slice(0, 3).map(c => c.name),
-                datasets: [{
-                    label: 'Puntaje de Afinidad',
-                    data: safeCareers.slice(0, 3).map(c => c.score),
-                    backgroundColor: ['#DFAF3F', '#a9d6e5', '#f8f9fa'],
-                    borderColor: '#034078',
-                    borderWidth: 2,
-                }]
-            }
-        }
     },
-    // 5. Slide Final (Podio y Reinicio)
-    {
+    safeCareers[1] && {
+      type: 'career',
+      content: {
+        supertitle: 'Tu Opción #2',
+        title: safeCareers[1].name,
+        details: `${getCareerData(safeCareers[1].name).facultad || ''}`,
+        reason: safeCareers[1].fun_overview || getCareerData(safeCareers[1].name).fun_overview || '',
+        url: safeCareers[1].url || getCareerData(safeCareers[1].name).url || `https://www.ucab.edu.ve/carreras/${slugify(safeCareers[1].name)}`
+      }
+    },
+    safeCareers[0] && {
+      type: 'career',
+      content: {
+        supertitle: 'Tu Opción #1',
+        title: safeCareers[0].name,
+        details: `${getCareerData(safeCareers[0].name).facultad || ''}`,
+        reason: safeCareers[0].fun_overview || getCareerData(safeCareers[0].name).fun_overview || '',
+        url: safeCareers[0].url || getCareerData(safeCareers[0].name).url || `https://www.ucab.edu.ve/carreras/${slugify(safeCareers[0].name)}`
+      }
+    },
+    // El podio final solo se añade si hay carreras que mostrar
+    safeCareers.length > 0 && {
       type: 'summary_podium',
       content: {
         title: 'Explora tu Futuro',
-        careers: safeCareers.slice(0, 3).map(c => ({
+        careers: safeCareers.slice(0, 3).map((c) => {
+          const original = getCareerData(c.name);
+          return {
             ...c,
-            url: `https://www.ucab.edu.ve/carreras/${slugify(c.name)}`
-        }))
+            facultad: original.facultad,
+            url: c.url || original.url || `https://www.ucab.edu.ve/carreras/${slugify(c.name)}`
+          };
+        })
       }
     }
-  ];
+  ].filter(Boolean);
 
   // --- MANEJO DE LA INTERACTIVIDAD ---
   const totalSlides = slides.length;
+  const autoAdvanceTimeout = useRef(null);
+  const [slideAnim, setSlideAnim] = useState('in');
 
   const handleInteraction = (e) => {
-    // Evitar que el click en un link avance el slide
-    if (e.target.tagName === 'A') return;
+    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+      e.stopPropagation();
+      return;
+    }
+    const bounds = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX;
+    const isLeft = x < bounds.left + bounds.width / 2;
     
-    setAnimationKey(prev => prev + 1); // Reinicia la animación de la barra
-    setActiveSlide(prev => (prev + 1) % totalSlides);
+    clearTimeout(autoAdvanceTimeout.current);
+
+    setSlideAnim('out');
+    setTimeout(() => {
+      setAnimationKey(prev => prev + 1);
+      setActiveSlide(prev => {
+        if (isLeft) {
+          return prev === 0 ? 0 : prev - 1;
+        } else {
+          return prev === totalSlides - 1 ? prev : prev + 1;
+        }
+      });
+      setSlideAnim('in');
+    }, 500);
   };
   
-  // Detener el avance automático cuando se llega al final
   useEffect(() => {
-    if (activeSlide === totalSlides -1) return;
+    if (activeSlide >= totalSlides - 1) {
+      clearTimeout(autoAdvanceTimeout.current);
+      return;
+    }
+    autoAdvanceTimeout.current = setTimeout(() => {
+      setSlideAnim('out');
+      setTimeout(() => {
+        setAnimationKey(prev => prev + 1);
+        setActiveSlide(prev => prev + 1);
+        setSlideAnim('in');
+      }, 500);
+    }, 5000); 
 
-    const timer = setTimeout(() => {
-         setAnimationKey(prev => prev + 1);
-         setActiveSlide(prev => prev + 1);
-    }, 5000); // Avance automático cada 5 segundos
-    return () => clearTimeout(timer);
+    return () => clearTimeout(autoAdvanceTimeout.current);
   }, [activeSlide, totalSlides]);
 
-
   // --- RENDERIZADO ---
-  if (isLoading || !results) {
+  if (isLoading) {
     return <LoadingSpinner />;
+  }
+  
+  // *** FIX IMPLEMENTED HERE ***
+  // Si después de filtrar, no hay slides, significa que el prop 'results' llegó vacío o incompleto.
+  // En lugar de renderizar un componente roto, mostramos un error claro.
+  if (!results || totalSlides === 0) {
+    return <ErrorDisplay onRestart={onRestart} />;
   }
 
   return (
     <div className="results-story-container" onClick={handleInteraction}>
       <img src="https://ucab.edu.ve/wp-content/uploads/2019/07/logo-ucab-blanco-600x583.png" alt="UCAB Logo" className="logo" />
 
-      {/* Barra de Progreso */}
       <div className="progress-bar">
         {slides.map((_, index) => (
           <div key={index} className="progress-segment">
             <div
               className={`progress-fill ${index < activeSlide ? 'visited' : ''} ${index === activeSlide ? 'active' : ''}`}
-              key={animationKey} // Clave para forzar el reinicio de la animación
+              key={animationKey}
+              style={{ animationDuration: '5s' }}
             ></div>
           </div>
         ))}
       </div>
 
-      {/* Slides */}
       {slides.map((slide, index) => (
         <div key={index} className={`slide ${index === activeSlide ? 'active' : ''}`}>
-          <div className="slide-content">
-            {/* Renderizado condicional según el tipo de slide */}
-
-            {/* INTRO Y ARQUETIPO */}
-            {(slide.type === 'intro' || slide.type === 'archetype') && (
+          <div className={`slide-content slide-content-anim${index === activeSlide ? ' ' + slideAnim : ''}`}> 
+            
+            {(slide.type === 'interests' || slide.type === 'profile') && (
               <>
                 <p className="slide-supertitle animate-fade-in">{slide.content.supertitle}</p>
                 <h1 className="slide-title animate-pop-in">{slide.content.title}</h1>
@@ -150,7 +203,6 @@ function ResultsScreen({ results, isLoading, onRestart, user }) {
               </>
             )}
 
-            {/* CARRERAS */}
             {slide.type === 'career' && (
               <>
                 <p className="slide-supertitle animate-fade-in">{slide.content.supertitle}</p>
@@ -159,34 +211,10 @@ function ResultsScreen({ results, isLoading, onRestart, user }) {
                   <strong>{slide.content.details}</strong>
                   <p>{slide.content.reason}</p>
                 </div>
-                 <a href={slide.content.url} target="_blank" rel="noopener noreferrer" className="career-link-button animate-fade-in-delay-1">Conoce más</a>
+                <a href={slide.content.url} target="_blank" rel="noopener noreferrer" className="career-link-button animate-fade-in-delay-1">Conoce más</a>
               </>
             )}
 
-            {/* RESUMEN CON GRÁFICO */}
-            {slide.type === 'summary_chart' && (
-                 <>
-                    <p className="slide-supertitle animate-fade-in">{slide.content.supertitle}</p>
-                    <h1 className="slide-title animate-pop-in">{slide.content.title}</h1>
-                    <div className="summary-chart-container animate-fade-in-delay-1">
-                         <Bar
-                            data={slide.content.chartData}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                indexAxis: 'y', // Gráfico de barras horizontales
-                                scales: {
-                                    x: { ticks: { color: 'white', font: { weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0.2)' }, suggestedMax: 100 },
-                                    y: { ticks: { color: 'white', font: { weight: 'bold', size: 12 } }, grid: { color: 'rgba(255,255,255,0.2)' } }
-                                },
-                                plugins: { legend: { display: false } }
-                            }}
-                        />
-                    </div>
-                 </>
-            )}
-
-            {/* PODIO FINAL */}
             {slide.type === 'summary_podium' && (
               <div className="summary-card animate-pop-in">
                 <h2 className="summary-title">{slide.content.title}</h2>
@@ -197,7 +225,7 @@ function ResultsScreen({ results, isLoading, onRestart, user }) {
                         <span className="podium-rank">{i + 1}</span>
                         <div className="podium-career-info">
                             <strong>{c.name}</strong>
-                            <span>{c.faculty}</span>
+                            <span>{c.facultad}</span>
                         </div>
                         <span className="podium-arrow">›</span>
                       </a>

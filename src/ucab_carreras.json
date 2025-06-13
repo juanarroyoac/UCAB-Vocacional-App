@@ -8,7 +8,9 @@
     "palabras_clave_intereses": ["estrategia", "emprendimiento", "organización", "finanzas", "gestión", "optimización"],
     "aptitudes_clave": ["toma_de_decisiones", "planificacion_estrategica", "resolucion_problemas", "pensamiento_analitico"],
     "materias_representativas": ["Gerencia Estratégica", "Finanzas Corporativas", "Mercadeo", "Modelos de Decisión Gerencial"],
-    "ambiente_trabajo": ["corporativo", "orientado_a_objetivos", "dinamico", "oficina", "colaborativo"]
+    "ambiente_trabajo": ["corporativo", "orientado_a_objetivos", "dinamico", "oficina", "colaborativo"],
+    "url": "https://www.ucab.edu.ve/carreras/administracion-de-empresas",
+    "fun_overview": "¿Te imaginas liderando tu propia empresa o tomando decisiones clave en grandes organizaciones? Administración de Empresas es para quienes disfrutan organizar, optimizar y ver crecer proyectos. ¡Tu visión estratégica puede cambiar el mundo de los negocios!"
   },
   {
     "carrera": "Contaduría Pública",
@@ -19,7 +21,9 @@
     "palabras_clave_intereses": ["números", "análisis", "finanzas", "normativa", "detalle", "exactitud"],
     "aptitudes_clave": ["atencion_al_detalle", "razonamiento_numerico", "integridad_etica", "organizacion"],
     "materias_representativas": ["Contabilidad Financiera Avanzada", "Auditoría de Estados Financieros", "Legislación Tributaria", "Normas Internacionales de Información Financiera (NIIF)"],
-    "ambiente_trabajo": ["estructurado", "oficina", "orientado_al_detalle", "trabajo_individual_y_equipo", "regulado"]
+    "ambiente_trabajo": ["estructurado", "oficina", "orientado_al_detalle", "trabajo_individual_y_equipo", "regulado"],
+    "url": "https://www.ucab.edu.ve/carreras/contaduria-publica",
+    "fun_overview": "¿Te apasionan los números y el orden? En Contaduría Pública, tu precisión y ética serán la clave para que empresas y personas tomen las mejores decisiones financieras. ¡Conviértete en el guardián de la transparencia!"
   },
   {
     "carrera": "Relaciones Industriales",
@@ -30,7 +34,9 @@
     "palabras_clave_intereses": ["personas", "negociación", "talento", "organización", "bienestar", "comunicación"],
     "aptitudes_clave": ["inteligencia_emocional", "habilidades_de_negociacion", "comunicacion_asertiva", "empatia", "resolucion_de_conflictos"],
     "materias_representativas": ["Gestión del Talento Humano", "Derecho Laboral", "Psicología Organizacional", "Compensación y Beneficios"],
-    "ambiente_trabajo": ["corporativo", "interpersonal", "mediacion", "oficina", "centrado_en_personas"]
+    "ambiente_trabajo": ["corporativo", "interpersonal", "mediacion", "oficina", "centrado_en_personas"],
+    "url": "https://www.ucab.edu.ve/carreras/relaciones-industriales",
+    "fun_overview": "¿Te gusta ayudar a las personas a crecer y resolver conflictos? Relaciones Industriales es para quienes disfrutan ser el puente entre el talento y el éxito organizacional. ¡Tu empatía y liderazgo pueden transformar equipos!"
   },
   {
     "carrera": "Sociología",
@@ -41,7 +47,9 @@
     "palabras_clave_intereses": ["sociedad", "investigación", "cultura", "análisis crítico", "problemas sociales", "gente", "historia", "política"],
     "aptitudes_clave": ["pensamiento_critico", "investigacion_cualitativa_y_cuantitativa", "capacidad_analitica", "observacion", "redaccion_academica"],
     "materias_representativas": ["Teoría Sociológica Clásica y Contemporánea", "Metodología de la Investigación Social", "Estadística Aplicada a las Ciencias Sociales", "Sociología de Venezuela"],
-    "ambiente_trabajo": ["academico", "investigativo", "trabajo_de_campo", "analitico", "oficina_y_comunidad"]
+    "ambiente_trabajo": ["academico", "investigativo", "trabajo_de_campo", "analitico", "oficina_y_comunidad"],
+    "url": "https://www.ucab.edu.ve/carreras/sociologia",
+    "fun_overview": "¿Te intriga entender cómo funciona la sociedad y proponer soluciones a sus problemas? Sociología es para quienes quieren analizar, investigar y cambiar el mundo desde adentro. ¡Tu mirada crítica puede inspirar grandes cambios!"
   },
   {
     "carrera": "Economía",
@@ -52,7 +60,9 @@
     "palabras_clave_intereses": ["análisis", "finanzas", "política", "mercados", "números", "tendencias globales", "historia", "estadística"],
     "aptitudes_clave": ["razonamiento_cuantitativo", "pensamiento_abstracto", "modelado_estadistico", "capacidad_analitica", "investigacion"],
     "materias_representativas": ["Microeconomía", "Macroeconomía", "Econometría", "Historia del Pensamiento Económico"],
-    "ambiente_trabajo": ["analitico", "corporativo", "gubernamental", "academico", "orientado_a_datos"]
+    "ambiente_trabajo": ["analitico", "corporativo", "gubernamental", "academico", "orientado_a_datos"],
+    "url": "https://www.ucab.edu.ve/carreras/economia",
+    "fun_overview": "¿Te apasiona descifrar cómo se mueve el dinero y las tendencias globales? Economía es para quienes disfrutan analizar, predecir y tomar decisiones que impactan a toda la sociedad. ¡Tu visión puede cambiar el rumbo económico!"
   },
   {
     "carrera": "Derecho",
@@ -63,7 +73,9 @@
     "palabras_clave_intereses": ["justicia", "debate", "lectura", "argumentación", "leyes", "defensa", "orden", "negociación"],
     "aptitudes_clave": ["argumentacion_juridica", "oratoria", "capacidad_analitica", "lectura_critica", "etica_profesional"],
     "materias_representativas": ["Derecho Constitucional", "Derecho Civil (Obligaciones y Contratos)", "Derecho Penal", "Derecho Procesal"],
-    "ambiente_trabajo": ["formal", "estructurado", "competitivo", "despachos_y_tribunales", "alta_presion"]
+    "ambiente_trabajo": ["formal", "estructurado", "competitivo", "despachos_y_tribunales", "alta_presion"],
+    "url": "https://www.ucab.edu.ve/carreras/derecho",
+    "fun_overview": "¿Te encanta debatir, defender ideas y buscar justicia? Derecho es para quienes disfrutan argumentar, analizar leyes y proteger los derechos de los demás. ¡Tu voz puede ser la diferencia en la sociedad!"
   },
   {
     "carrera": "Psicología",
@@ -74,7 +86,9 @@
     "palabras_clave_intereses": ["mente humana", "ayuda a otros", "comportamiento", "salud mental", "empatía", "investigación"],
     "aptitudes_clave": ["escucha_activa", "empatia", "capacidad_analitica", "comunicacion_asertiva"],
     "materias_representativas": ["Psicología Clínica", "Teorías de la Personalidad", "Psicopatología", "Neurociencias"],
-    "ambiente_trabajo": ["consultorio", "entorno_educativo", "confidencial", "interpersonal", "centrado_en_personas"]
+    "ambiente_trabajo": ["consultorio", "entorno_educativo", "confidencial", "interpersonal", "centrado_en_personas"],
+    "url": "https://www.ucab.edu.ve/carreras/psicologia",
+    "fun_overview": "¿Te motiva ayudar a otros a entenderse y crecer? Psicología es para quienes disfrutan escuchar, analizar y acompañar a las personas en su bienestar. ¡Tu empatía puede cambiar vidas!"
   },
   {
     "carrera": "Comunicación Social",
@@ -85,7 +99,9 @@
     "palabras_clave_intereses": ["creatividad", "escritura", "redes sociales", "audiovisual", "contar historias", "gente", "cultura", "actualidad"],
     "aptitudes_clave": ["creatividad", "habilidades_de_comunicacion_oral_y_escrita", "pensamiento_critico", "adaptabilidad_tecnologica", "storytelling"],
     "materias_representativas": ["Periodismo Interpretativo", "Comunicación Corporativa", "Guionismo", "Producción Audiovisual"],
-    "ambiente_trabajo": ["creativo", "dinamico", "orientado_a_plazos", "agencias", "medios_de_comunicacion", "colaborativo"]
+    "ambiente_trabajo": ["creativo", "dinamico", "orientado_a_plazos", "agencias", "medios_de_comunicacion", "colaborativo"],
+    "url": "https://www.ucab.edu.ve/carreras/comunicacion-social",
+    "fun_overview": "¿Te encanta contar historias, crear contenido y conectar con el mundo? Comunicación Social es para quienes disfrutan informar, inspirar y entretener en todos los formatos. ¡Tu creatividad puede llegar a miles!"
   },
   {
     "carrera": "Educación",
@@ -96,7 +112,9 @@
     "palabras_clave_intereses": ["enseñar", "vocación de servicio", "paciencia", "psicología", "creatividad", "planificación", "niños y jóvenes", "impacto social"],
     "aptitudes_clave": ["paciencia", "pedagogia", "liderazgo_en_el_aula", "creatividad", "planificacion"],
     "materias_representativas": ["Didáctica General", "Psicología del Desarrollo", "Evaluación de los Aprendizajes", "Gerencia Educativa"],
-    "ambiente_trabajo": ["entorno_educativo", "colaborativo", "estructurado", "centrado_en_personas", "vocacional"]
+    "ambiente_trabajo": ["entorno_educativo", "colaborativo", "estructurado", "centrado_en_personas", "vocacional"],
+    "url": "https://www.ucab.edu.ve/carreras/educacion",
+    "fun_overview": "¿Te inspira enseñar y ver crecer a otros? Educación es para quienes disfrutan compartir conocimientos, innovar y dejar huella en nuevas generaciones. ¡Tu vocación puede transformar el futuro!"
   },
   {
     "carrera": "Filosofía",
@@ -107,7 +125,9 @@
     "palabras_clave_intereses": ["pensamiento abstracto", "lectura", "debate", "lógica", "preguntas fundamentales", "crítica", "historia de las ideas", "escritura"],
     "aptitudes_clave": ["pensamiento_critico", "razonamiento_logico", "capacidad_de_abstraccion", "argumentacion", "interpretacion_de_textos"],
     "materias_representativas": ["Metafísica", "Ética", "Lógica", "Historia de la Filosofía"],
-    "ambiente_trabajo": ["academico", "reflexivo", "trabajo_individual", "intelectual", "editorial"]
+    "ambiente_trabajo": ["academico", "reflexivo", "trabajo_individual", "intelectual", "editorial"],
+    "url": "https://www.ucab.edu.ve/carreras/filosofia",
+    "fun_overview": "¿Te fascina cuestionar, debatir y buscar respuestas profundas? Filosofía es para quienes disfrutan pensar, analizar y dialogar sobre los grandes temas de la humanidad. ¡Tu mente puede iluminar nuevas ideas!"
   },
   {
     "carrera": "Letras",
@@ -118,7 +138,9 @@
     "palabras_clave_intereses": ["literatura", "lectura", "escritura", "idiomas", "cultura", "arte", "análisis", "historia"],
     "aptitudes_clave": ["lectura_critica", "redaccion_avanzada", "investigacion_documental", "capacidad_analitica", "sensibilidad_estetica"],
     "materias_representativas": ["Teoría Literaria", "Lingüística", "Literatura Venezolana y Latinoamericana", "Latín"],
-    "ambiente_trabajo": ["academico", "editorial", "cultural", "creativo", "trabajo_individual"]
+    "ambiente_trabajo": ["academico", "editorial", "cultural", "creativo", "trabajo_individual"],
+    "url": "https://www.ucab.edu.ve/carreras/letras",
+    "fun_overview": "¿Te apasiona la literatura, la escritura y el arte de las palabras? Letras es para quienes disfrutan leer, crear y analizar textos que inspiran y transforman. ¡Tu pluma puede dejar huella!"
   },
   {
     "carrera": "Ingeniería Civil",
@@ -129,7 +151,9 @@
     "palabras_clave_intereses": ["construcción", "diseño", "matemáticas", "estructuras", "planificación"],
     "aptitudes_clave": ["vision_espacial", "razonamiento_numerico", "resolucion_problemas_complejos", "fisica_aplicada"],
     "materias_representativas": ["Análisis Estructural", "Mecánica de Suelos", "Ingeniería de Materiales", "Hidráulica"],
-    "ambiente_trabajo": ["trabajo_de_campo_y_oficina", "orientado_a_proyectos", "colaborativo", "tecnico", "regulado"]
+    "ambiente_trabajo": ["trabajo_de_campo_y_oficina", "orientado_a_proyectos", "colaborativo", "tecnico", "regulado"],
+    "url": "https://www.ucab.edu.ve/carreras/ingenieria-civil",
+    "fun_overview": "¿Te imaginas diseñando y construyendo grandes obras que mejoran la vida de todos? Ingeniería Civil es para quienes disfrutan crear, planificar y ver sus ideas hechas realidad. ¡Tu ingenio puede construir el futuro!"
   },
   {
     "carrera": "Ingeniería en Telecomunicaciones",
@@ -140,7 +164,9 @@
     "palabras_clave_intereses": ["tecnología", "programación", "computadoras", "software", "datos"],
     "aptitudes_clave": ["razonamiento_logico", "resolucion_problemas_complejos", "capacidad_de_abstraccion", "aprendizaje_autonomo"],
     "materias_representativas": ["Redes de Comunicación", "Sistemas de Transmisión", "Procesamiento Digital de Señales", "Antenas y Propagación"],
-    "ambiente_trabajo": ["tecnologico", "dinamico", "resolucion_de_problemas", "oficina_y_data_center", "innovador"]
+    "ambiente_trabajo": ["tecnologico", "dinamico", "resolucion_de_problemas", "oficina_y_data_center", "innovador"],
+    "url": "https://www.ucab.edu.ve/carreras/ingenieria-en-telecomunicaciones",
+    "fun_overview": "¿Te apasiona la tecnología y conectar a las personas? Ingeniería en Telecomunicaciones es para quienes disfrutan innovar, resolver problemas y mantener al mundo comunicado. ¡Tu talento puede conectar el futuro!"
   },
   {
     "carrera": "Ingeniería Industrial",
@@ -151,7 +177,9 @@
     "palabras_clave_intereses": ["eficiencia", "procesos", "optimización", "logística", "calidad", "sistemas", "gestión", "resolución de problemas"],
     "aptitudes_clave": ["resolucion_problemas_complejos", "pensamiento_sistemico", "liderazgo", "razonamiento_numerico", "planificacion"],
     "materias_representativas": ["Investigación de Operaciones", "Control de Calidad", "Logística y Cadena de Suministro", "Ingeniería de Procesos"],
-    "ambiente_trabajo": ["colaborativo", "orientado_a_objetivos", "oficina_y_planta", "dinamico", "analitico"]
+    "ambiente_trabajo": ["colaborativo", "orientado_a_objetivos", "oficina_y_planta", "dinamico", "analitico"],
+    "url": "https://www.ucab.edu.ve/carreras/ingenieria-industrial",
+    "fun_overview": "¿Te motiva optimizar procesos y mejorar la eficiencia en todo lo que haces? Ingeniería Industrial es para quienes disfrutan analizar, planificar y liderar proyectos que hacen la diferencia. ¡Tu visión puede revolucionar industrias!"
   },
   {
     "carrera": "Ingeniería Informática",
@@ -162,7 +190,9 @@
     "palabras_clave_intereses": ["tecnología", "programación", "computadoras", "software", "datos"],
     "aptitudes_clave": ["razonamiento_logico", "resolucion_problemas_complejos", "capacidad_de_abstraccion", "aprendizaje_autonomo"],
     "materias_representativas": ["Algoritmos y Estructuras de Datos", "Bases de Datos", "Ingeniería de Software", "Sistemas Operativos"],
-    "ambiente_trabajo": ["tecnologico", "innovador", "colaborativo", "resolucion_de_problemas", "flexible"]
+    "ambiente_trabajo": ["tecnologico", "innovador", "colaborativo", "resolucion_de_problemas", "flexible"],
+    "url": "https://www.ucab.edu.ve/carreras/ingenieria-informatica",
+    "fun_overview": "¿Te encanta programar, crear soluciones y explorar el mundo digital? Ingeniería Informática es para quienes disfrutan innovar, resolver retos y transformar la tecnología. ¡Tu código puede cambiar el mundo!"
   },
   {
     "carrera": "Arquitectura",
@@ -173,7 +203,9 @@
     "palabras_clave_intereses": ["diseño", "creatividad", "arte", "espacios", "estética"],
     "aptitudes_clave": ["vision_espacial", "creatividad", "pensamiento_de_diseno", "habilidades_graficas"],
     "materias_representativas": ["Taller de Diseño Arquitectónico", "Historia de la Arquitectura", "Sistemas Constructivos", "Urbanismo"],
-    "ambiente_trabajo": ["creativo", "estudio_de_diseno", "colaborativo", "orientado_a_proyectos", "trabajo_de_campo_y_oficina"]
+    "ambiente_trabajo": ["creativo", "estudio_de_diseno", "colaborativo", "orientado_a_proyectos", "trabajo_de_campo_y_oficina"],
+    "url": "https://www.ucab.edu.ve/carreras/arquitectura",
+    "fun_overview": "¿Te inspira diseñar espacios únicos y funcionales? Arquitectura es para quienes disfrutan crear, imaginar y transformar el entorno con arte y técnica. ¡Tu creatividad puede dar forma a ciudades!"
   },
   {
     "carrera": "Teología",
@@ -184,6 +216,8 @@
     "palabras_clave_intereses": ["espiritualidad", "fe", "historia", "filosofía", "ayuda a otros", "comunidad", "lectura", "reflexion"],
     "aptitudes_clave": ["pensamiento_critico", "interpretacion_de_textos", "capacidad_hermeneutica", "reflexion_filosofica", "consejeria"],
     "materias_representativas": ["Teología Fundamental", "Estudio de las Sagradas Escrituras (Exégesis)", "Teología Moral", "Historia de la Iglesia"],
-    "ambiente_trabajo": ["academico", "pastoral", "comunitario", "reflexivo", "vocacional"]
+    "ambiente_trabajo": ["academico", "pastoral", "comunitario", "reflexivo", "vocacional"],
+    "url": "https://www.ucab.edu.ve/carreras/teologia",
+    "fun_overview": "¿Te interesa explorar la fe, la espiritualidad y el sentido de la vida? Teología es para quienes disfrutan reflexionar, dialogar y acompañar a otros en su crecimiento personal. ¡Tu vocación puede inspirar y guiar!"
   }
 ]

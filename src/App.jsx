@@ -311,20 +311,28 @@ import careers from './ucab_carreras.json';
 
 // Llama a Gemini API y espera un JSON válido como respuesta
 const analyzeWithGemini = async (prompt) => {
-    try {
-        const responseText = await runAiInteraction(prompt);
-        // Intenta parsear como JSON, si falla, devuelve el texto plano
-        try {
-            return JSON.parse(responseText);
-        } catch (jsonError) {
-            // No es JSON, devuelve el texto como resultado
-            return { text: responseText };
-        }
-    } catch (error) {
-        console.error('Error al analizar con Gemini:', error);
-        // Devuelve un error estructurado para mostrar al usuario
-        return { error: 'No se pudo analizar la respuesta de la IA. Intenta de nuevo.' };
+  try {
+    const responseText = await runAiInteraction(prompt);
+
+    // Remove markdown code block if present
+    let cleaned = responseText.trim();
+    if (cleaned.startsWith('```json')) {
+      cleaned = cleaned.replace(/^```json/, '').replace(/```$/, '').trim();
+    } else if (cleaned.startsWith('```')) {
+      cleaned = cleaned.replace(/^```/, '').replace(/```$/, '').trim();
     }
+
+    try {
+      return JSON.parse(cleaned);
+    } catch (jsonError) {
+      // Not JSON, return the text as result
+      return { text: responseText };
+    }
+  } catch (error) {
+    console.error('Error al analizar con Gemini:', error);
+    // Devuelve un error estructurado para mostrar al usuario
+    return { error: 'No se pudo analizar la respuesta de la IA. Intenta de nuevo.' };
+  }
 };
 
 // ===================================================================================
@@ -365,9 +373,10 @@ function AppRoutes() {
   const handleSubmitForAnalysis = async (finalAnswers) => {
     setIsLoading(true);
     navigate('/results');
-    // Genera el prompt con preguntas y carreras
-    const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers);
+    // Genera el prompt con preguntas, carreras y nombre del usuario
+    const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name);
     const parsedResults = await analyzeWithGemini(prompt);
+    console.log('Gemini raw response:', parsedResults);
     setResults(parsedResults);
     setIsLoading(false);
   };

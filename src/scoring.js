@@ -8,7 +8,7 @@
  * @param {Array<object>} careers - El array completo de datos de las carreras.
  * @returns {string} - El prompt listo para ser enviado a la IA.
  */
-export function generateAnalysisPrompt(answers, questions, careers) {
+export function generateAnalysisPrompt(answers, questions, careers, userName) {
 
   // Mapeamos las respuestas a un formato de texto legible para la IA
   const userProfile = questions.map(q => {
@@ -19,7 +19,7 @@ export function generateAnalysisPrompt(answers, questions, careers) {
     if (answerValue === 3) answerText = "Neutral";
     if (answerValue === 2) answerText = "En desacuerdo";
     if (answerValue === 1) answerText = "Totalmente en desacuerdo";
-    
+    if (answerValue === 0) answerText = "No";
     return `- ${q.text}: ${answerText}`;
   }).join("\n");
 
@@ -29,43 +29,53 @@ export function generateAnalysisPrompt(answers, questions, careers) {
   // El prompt le da a la IA un rol, contexto, los datos y una tarea muy específica.
   // Es crucial pedirle que devuelva un JSON estructurado para poderlo usar en el frontend.
   const prompt = `
-    Eres un orientador vocacional experto de la Universidad Católica Andrés Bello (UCAB). Tu tarea es analizar el perfil de un estudiante basándote en sus respuestas a un test vocacional y recomendarle las carreras más adecuadas de la oferta de la UCAB. Debes ser alentador, perspicaz y basar tu análisis estrictamente en los datos proporcionados.
+Eres un orientador vocacional experto de la Universidad Católica Andrés Bello (UCAB). Tu tarea es analizar el perfil de un estudiante basándote en sus respuestas a un test vocacional y recomendarle las carreras más adecuadas de la oferta de la UCAB. Debes ser alentador, perspicaz y basar tu análisis estrictamente en los datos proporcionados.
 
-    **Contexto:**
-    1.  **Perfil del Estudiante (basado en sus respuestas):**
-        ${userProfile}
+**Contexto:**
+1.  **Nombre del estudiante:** ${userName || 'El estudiante'}
+2.  **Perfil del Estudiante (basado en sus respuestas):**
+    ${userProfile}
 
-    2.  **Oferta Académica de la UCAB (Datos Completos):**
-        ${careersText}
+3.  **Oferta Académica de la UCAB (Datos Completos):**
+    ${careersText}
 
-    **Tu Tarea:**
-    Realiza un análisis profundo y genera una respuesta en formato JSON. El JSON debe tener la siguiente estructura:
+**Tu Tarea:**
+Realiza un análisis profundo y genera una respuesta en formato JSON. El JSON debe tener la siguiente estructura EXACTA:
+{
+  "main_interests": "Lista o párrafo breve con los principales intereses y áreas temáticas que predominan en el perfil del estudiante, usando un tono divertido y creativo.",
+  "personality_profile": "Un párrafo divertido y personalizado que describe la personalidad vocacional del estudiante, usando su nombre (${userName || 'el estudiante'}) de forma creativa.",
+  "careers": [
     {
-      "resumen_perfil": "Un párrafo que describa las principales inclinaciones, intereses y aptitudes del estudiante basándote en un análisis holístico de sus respuestas.",
-      "carreras_recomendadas": [
-        {
-          "carrera": "Nombre de la Carrera 1",
-          "afinidad": "Alta",
-          "justificacion": "Un párrafo detallado y personalizado explicando POR QUÉ esta carrera es una buena opción. Debes conectar respuestas específicas del estudiante (ej: 'Tu interés en la tecnología y la resolución de problemas...') con aspectos clave del perfil de la carrera (ej: '...se alinea perfectamente con la Ingeniería Informática, que se enfoca en el desarrollo de software...')."
-        },
-        {
-          "carrera": "Nombre de la Carrera 2",
-          "afinidad": "Media",
-          "justificacion": "Un párrafo similar al anterior, explicando la conexión entre las respuestas del estudiante y el perfil de esta segunda carrera recomendada."
-        },
-        {
-          "carrera": "Nombre de la Carrera 3",
-          "afinidad": "Considerable",
-          "justificacion": "Un párrafo similar para una tercera opción, quizás destacando un potencial que el estudiante no haya considerado."
-        }
-      ]
+      "name": "Nombre de la carrera #1 (más afinidad)",
+      "affinity": "Alta",
+      "justification": "Explicación personalizada de por qué esta carrera es ideal para el estudiante.",
+      "url": "URL oficial de la carrera en la UCAB (usa el campo url de los datos)",
+      "fun_overview": "Resumen divertido de la carrera (usa el campo fun_overview de los datos)",
+    },
+    {
+      "name": "Nombre de la carrera #2",
+      "affinity": "Media",
+      "justification": "Explicación personalizada de por qué esta carrera es una buena opción.",
+      "url": "URL oficial de la carrera en la UCAB (usa el campo url de los datos)",
+      "fun_overview": "Resumen divertido de la carrera (usa el campo fun_overview de los datos)",
+    },
+    {
+      "name": "Nombre de la carrera #3",
+      "affinity": "Considerable",
+      "justification": "Explicación personalizada de por qué esta carrera también es afín.",
+      "url": "URL oficial de la carrera en la UCAB (usa el campo url de los datos)",
+      "fun_overview": "Resumen divertido de la carrera (usa el campo fun_overview de los datos)",
     }
+  ]
+}
 
-    **Instrucciones Importantes:**
-    - Recomienda exactamente 3 carreras.
-    - El análisis debe ser profundo, no superficial. No te limites a contar palabras clave; interpreta el significado detrás de las respuestas.
-    - Asegúrate de que la salida sea un único bloque de código JSON válido, sin texto adicional antes o después.
-  `;
+**Instrucciones Importantes:**
+- Recomienda exactamente 3 carreras, en orden de afinidad (la #1 es la más afín).
+- El análisis debe ser profundo, no superficial. No te limites a contar palabras clave; interpreta el significado detrás de las respuestas.
+- Usa el nombre del estudiante (${userName || 'el estudiante'}) de forma creativa en el perfil de personalidad.
+- Usa los campos "url" y "fun_overview" de los datos de cada carrera para completar esos campos en el JSON.
+- Asegúrate de que la salida sea un único bloque de código JSON válido, sin texto adicional antes o después.
+`;
 
   return prompt;
 }
