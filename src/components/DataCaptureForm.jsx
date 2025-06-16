@@ -1,12 +1,36 @@
 import React, { useState, useMemo } from 'react';
+import './Onboarding.css';
+
+const VENEZUELAN_STATES = [
+  'Amazonas', 'Anzoátegui', 'Apure', 'Aragua', 'Barinas', 'Bolívar', 'Carabobo',
+  'Cojedes', 'Delta Amacuro', 'Distrito Capital', 'Falcón', 'Guárico', 'Lara',
+  'Mérida', 'Miranda', 'Monagas', 'Nueva Esparta', 'Portuguesa', 'Sucre',
+  'Táchira', 'Trujillo', 'La Guaira', 'Yaracuy', 'Zulia'
+];
+
+const GENDERS = [
+  'Masculino', 'Femenino', 'Otro', 'Prefiero no decirlo'
+];
+
+const HEARD_ABOUT_US = [
+  'Redes Sociales', 'Colegio', 'Amigo/a', 'Otro'
+];
 
 const DataCaptureForm = ({ onOnboardingComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    dob: '',
+    gender: '',
+    state: '',
+    city: '',
     school: '',
+    gradYear: '',
+    heardAbout: '',
   });
+  const [textTransition, setTextTransition] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,196 +63,149 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       validationField: 'name',
     },
     {
-      title: 'Un último dato',
+      title: 'Tu correo electrónico y teléfono',
       isForm: true,
       content: (
         <>
-            <div className="form-field">
-                <label htmlFor="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} autoFocus maxLength={50} placeholder="tu.correo@ejemplo.com"/>
-            </div>
-             <p className="disclaimer">
-            Al continuar, aceptas que podríamos enviarte información sobre eventos y novedades de orientación vocacional.
-          </p>
+          <div className="form-field center-field">
+            <label htmlFor="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} maxLength={50} placeholder="tu.correo@ejemplo.com"/>
+          </div>
+          <div className="form-field center-field">
+            <label htmlFor="phone">Teléfono (opcional)</label>
+            <input id="phone" name="phone" value={formData.phone} onChange={handleInputChange} maxLength={20} placeholder="Ej: 0412-1234567" />
+          </div>
+          <p className="disclaimer">Al continuar, aceptas que podríamos enviarte información sobre eventos y novedades de orientación vocacional.</p>
         </>
       ),
       validationField: 'email',
     },
-  ], [formData.name, formData.email]); // Dependency array ensures content is memoized correctly
+    {
+      title: 'Fecha de nacimiento',
+      isForm: true,
+      content: (
+        <div className="form-field">
+          <label htmlFor="dob">Fecha de nacimiento</label>
+          <input type="date" id="dob" name="dob" value={formData.dob} onChange={handleInputChange} />
+        </div>
+      ),
+      validationField: 'dob',
+    },
+    {
+      title: 'Género',
+      isForm: true,
+      content: (
+        <div className="form-field">
+          <label htmlFor="gender">Género</label>
+          <select id="gender" name="gender" value={formData.gender} onChange={handleInputChange}>
+            <option value="">Selecciona una opción</option>
+            {GENDERS.map(g => <option key={g} value={g}>{g}</option>)}
+          </select>
+        </div>
+      ),
+      validationField: 'gender',
+    },
+    {
+      title: 'Estado y ciudad',
+      isForm: true,
+      content: (
+        <div className="form-field center-field">
+          <label htmlFor="state">Estado</label>
+          <select id="state" name="state" value={formData.state} onChange={handleInputChange}>
+            <option value="">Selecciona tu estado</option>
+            {VENEZUELAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <label htmlFor="city" style={{marginTop: 16}}>Ciudad</label>
+          <input id="city" name="city" value={formData.city} onChange={handleInputChange} maxLength={50} placeholder="Ej: Caracas" />
+        </div>
+      ),
+      validationField: ['state', 'city'],
+    },
+    {
+      title: 'Colegio y año de graduación',
+      isForm: true,
+      content: (
+        <>
+          <div className="form-field">
+            <label htmlFor="school">Nombre del colegio</label>
+            <input id="school" name="school" value={formData.school} onChange={handleInputChange} maxLength={50} placeholder="Nombre del colegio" />
+          </div>
+          <div className="form-field" style={{marginTop: 8}}>
+            <label htmlFor="gradYear">Año de graduación</label>
+            <input id="gradYear" name="gradYear" value={formData.gradYear} onChange={handleInputChange} maxLength={4} placeholder="Ej: 2025" />
+          </div>
+        </>
+      ),
+      validationField: ['school', 'gradYear'],
+    },
+    {
+      title: '¿Cómo supiste de nosotros?',
+      isForm: true,
+      content: (
+        <div className="form-field">
+          <label htmlFor="heardAbout">¿Cómo supiste de nosotros?</label>
+          <select id="heardAbout" name="heardAbout" value={formData.heardAbout} onChange={handleInputChange}>
+            <option value="">Selecciona una opción</option>
+            {HEARD_ABOUT_US.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+          </select>
+        </div>
+      ),
+      validationField: 'heardAbout',
+    },
+  ], [formData, textTransition]);
 
   const handleNext = () => {
-    const isFinalStep = currentStep === stepsConfig.length - 1;
-    if (isFinalStep) {
+    setTextTransition(true);
+    setTimeout(() => {
+      setTextTransition(false);
+      const isFinalStep = currentStep === stepsConfig.length - 1;
+      if (isFinalStep) {
         if (typeof onOnboardingComplete === 'function') {
-            // Pass the collected data upon completion
-            onOnboardingComplete(formData);
+          onOnboardingComplete(formData);
         }
         return;
-    }
-    setCurrentStep(prev => prev + 1);
+      }
+      setCurrentStep(prev => prev + 1);
+    }, 250);
   };
-  
+
   const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    }
+    setTextTransition(true);
+    setTimeout(() => {
+      setTextTransition(false);
+      if (currentStep > 0) {
+        setCurrentStep(prev => prev - 1);
+      }
+    }, 250);
   };
 
   const currentStepConfig = stepsConfig[currentStep];
+  if (!currentStepConfig) {
+    // If step is out of bounds, show a fallback error message
+    return (
+      <div className="onboarding-wrapper">
+        <div className="onboarding-container">
+          <h2>Ocurrió un error. Por favor, recarga la página.</h2>
+        </div>
+      </div>
+    );
+  }
+
   // Basic email validation for enabling the next button
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
-  const isNextDisabled = currentStepConfig.isForm && 
-    (currentStepConfig.validationField === 'email' ? !isEmailValid : !formData[currentStepConfig.validationField]);
+  let isNextDisabled = false;
+  if (currentStepConfig.isForm) {
+    if (Array.isArray(currentStepConfig.validationField)) {
+      isNextDisabled = !currentStepConfig.validationField.every(f => formData[f]);
+    } else if (currentStepConfig.validationField === 'email') {
+      isNextDisabled = !isEmailValid;
+    } else {
+      isNextDisabled = !formData[currentStepConfig.validationField];
+    }
+  }
 
   return (
     <>
-      <style>{`
-        /*
-          Component: DataCaptureForm
-          Design: Clean, minimalist, multi-step onboarding flow.
-          All colors are hardcoded for self-contained styling.
-        */
-        .onboarding-wrapper {
-          width: 100vw;
-          min-height: 100vh;
-          background-color: #f6f8fa;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 24px;
-        }
-
-        .onboarding-container {
-          width: 100%;
-          max-width: 450px;
-          background-color: #fff;
-          border-radius: 16px;
-          padding: 40px;
-          box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-          display: flex;
-          flex-direction: column;
-          text-align: center;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .onboarding-header h1 {
-          font-size: clamp(1.75rem, 5vw, 2.25rem);
-          color: #003366;
-          font-weight: 800;
-          margin: 0 0 16px 0;
-        }
-
-        .step-description, .form-field {
-          margin: 24px 0;
-        }
-
-        .step-description {
-            font-size: 1.125rem;
-            line-height: 1.6;
-            color: #222b45;
-        }
-
-        .form-field {
-            text-align: left;
-        }
-        
-        .form-field label {
-          font-size: 1rem;
-          font-weight: 500;
-          color: #222b45;
-          display: block;
-          margin-bottom: 8px;
-        }
-
-        .form-field input {
-          width: 100%;
-          padding: 12px 16px;
-          font-size: 1rem;
-          border: 1px solid #d1d5db;
-          border-radius: 8px;
-          transition: border-color 0.2s, box-shadow 0.2s;
-          background: #f9fafb;
-        }
-
-        .form-field input:focus {
-          outline: none;
-          border-color: #003366;
-          box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.15);
-        }
-        
-        .disclaimer {
-          font-size: 0.8rem;
-          color: #6b7280;
-          margin-top: 1rem;
-          line-height: 1.5;
-        }
-
-        .onboarding-nav {
-          margin-top: 24px;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-        
-        .nav-buttons {
-          display: flex;
-          justify-content: center;
-          gap: 12px;
-        }
-
-        .onboarding-nav button {
-          flex-grow: 1;
-          border: none;
-          border-radius: 8px;
-          padding: 12px 24px;
-          font-size: 1rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        
-        .btn-primary {
-          background-color: #003366;
-          color: white;
-        }
-        .btn-primary:hover:not(:disabled) {
-          background-color: #2563eb;
-        }
-        .btn-primary:disabled {
-          background-color: #A9D6E5;
-          cursor: not-allowed;
-        }
-        
-        .btn-secondary {
-          background-color: transparent;
-          color: #6b7280;
-          border: 1px solid #d1d5db;
-        }
-        .btn-secondary:hover {
-          background-color: #f6f8fa;
-          color: #222b45;
-        }
-
-        .progress-indicator {
-          display: flex;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 24px;
-        }
-
-        .progress-dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background-color: #d1d5db;
-          transition: background-color 0.3s;
-        }
-
-        .progress-dot.active {
-          background-color: #003366;
-        }
-      `}</style>
       <div className="onboarding-wrapper">
         <div className="onboarding-container">
           <header className="onboarding-header">

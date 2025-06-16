@@ -1,0 +1,154 @@
+/* Onboarding.css - Styles for the multi-step data collection form */
+.onboarding-wrapper {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f6f8fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.onboarding-container {
+  width: 100%;
+  max-width: 450px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.onboarding-header h1 {
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  color: #003366;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+}
+
+.step-description, .form-field {
+  margin: 24px 0;
+}
+
+.step-description {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #222b45;
+}
+
+.form-field {
+  text-align: left;
+}
+
+.form-field label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222b45;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #f9fafb;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: #003366;
+  box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.15);
+}
+
+.disclaimer {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+
+.onboarding-nav {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.onboarding-nav button {
+  flex-grow: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #003366;
+  color: white;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+.btn-primary:disabled {
+  background-color: #A9D6E5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+.btn-secondary:hover {
+  background-color: #f6f8fa;
+  color: #222b45;
+}
+
+.progress-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #d1d5db;
+  transition: background-color 0.3s;
+}
+.progress-dot.active {
+  background-color: #003366;
+}
+
+.center-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.center-field label,
+.center-field input,
+.center-field select {
+  text-align: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}

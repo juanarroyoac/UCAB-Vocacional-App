@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import DataCaptureForm from './components/DataCaptureForm';
 
 // ===================================================================================
 //  COMPONENT DEFINITIONS
@@ -154,74 +155,6 @@ const UcabHomePage = ({ onStartTest }) => {
               <button className="main-cta-button" onClick={onStartTest}>Comenzar ahora</button>
             </div>
           </main>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const DataCaptureForm = ({ onOnboardingComplete }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({ name: '', email: '' });
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-  const stepsConfig = useMemo(() => [
-    { title: '¡Bienvenido/a!', content: <p className="step-description">Esta es la prueba vocacional inteligente de la UCAB. Descubre las carreras más afines a tus intereses y aptitudes.</p> },
-    { title: '¿Cómo funciona?', content: <p className="step-description">Responderás una serie de preguntas sobre tus intereses y habilidades. La prueba dura aproximadamente 10 minutos y es 100% confidencial.</p> },
-    { title: 'Antes de comenzar', isForm: true, content: <div className="form-field"><label htmlFor="name">Nombre completo</label><input id="name" name="name" value={formData.name} onChange={handleInputChange} autoFocus maxLength={50} placeholder="Escribe tu nombre" /></div>, validationField: 'name' },
-    { title: 'Un último dato', isForm: true, content: <><div className="form-field"><label htmlFor="email">Correo electrónico</label><input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} autoFocus maxLength={50} placeholder="tu.correo@ejemplo.com"/></div><p className="disclaimer">Al continuar, aceptas que podríamos enviarte información sobre eventos y novedades de orientación vocacional.</p></>, validationField: 'email' },
-  ], [formData.name, formData.email]);
-  const handleNext = () => {
-    if (currentStep === stepsConfig.length - 1) {
-      if (typeof onOnboardingComplete === 'function') onOnboardingComplete(formData);
-      return;
-    }
-    setCurrentStep(prev => prev + 1);
-  };
-  const handleBack = () => { if (currentStep > 0) setCurrentStep(prev => prev - 1) };
-  const currentStepConfig = stepsConfig[currentStep];
-  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
-  const isNextDisabled = currentStepConfig.isForm && (currentStepConfig.validationField === 'email' ? !isEmailValid : !formData[currentStepConfig.validationField]);
-  return (
-    <>
-      <style>{`
-        .onboarding-wrapper { width: 100%; min-height: 100vh; background-color: var(--neutral-bg); display: flex; justify-content: center; align-items: center; padding: 24px; }
-        .onboarding-container { width: 100%; max-width: 450px; min-height: 480px; background-color: var(--white); border-radius: 16px; padding: 32px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); display: flex; flex-direction: column; text-align: center; }
-        .onboarding-header { flex: 0 0 auto; }
-        .onboarding-header h1 { font-size: clamp(1.75rem, 5vw, 2.25rem); color: var(--dark-blue); font-weight: 800; margin: 0 0 16px 0; }
-        .onboarding-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
-        .step-description, .form-field { margin: 16px 0; }
-        .step-description { font-size: 1.125rem; line-height: 1.6; color: var(--text-secondary); }
-        .form-field { text-align: left; }
-        .form-field label { font-size: 1rem; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 8px; }
-        .form-field input { width: 100%; padding: 12px 16px; font-size: 1rem; border: 1px solid var(--border-color); border-radius: 8px; transition: border-color 0.2s, box-shadow 0.2s; }
-        .form-field input:focus { outline: none; border-color: var(--dark-blue); box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.15); }
-        .disclaimer { font-size: 0.8rem; color: var(--text-secondary); margin-top: 1rem; line-height: 1.5; }
-        .onboarding-footer { flex: 0 0 auto; display: flex; flex-direction: column; gap: 16px; padding-top: 24px; }
-        .nav-buttons { display: flex; justify-content: center; gap: 12px; }
-        .onboarding-footer button { flex-grow: 1; border: none; border-radius: 8px; padding: 12px 24px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
-        .btn-primary { background-color: var(--dark-blue); color: white; }
-        .btn-primary:hover:not(:disabled) { background-color: var(--medium-blue); }
-        .btn-primary:disabled { background-color: #A9D6E5; cursor: not-allowed; }
-        .btn-secondary { background-color: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); }
-        .btn-secondary:hover { background-color: var(--neutral-bg); color: var(--text-primary); }
-        .progress-indicator { display: flex; justify-content: center; gap: 8px; }
-        .progress-dot { width: 10px; height: 10px; border-radius: 50%; background-color: var(--border-color); transition: background-color 0.3s; }
-        .progress-dot.active { background-color: var(--dark-blue); }
-      `}</style>
-      <div className="onboarding-wrapper">
-        <div className="onboarding-container">
-          <header className="onboarding-header"><h1>{currentStepConfig.title}</h1></header>
-          <div className="onboarding-main">{currentStepConfig.content}</div>
-          <footer className="onboarding-footer">
-            <div className="nav-buttons">
-              {currentStep > 0 && (<button onClick={handleBack} className="btn-secondary">Atrás</button>)}
-              <button onClick={handleNext} disabled={isNextDisabled} className="btn-primary">{currentStep === stepsConfig.length - 1 ? 'Comenzar Test' : 'Siguiente'}</button>
-            </div>
-            <div className="progress-indicator">{stepsConfig.map((_, index) => (<div key={index} className={`progress-dot ${currentStep === index ? 'active' : ''}`} />))}</div>
-          </footer>
         </div>
       </div>
     </>
