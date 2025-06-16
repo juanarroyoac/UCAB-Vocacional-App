@@ -1,4 +1,5 @@
 import React from 'react';
+import LightParticles from "./LightParticles";
 
 const UcabHomePage = ({ onStartTest }) => {
   // The useNavigate hook has been removed to fix the router context error.
@@ -193,7 +194,8 @@ const UcabHomePage = ({ onStartTest }) => {
           }
         }
     `}</style>
-      <div className="ucab-home-page-wrapper">
+      <div className="ucab-home-page-wrapper" style={{ position: "relative", overflow: "hidden" }}>
+        <LightParticles />
         <div className="ucab-home-page">
           {/* Header Section */}
           <header className="ucab-header">

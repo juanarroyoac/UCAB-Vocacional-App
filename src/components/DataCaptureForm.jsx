@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import './Onboarding.css';
+import './ModernSelect.css';
 
 const VENEZUELAN_STATES = [
   'Amazonas', 'Anzoátegui', 'Apure', 'Aragua', 'Barinas', 'Bolívar', 'Carabobo',
@@ -73,7 +74,7 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
           </div>
           <div className="form-field center-field">
             <label htmlFor="phone">Teléfono (opcional)</label>
-            <input id="phone" name="phone" value={formData.phone} onChange={handleInputChange} maxLength={20} placeholder="Ej: 0412-1234567" />
+            <input id="phone" name="phone" value={formData.phone} onChange={handleInputChange} maxLength={20} placeholder="Ej: 0412-1234567" pattern="[0-9\-\+\s]*" inputMode="numeric" />
           </div>
           <p className="disclaimer">Al continuar, aceptas que podríamos enviarte información sobre eventos y novedades de orientación vocacional.</p>
         </>
@@ -97,7 +98,7 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       content: (
         <div className="form-field">
           <label htmlFor="gender">Género</label>
-          <select id="gender" name="gender" value={formData.gender} onChange={handleInputChange}>
+          <select id="gender" name="gender" value={formData.gender} onChange={handleInputChange} className="modern-select">
             <option value="">Selecciona una opción</option>
             {GENDERS.map(g => <option key={g} value={g}>{g}</option>)}
           </select>
@@ -111,7 +112,7 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       content: (
         <div className="form-field center-field">
           <label htmlFor="state">Estado</label>
-          <select id="state" name="state" value={formData.state} onChange={handleInputChange}>
+          <select id="state" name="state" value={formData.state} onChange={handleInputChange} className="modern-select">
             <option value="">Selecciona tu estado</option>
             {VENEZUELAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
@@ -144,7 +145,7 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       content: (
         <div className="form-field">
           <label htmlFor="heardAbout">¿Cómo supiste de nosotros?</label>
-          <select id="heardAbout" name="heardAbout" value={formData.heardAbout} onChange={handleInputChange}>
+          <select id="heardAbout" name="heardAbout" value={formData.heardAbout} onChange={handleInputChange} className="modern-select">
             <option value="">Selecciona una opción</option>
             {HEARD_ABOUT_US.map(opt => <option key={opt} value={opt}>{opt}</option>)}
           </select>
@@ -193,12 +194,14 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
 
   // Basic email validation for enabling the next button
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+  // Phone validation: allow empty or valid Venezuelan phone number (7-15 digits, optional +, -, spaces)
+  const isPhoneValid = !formData.phone || /^[0-9\-\+\s]{7,15}$/.test(formData.phone);
   let isNextDisabled = false;
   if (currentStepConfig.isForm) {
     if (Array.isArray(currentStepConfig.validationField)) {
       isNextDisabled = !currentStepConfig.validationField.every(f => formData[f]);
     } else if (currentStepConfig.validationField === 'email') {
-      isNextDisabled = !isEmailValid;
+      isNextDisabled = !isEmailValid || !isPhoneValid;
     } else {
       isNextDisabled = !formData[currentStepConfig.validationField];
     }

@@ -4,6 +4,19 @@ import "./AboutTest.css";
 const AboutTest = () => {
   return (
     <div className="about-test-container">
+      {/* UCAB Header (copied from homepage) */}
+      <header className="ucab-header">
+        <a href="/" className="logo-container">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_ucab_original.svg/1200px-Logo_ucab_original.svg.png" alt="UCAB Logo" className="logo-ucab" />
+          <span className="logo-text-ucab">Portal Vocacional</span>
+        </a>
+        <div className="header-actions">
+          <a href="https://www.ucab.edu.ve/pregrado/" className="career-link" target="_blank" rel="noopener noreferrer">Áreas Profesionales</a>
+          <a href="/acerca" className="career-link">Acerca del test</a>
+          <a href="/" className="test-button">Haz el test</a>
+        </div>
+      </header>
+      {/* End UCAB Header */}
       <div className="about-hero">
         <svg width="100%" height="180" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="about-hero-svg">
           <defs>
@@ -43,14 +56,11 @@ const AboutTest = () => {
           </div>
           <div className="about-card-shape about-card-shape-2"></div>
         </div>
-        <div className="about-card about-card-highlight">
-          <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#0ea5e9" fillOpacity="0.2"/>
-            <path d="M20 30L28 38L40 22" stroke="#0ea5e9" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span>
-            ¡Descubre tu vocación y da el primer paso hacia tu futuro!
-          </span>
+        <div className="about-card about-card-highlight about-card-buttons no-bg-card">
+          <div className="about-buttons-container">
+            <a href="https://www.ucab.edu.ve/oferta-academica/carreras/" target="_blank" rel="noopener noreferrer" className="about-btn about-btn-careers">Ver carreras UCAB</a>
+            <button className="about-btn about-btn-test" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>Tomar el test ahora</button>
+          </div>
         </div>
       </section>
     </div>

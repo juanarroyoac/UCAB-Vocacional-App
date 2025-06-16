@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import DataCaptureForm from './components/DataCaptureForm';
 import AboutTest from './components/AboutTest';
+import SectionIntro from './components/SectionIntro';
+import LightParticles from "./components/LightParticles";
 
 // ===================================================================================
 //  COMPONENT DEFINITIONS
@@ -77,7 +79,7 @@ const UcabHomePage = ({ onStartTest }) => {
           grid-template-columns: 1fr 1.1fr;
           align-items: center;
           gap: 64px;
-          padding: 80px 0;
+          padding: 1px 0; /* was 80px 0, reduced for less space */
           flex-grow: 1;
         }
         .left-panel .main-image {
@@ -121,7 +123,7 @@ const UcabHomePage = ({ onStartTest }) => {
             box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
         }
         @media (max-width: 992px) {
-          .ucab-main-content { grid-template-columns: 1fr; gap: 48px; padding: 60px 0; text-align: center; }
+          .ucab-main-content { grid-template-columns: 1fr; gap: 48px; padding: 32px 0; text-align: center; }
           .left-panel { order: 2; display: flex; justify-content: center; }
           .left-panel .main-image { max-width: 400px; }
           .right-panel { order: 1; align-items: center; }
@@ -288,20 +290,88 @@ const GlobalStyles = () => (
   `}</style>
 );
 
+// Dynamically generate sections from closedQuestions
+function getSectionsFromQuestions(questions) {
+  const sectionMap = new Map();
+  questions.forEach((q, idx) => {
+    if (!q.section) return;
+    if (!sectionMap.has(q.section)) {
+      sectionMap.set(q.section, { title: q.section, start: idx, end: idx });
+    } else {
+      sectionMap.get(q.section).end = idx;
+    }
+  });
+  // Add descriptions for each section (customize as needed)
+  const descriptions = {
+    'Intereses': 'Estas preguntas exploran tus intereses generales.',
+    'Habilidades': 'Ahora vamos a conocer tus habilidades.',
+    'Valores': 'Reflexiona sobre los valores que guían tus decisiones.',
+    'Contextos': '¿En qué contextos te gustaría desarrollarte profesionalmente?',
+    'Motivaciones': '¿Qué te impulsa y motiva en tu vida académica y profesional?',
+    'Transversales': 'Competencias y actitudes clave para cualquier área.'
+  };
+  return Array.from(sectionMap.values()).map(sec => ({
+    ...sec,
+    description: descriptions[sec.title] || ''
+  }));
+}
+
 function AppRoutes() {
+  // Move sections to the top so it is available to all hooks and helpers
+  const sections = useMemo(() => getSectionsFromQuestions(closedQuestions), [closedQuestions]);
   const [answers, setAnswers] = useState({});
   const [userData, setUserData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
+  const [resumeTarget, setResumeTarget] = useState(null);
+  const [currentSection, setCurrentSection] = useState(0);
+  const [showSectionIntro, setShowSectionIntro] = useState(true);
   const navigate = useNavigate();
-  const handleStartTest = () => navigate('/intro');
+  const handleStartTest = () => {
+    const saved = localStorage.getItem('vocacional-progress');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && (parsed.userData || Object.keys(parsed.answers || {}).length > 0)) {
+          setShowResumePrompt(true);
+          setResumeTarget(parsed);
+          return;
+        }
+      } catch (e) { /* ignore */ }
+    }
+    navigate('/intro');
+  };
+  const handleResume = () => {
+    setShowResumePrompt(false);
+    if (resumeTarget && resumeTarget.userData) {
+      setUserData(resumeTarget.userData);
+      setAnswers(resumeTarget.answers || {});
+      setCurrentQuestionIndex(resumeTarget.currentQuestionIndex || 0);
+      navigate('/test');
+    } else {
+      navigate('/intro');
+    }
+  };
+  const handleForceRestart = () => {
+    setShowResumePrompt(false);
+    setAnswers({});
+    setCurrentQuestionIndex(0);
+    setResults(null);
+    setIsLoading(false);
+    setUserData(null);
+    localStorage.removeItem('vocacional-progress');
+    navigate('/intro');
+  };
   const handleOnboardingComplete = (formData) => {
     setUserData(formData);
     setAnswers({});
     setCurrentQuestionIndex(0);
     setResults(null);
     setIsLoading(false);
+    // Clear previous progress
+    localStorage.removeItem('vocacional-progress');
     navigate('/test');
   };
   const handleSubmitForAnalysis = async (finalAnswers) => {
@@ -330,16 +400,110 @@ function AppRoutes() {
     setResults(null);
     setIsLoading(false);
     setUserData(null);
+    localStorage.removeItem('vocacional-progress');
     navigate('/');
   };
+
+  // Load progress from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('vocacional-progress');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed) {
+          if (parsed.answers) setAnswers(parsed.answers);
+          if (parsed.userData) setUserData(parsed.userData);
+          if (typeof parsed.currentQuestionIndex === 'number') setCurrentQuestionIndex(parsed.currentQuestionIndex);
+        }
+      } catch (e) { /* ignore */ }
+    }
+  }, []);
+
+  // Save progress to localStorage whenever relevant state changes
+  useEffect(() => {
+    localStorage.setItem('vocacional-progress', JSON.stringify({
+      answers,
+      userData,
+      currentQuestionIndex
+    }));
+  }, [answers, userData, currentQuestionIndex]);
+
+  // Helper to get section for current question
+  const getSectionForQuestion = (qIdx) => {
+    return sections.findIndex(
+      (section) => qIdx >= section.start && qIdx <= section.end
+    );
+  };
+
+  // When question index changes, show intro if at section start
+  useEffect(() => {
+    const sectionIdx = getSectionForQuestion(currentQuestionIndex);
+    if (sectionIdx !== -1 && currentQuestionIndex === sections[sectionIdx].start) {
+      setCurrentSection(sectionIdx);
+      setShowSectionIntro(true);
+    }
+  }, [currentQuestionIndex, sections]);
+
   return (
-    <Routes>
-      <Route path="/" element={<UcabHomePage onStartTest={handleStartTest} />} />
-      <Route path="/intro" element={<DataCaptureForm onOnboardingComplete={handleOnboardingComplete} />} />
-      <Route path="/test" element={ closedQuestions[currentQuestionIndex] ? <Question question={closedQuestions[currentQuestionIndex]} onAnswer={handleAnswer} questionNumber={currentQuestionIndex + 1} totalQuestions={closedQuestions.length} onBack={handleBack}/> : <div>Cargando...</div> } />
-      <Route path="/results" element={ <ResultsScreen results={results} isLoading={isLoading} onRestart={handleRestart} user={userData} /> }/>
-      <Route path="/acerca" element={<AboutTest />} />
-    </Routes>
+    <>
+      {showResumePrompt && (
+        <div style={{position:'fixed',top:0,left:0,width:'100vw',height:'100vh',background:'rgba(0,0,0,0.4)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <div style={{background:'#fff',padding:32,borderRadius:12,boxShadow:'0 4px 24px rgba(0,0,0,0.15)',maxWidth:350,textAlign:'center'}}>
+            <h2>¿Continuar tu test?</h2>
+            <p>Ya tienes un test iniciado. ¿Quieres continuar donde lo dejaste o empezar de nuevo?</p>
+            <button style={{margin:'12px 0',padding:'10px 24px',fontWeight:700,background:'#003366',color:'#fff',border:'none',borderRadius:6,cursor:'pointer'}} onClick={handleResume}>Continuar donde lo dejé</button>
+            <br />
+            <button style={{padding:'8px 20px',background:'none',color:'#003366',border:'1px solid #003366',borderRadius:6,cursor:'pointer'}} onClick={handleForceRestart}>Empezar de nuevo</button>
+          </div>
+        </div>
+      )}
+      <Routes>
+        <Route path="/" element={<UcabHomePage onStartTest={handleStartTest} />} />
+        <Route path="/intro" element={<DataCaptureForm onOnboardingComplete={handleOnboardingComplete} />} />
+        <Route path="/test" element={
+          userData ? (
+            showSectionIntro ? (
+              <SectionIntro
+                title={sections[currentSection]?.title}
+                description={sections[currentSection]?.description}
+                onContinue={() => {
+                  setShowSectionIntro(false);
+                }}
+              />
+            ) : (
+              closedQuestions[currentQuestionIndex] ? (
+                <Question
+                  question={closedQuestions[currentQuestionIndex]}
+                  onAnswer={(qid, val) => {
+                    // Solo avanza la sección, no muestres intro aquí
+                    if (currentQuestionIndex === sections[currentSection]?.end) {
+                      handleAnswer(qid, val);
+                      setCurrentSection(cs => cs + 1);
+                      // NO setShowSectionIntro(true) aquí
+                    } else {
+                      handleAnswer(qid, val);
+                    }
+                  }}
+                  questionNumber={currentQuestionIndex + 1}
+                  totalQuestions={closedQuestions.length}
+                  onBack={handleBack}
+                />
+              ) : <div>Cargando...</div>
+            )
+          ) : (
+            <Navigate to="/intro" replace />
+          )
+        } />
+        <Route path="/results" element={
+          results && userData ? (
+            <ResultsScreen results={results} isLoading={isLoading} onRestart={handleRestart} user={userData} />
+          ) : (
+            <Navigate to={userData ? "/test" : "/intro"} replace />
+          )
+        }/>
+        <Route path="/acerca" element={<AboutTest />} />
+      </Routes>
+    </>
   );
 }
 
@@ -347,7 +511,8 @@ function App() {
   return (
     <Router>
       <GlobalStyles />
-      <div className="app-container">
+      <div className="app-container" style={{ position: "relative", overflow: "hidden" }}>
+        <LightParticles />
         <AppRoutes />
       </div>
     </Router>

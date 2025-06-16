@@ -1,168 +1,73 @@
-// src/components/Question.jsx
-// Componente dinámico para mostrar una pregunta y sus opciones de respuesta.
+// src/App.jsx
+// Componente principal de la aplicación que maneja el estado y la lógica del cuestionario.
 
 
-import React from "react";
+import React, { useState } from "react";
+import Question from "./components/Question";
 
-const likertLabels = [
-  "Totalmente en desacuerdo",
-  "En desacuerdo",
-  "Neutral",
-  "De acuerdo",
-  "Totalmente de acuerdo"
+const questionsData = [
+  {
+    text: "¿Te sientes satisfecho con tu vida en general?",
+    type: "likert"
+  },
+  {
+    text: "¿Has tenido pensamientos de hacerte daño?",
+    type: "binary"
+  },
+  {
+    text: "¿Sientes que tienes suficiente apoyo emocional?",
+    type: "likert"
+  },
+  {
+    text: "¿Te resulta fácil manejar el estrés?",
+    type: "likert"
+  },
+  {
+    text: "¿Tienes metas claras para el futuro?",
+    type: "binary"
+  }
 ];
 
-function Question({ question, index, total, onAnswer, onBack, answer, onFinish, isLast }) {
+function App() {
+  const [questions] = useState(questionsData);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
+
   const handleAnswer = (val) => {
-    onAnswer(val);
-    if (isLast) onFinish && onFinish();
+    const newAnswers = [...answers];
+    newAnswers[currentQuestion] = val;
+    setAnswers(newAnswers);
   };
 
+  const handleNext = () => {
+    setCurrentQuestion((prev) => Math.min(prev + 1, questions.length - 1));
+  };
+
+  const handleBack = () => {
+    setCurrentQuestion((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleFinish = () => {
+    alert("Cuestionario completado. Tus respuestas: " + JSON.stringify(answers));
+  };
+
+  const question = questions[currentQuestion];
+  const isLast = currentQuestion === questions.length - 1;
+
   return (
-    <div className="quiz-bg">
-      <div className="quiz-card">
-        <div className="quiz-header">
-          <button className="back-btn" onClick={onBack} aria-label="Atrás">
-            ←
-          </button>
-          <span className="progress-text">
-            Pregunta {index + 1} de {total}
-          </span>
-        </div>
-        <h2 className="question-title">{question.text}</h2>
-        <div className="answers">
-          {question.type === "likert" ? (
-            likertLabels.map((label, i) => (
-              <button
-                key={i}
-                className={`answer-btn${answer === i + 1 ? " selected" : ""}`}
-                onClick={() => handleAnswer(i + 1)}
-                tabIndex={0}
-              >
-                {label}
-              </button>
-            ))
-          ) : (
-            ["Sí", "No"].map((label, i) => (
-              <button
-                key={label}
-                className={`answer-btn${answer === (i === 0 ? 1 : 0) ? " selected" : ""}`}
-                onClick={() => handleAnswer(i === 0 ? 1 : 0)}
-                tabIndex={0}
-              >
-                {label}
-              </button>
-            ))
-          )}
-        </div>
-        <div className="progress-bar-wrap">
-          <div
-            className="progress-bar"
-            style={{ width: `${((index + 1) / total) * 100}%` }}
-          />
-        </div>
-      </div>
-      <style>{`
-        .quiz-bg {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--color-bg);
-        }
-        .quiz-card {
-          background: #fff;
-          border-radius: 1.5rem;
-          box-shadow: 0 4px 32px 0 rgba(0,90,156,0.08);
-          padding: 2.2rem 1.5rem 2.5rem 1.5rem;
-          max-width: 420px;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-        }
-        .quiz-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 1.2rem;
-        }
-        .back-btn {
-          background: var(--color-primary-light);
-          color: var(--color-primary-dark);
-          border: none;
-          border-radius: 50%;
-          width: 2.2rem;
-          height: 2.2rem;
-          font-size: 1.3rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background 0.2s;
-        }
-        .back-btn:hover {
-          background: var(--color-primary);
-          color: #fff;
-        }
-        .progress-text {
-          font-size: 1rem;
-          color: var(--color-primary);
-          font-weight: 500;
-        }
-        .question-title {
-          font-size: 1.3rem;
-          color: var(--color-primary-dark);
-          margin: 0 0 1.5rem 0;
-          text-align: center;
-        }
-        .answers {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          margin-bottom: 2.2rem;
-        }
-        .answer-btn {
-          background: var(--color-primary-light);
-          color: var(--color-primary-dark);
-          border: none;
-          border-radius: 1.2rem;
-          padding: 1rem 0.5rem;
-          font-size: 1.05rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background 0.2s, color 0.2s;
-          outline: none;
-        }
-        .answer-btn.selected, .answer-btn:focus {
-          background: var(--color-accent);
-          color: #fff;
-        }
-        .answer-btn:hover {
-          background: var(--color-primary);
-          color: #fff;
-        }
-        .progress-bar-wrap {
-          width: 100%;
-          height: 8px;
-          background: var(--color-neutral);
-          border-radius: 4px;
-          margin-top: 1.2rem;
-          overflow: hidden;
-        }
-        .progress-bar {
-          height: 100%;
-          background: linear-gradient(90deg, var(--color-primary) 80%, #FFE066 100%);
-          border-radius: 4px;
-          transition: width 0.3s;
-        }
-        @media (max-width: 500px) {
-          .quiz-card {
-            padding: 1.2rem 0.5rem 1.5rem 0.5rem;
-            max-width: 98vw;
-          }
-        }
-      `}</style>
+    <div className="app">
+      <Question
+        question={question}
+        index={currentQuestion}
+        total={questions.length}
+        onAnswer={handleAnswer}
+        onBack={handleBack}
+        answer={answers[currentQuestion]}
+        onFinish={handleFinish}
+        isLast={isLast}
+      />
     </div>
   );
 }
 
-export default Question;
+export default App;
