@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import DataCaptureForm from './components/DataCaptureForm';
+import AboutTest from './components/AboutTest';
 
 // ===================================================================================
 //  COMPONENT DEFINITIONS
@@ -141,7 +142,7 @@ const UcabHomePage = ({ onStartTest }) => {
             </a>
             <div className="header-actions">
               <a href="https://www.ucab.edu.ve/pregrado/" className="career-link" target="_blank" rel="noopener noreferrer">Áreas Profesionales</a>
-              <a href="https://www.ucab.edu.ve/pregrado/" className="career-link" target="_blank" rel="noopener noreferrer">Acerca del test</a>
+              <a href="/acerca" className="career-link">Acerca del test</a>
               <button className="test-button" onClick={onStartTest}>Haz el test</button>
             </div>
           </header>
@@ -337,6 +338,7 @@ function AppRoutes() {
       <Route path="/intro" element={<DataCaptureForm onOnboardingComplete={handleOnboardingComplete} />} />
       <Route path="/test" element={ closedQuestions[currentQuestionIndex] ? <Question question={closedQuestions[currentQuestionIndex]} onAnswer={handleAnswer} questionNumber={currentQuestionIndex + 1} totalQuestions={closedQuestions.length} onBack={handleBack}/> : <div>Cargando...</div> } />
       <Route path="/results" element={ <ResultsScreen results={results} isLoading={isLoading} onRestart={handleRestart} user={userData} /> }/>
+      <Route path="/acerca" element={<AboutTest />} />
     </Routes>
   );
 }

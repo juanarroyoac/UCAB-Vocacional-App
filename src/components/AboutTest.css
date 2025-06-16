@@ -1,0 +1,113 @@
+.about-test-container {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: #f8fafc;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+.about-hero {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.about-hero-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.about-title {
+  position: relative;
+  z-index: 1;
+  color: #0ea5e9;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 60px;
+  margin-bottom: 0;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  z-index: 1;
+  position: relative;
+}
+
+.about-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 32px 0 rgba(14,165,233,0.08);
+  padding: 2rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.about-card:hover {
+  box-shadow: 0 8px 40px 0 rgba(99,102,241,0.12);
+}
+
+.about-card-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.about-card-shape {
+  min-width: 80px;
+  min-height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0ea5e9 60%, #6366f1 100%);
+  opacity: 0.15;
+  margin: 0 1rem;
+}
+
+.about-card-shape-1 {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #6366f1 60%, #0ea5e9 100%);
+}
+
+.about-card-shape-2 {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #0ea5e9 60%, #6366f1 100%);
+}
+
+.about-card-highlight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: linear-gradient(90deg, #0ea5e9 10%, #6366f1 90%);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: 0 2px 16px 0 rgba(14,165,233,0.10);
+  border-radius: 1.5rem;
+  padding: 1.5rem 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 700px) {
+  .about-content {
+    padding: 0 1rem;
+  }
+  .about-card, .about-card-highlight {
+    padding: 1.2rem 1rem;
+  }
+  .about-card-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .about-title {
+    font-size: 2rem;
+    margin-top: 40px;
+  }
+}

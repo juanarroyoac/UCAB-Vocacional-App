@@ -234,12 +234,73 @@ const UcabHomePage = ({ onStartTest }) => {
           {/* Main Content Section */}
           <main className="ucab-main-content">
             <div className="left-panel">
-              {/* Using a placeholder that reflects the style of the reference image */}
-              <img 
-                src="https://placehold.co/500x500/E8F5E9/003366?text=Talento+UCAB" 
-                alt="Estudiante descubriendo su vocación" 
-                className="main-image"
-              />
+              {/* SVG design replacing the placeholder image */}
+              <svg width="420" height="350" viewBox="0 0 900 500" fill="none" xmlns="http://www.w3.org/2000/svg" style={{maxWidth: '100%', height: 'auto'}}>
+                {/* Central area for student picture */}
+                <rect x="320" y="100" width="260" height="320" fill="#fff" stroke="#ccc" strokeWidth="2"/>
+                {/* Grid overlay for picture area */}
+                <g opacity="0.2">
+                  <defs>
+                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#888" strokeWidth="1"/>
+                    </pattern>
+                  </defs>
+                  <rect x="320" y="100" width="260" height="320" fill="url(#grid)" />
+                </g>
+                {/* Top boxes */}
+                <rect x="120" y="40" width="120" height="60" fill="#fff" stroke="#222" strokeWidth="2"/>
+                <rect x="390" y="20" width="120" height="60" fill="#fff" stroke="#222" strokeWidth="2"/>
+                <rect x="660" y="40" width="120" height="60" fill="#fff" stroke="#222" strokeWidth="2"/>
+                {/* Red lines in boxes */}
+                <g>
+                  <rect x="135" y="55" width="90" height="8" fill="#D32F2F"/>
+                  <rect x="135" y="70" width="90" height="8" fill="#D32F2F"/>
+                  <rect x="135" y="85" width="90" height="8" fill="#D32F2F"/>
+                </g>
+                <g>
+                  <rect x="405" y="35" width="90" height="8" fill="#D32F2F"/>
+                  <rect x="405" y="50" width="90" height="8" fill="#D32F2F"/>
+                  <rect x="405" y="65" width="90" height="8" fill="#D32F2F"/>
+                </g>
+                <g>
+                  <rect x="675" y="55" width="90" height="8" fill="#D32F2F"/>
+                  <rect x="675" y="70" width="90" height="8" fill="#D32F2F"/>
+                  <rect x="675" y="85" width="90" height="8" fill="#D32F2F"/>
+                </g>
+                {/* Labels above boxes */}
+                <text x="180" y="35" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#222">CAPACIDADES</text>
+                <text x="450" y="15" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#222">APTITUDES</text>
+                <text x="720" y="35" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#222">CONOCIMIENTOS</text>
+                {/* Connecting lines */}
+                <line x1="180" y1="100" x2="180" y2="180" stroke="#222" strokeWidth="2"/>
+                <line x1="450" y1="80" x2="450" y2="100" stroke="#222" strokeWidth="2"/>
+                <line x1="720" y1="100" x2="720" y2="180" stroke="#222" strokeWidth="2"/>
+                <line x1="180" y1="180" x2="320" y2="180" stroke="#222" strokeWidth="2"/>
+                <line x1="720" y1="180" x2="580" y2="180" stroke="#222" strokeWidth="2"/>
+                {/* Mini bar chart (bottom left) */}
+                <rect x="140" y="400" width="10" height="30" fill="#8E24AA"/>
+                <rect x="155" y="410" width="10" height="20" fill="#43A047"/>
+                <rect x="170" y="420" width="10" height="10" fill="#FBC02D"/>
+                {/* Legend (right) */}
+                <g>
+                  <rect x="670" y="200" width="30" height="8" fill="#8E24AA"/>
+                  <text x="710" y="208" fontSize="13" fontFamily="sans-serif" fill="#222" alignmentBaseline="middle">TECH & DATA</text>
+                  <rect x="670" y="225" width="30" height="8" fill="#43A047"/>
+                  <text x="710" y="233" fontSize="13" fontFamily="sans-serif" fill="#222" alignmentBaseline="middle">MKT & COMMS</text>
+                  <rect x="670" y="250" width="30" height="8" fill="#00897B"/>
+                  <text x="710" y="258" fontSize="13" fontFamily="sans-serif" fill="#222" alignmentBaseline="middle">HR & ADMIN</text>
+                  <rect x="670" y="275" width="30" height="8" fill="#FBC02D"/>
+                  <text x="710" y="283" fontSize="13" fontFamily="sans-serif" fill="#222" alignmentBaseline="middle">VISUAL DESIGN, ART & CREATIVITY</text>
+                  <rect x="670" y="300" width="30" height="8" fill="#1976D2"/>
+                  <text x="710" y="308" fontSize="13" fontFamily="sans-serif" fill="#222" alignmentBaseline="middle">ECONOMICS & FINANCE</text>
+                </g>
+                {/* Legend lines */}
+                <line x1="750" y1="204" x2="800" y2="204" stroke="#8E24AA" strokeWidth="3"/>
+                <line x1="750" y1="229" x2="800" y2="229" stroke="#43A047" strokeWidth="3"/>
+                <line x1="750" y1="254" x2="800" y2="254" stroke="#00897B" strokeWidth="3"/>
+                <line x1="750" y1="279" x2="800" y2="279" stroke="#FBC02D" strokeWidth="3"/>
+                <line x1="750" y1="304" x2="800" y2="304" stroke="#1976D2" strokeWidth="3"/>
+              </svg>
             </div>
             <div className="right-panel">
               <h1>Test de Orientación Vocacional Inteligente</h1>
