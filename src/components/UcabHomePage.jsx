@@ -1,6 +1,12 @@
 import React from 'react';
 import LightParticles from "./LightParticles";
 
+// Add Montserrat font import for heading
+const fontLink = document.createElement('link');
+fontLink.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap';
+fontLink.rel = 'stylesheet';
+document.head.appendChild(fontLink);
+
 const UcabHomePage = ({ onStartTest }) => {
   // The useNavigate hook has been removed to fix the router context error.
   // Navigation is handled by the onStartTest prop passed from the parent component.
@@ -118,29 +124,37 @@ const UcabHomePage = ({ onStartTest }) => {
         .right-panel {
           display: flex;
           flex-direction: column;
+          /* UCAB gradient background from reference image */
+          background: linear-gradient(90deg, #f9d423 0%, #ff4e50 50%, #009e4f 100%);
+          border-radius: 24px;
+          padding: 48px 40px;
+          box-shadow: 0 4px 32px rgba(0,0,0,0.04);
         }
 
         .right-panel h1 {
           font-size: clamp(2.5rem, 5vw, 3.5rem);
+          font-family: 'Montserrat', 'Inter', sans-serif;
           font-weight: 800;
-          color: var(--dark-blue);
+          color: #fff;
           margin: 0 0 16px 0;
           line-height: 1.2;
           letter-spacing: -1.5px;
+          text-shadow: 0 2px 8px rgba(0,0,0,0.10);
         }
 
         .subtitle {
           font-size: 1.125rem;
-          color: var(--text-secondary);
+          color: #fff;
           line-height: 1.7;
           margin-bottom: 32px;
           max-width: 550px;
+          text-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
         
         /* This button is a replacement for the "QR code" in the reference image */
         .main-cta-button {
-           background-color: var(--dark-blue);
-           color: var(--white);
+           background-color: #fff;
+           color: #1a237e;
            align-self: flex-start;
            font-size: 18px;
            padding: 14px 40px;
@@ -152,7 +166,8 @@ const UcabHomePage = ({ onStartTest }) => {
         }
 
         .main-cta-button:hover {
-            background-color: var(--medium-blue);
+            background-color: #f9d423;
+            color: #222;
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
         }
@@ -305,7 +320,7 @@ const UcabHomePage = ({ onStartTest }) => {
               </svg>
             </div>
             <div className="right-panel">
-              <h1>Test de Orientación Vocacional Inteligente</h1>
+              <h1>TU PRIMER PASO A LLEGAR LEJOS.</h1>
               <p className="subtitle">
                 Completa nuestro test vocacional para descubrir qué profesión de futuro encaja mejor contigo y recibir orientación formativa. ¡Elige tu futuro en la UCAB!
               </p>
@@ -313,7 +328,7 @@ const UcabHomePage = ({ onStartTest }) => {
                 className="main-cta-button"
                 onClick={onStartTest}
               >
-                Comenzar ahora
+                Comenzar mi prueba vocacional
               </button>
             </div>
           </main>
