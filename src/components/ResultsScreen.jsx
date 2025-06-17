@@ -33,11 +33,50 @@ const ErrorDisplay = ({ onRestart }) => (
 )
 
 // --- MAIN RESULTS SCREEN ---
-function ResultsScreen({ results, isLoading, onRestart, user }) {
+function ResultsScreen({ results, isLoading, onRestart, user, onShowDetailed }) {
   const [activeSlide, setActiveSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
   const timerRef = useRef()
+
+  // Add touch gesture handling
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
+
+  // Handle initial loading state
+  useEffect(() => {
+    if (!isLoading && results) {
+      // Add a small delay to ensure smooth transition
+      const timer = setTimeout(() => {
+        setIsLoaded(true)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [isLoading, results])
+
+  const handleTouchStart = (e) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      goToNextSlide()
+    }
+    if (isRightSwipe) {
+      goToPrevSlide()
+    }
+  }
 
   // Helper to enrich careers with URL and faculty
   const enrichCareer = (career) => {
@@ -139,11 +178,25 @@ function ResultsScreen({ results, isLoading, onRestart, user }) {
     setIsPaused((p) => !p)
   }
 
-  // Share function (placeholder)
-  const handleShare = (e) => {
+  // Enhanced share functionality
+  const handleShare = async (e) => {
     e.stopPropagation()
-    // Placeholder for share functionality
-    alert("¡Función de compartir próximamente!")
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Mis Resultados Vocacionales UCAB",
+          text: `¡Descubrí mi perfil vocacional! Mi arquetipo es: ${results.personality?.name}`,
+          url: window.location.href,
+        })
+      } catch (err) {
+        console.log("Error sharing:", err)
+      }
+    } else {
+      // Fallback to clipboard
+      navigator.clipboard.writeText(window.location.href)
+      alert("¡Enlace copiado al portapapeles!")
+    }
   }
 
   // Loading or error states
@@ -264,6 +317,9 @@ function ResultsScreen({ results, isLoading, onRestart, user }) {
                   {shareIcon}
                   <span>COMPARTIR MIS RESULTADOS</span>
                 </button>
+                <button className="details-button" onClick={onShowDetailed}>
+                  VER RESULTADOS DETALLADOS
+                </button>
               </div>
             </div>
           </div>
@@ -293,7 +349,13 @@ function ResultsScreen({ results, isLoading, onRestart, user }) {
   )
 
   return (
-    <div className="results-story-container" onClick={handleInteraction}>
+    <div
+      className={`results-story-container ${isLoaded ? 'loaded' : ''}`}
+      onClick={handleInteraction}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* UCAB Logo */}
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_ucab_original.svg/1200px-Logo_ucab_original.svg.png"

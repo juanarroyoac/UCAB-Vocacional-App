@@ -25,7 +25,7 @@ const SectionIntro = ({ title, description, onContinue }) => {
         <button onClick={handleContinue}>Continuar</button>
       </div>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Impact&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
         
         .section-intro-fade {
           position: fixed;
@@ -71,8 +71,8 @@ const SectionIntro = ({ title, description, onContinue }) => {
         }
         
         .section-intro-fade h2 {
-          font-family: 'Impact', 'Arial Black', sans-serif;
-          font-weight: normal;
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
           font-size: clamp(2rem, 5vw, 2.5rem);
           color: #003366;
           margin: 0 0 16px 0;

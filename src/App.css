@@ -1,22 +1,71 @@
 /* src/App.css - Versión unificada y corregida */
 
 /* --- Variables Globales y Fuentes --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap");
 
 :root {
-  --font-primary: 'Inter', sans-serif;
-  --font-secondary: 'Poppins', sans-serif;
-  --ucab-blue: #0033A0;
-  --ucab-gold: #DFAF3F;
+  --font-primary: "Inter", sans-serif;
+  --font-secondary: "Poppins", sans-serif;
+  --ucab-blue: #0033a0;
+  --ucab-gold: #dfaf3f;
   --background-light: #f4f6f8;
   --text-dark: #212529;
   --text-light: #f8f9fa;
   --border-color: #dee2e6;
-  --soft-red: #FF6B6B;
+  --soft-red: #ff6b6b;
+}
+
+/* --- Enhanced Background Effects --- */
+.ucab-home-page-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.15) 1px, transparent 0);
+  background-size: 20px 20px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ucab-home-page-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(59, 167, 212, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(30, 126, 188, 0.2), transparent);
+  background-repeat: repeat;
+  background-size: 150px 150px;
+  animation: float 20s ease-in-out infinite;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+  }
 }
 
 /* --- Estilos Base y Reglas Full-Screen (CORRECCIÓN CLAVE) --- */
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -33,14 +82,13 @@ body {
   width: 100%;
 }
 
-
 /* --- Estilos para Componentes de la App (Formulario, Preguntas, etc.) --- */
 
 /* Data Capture Form */
 .data-capture-form {
   background: white;
   border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0, 51, 160, 0.08), 0 1.5px 6px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 24px rgba(0, 51, 160, 0.08), 0 1.5px 6px rgba(0, 0, 0, 0.04);
   padding: 2.2rem 2rem 1.5rem 2rem;
   max-width: 370px;
   margin: 3rem auto;
@@ -50,7 +98,6 @@ body {
   border: 1.5px solid #e9ecef;
 }
 /* ... (otros estilos del formulario que ya tenías) ... */
-
 
 /* Pantalla de Preguntas */
 .question-screen {
@@ -82,7 +129,8 @@ h2.question-text {
   min-height: 100px; /* Espacio para que el texto no salte */
 }
 
-.likert-scale, .yes-no-scale {
+.likert-scale,
+.yes-no-scale {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,7 +138,6 @@ h2.question-text {
   margin-top: 1rem;
 }
 /* ... (otros estilos de las preguntas que ya tenías) ... */
-
 
 /* --- NUEVOS ESTILOS PARA LA PANTALLA DE RESULTADOS (WRAPPED) --- */
 
@@ -100,7 +147,7 @@ h2.question-text {
   /* Fondo oscuro y degradado para el look premium */
   background: linear-gradient(145deg, #001f54, #023059, #034078);
   color: #fff;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,13 +182,13 @@ h2.question-text {
 
 /* Logo de la UCAB en la pantalla de resultados */
 .results-story-container .logo {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 60px;
-    height: auto;
-    z-index: 10;
-    opacity: 0.8;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 60px;
+  height: auto;
+  z-index: 10;
+  opacity: 0.8;
 }
 
 /* Barra de Progreso de las Stories */
@@ -170,7 +217,6 @@ h2.question-text {
 .progress-segment.visited {
   background-color: rgba(255, 255, 255, 0.9);
 }
-
 
 /* Estructura y Estilos de cada Slide */
 .slide {
@@ -211,7 +257,8 @@ h2.question-text {
   margin-bottom: 0.5rem;
 }
 
-h1.slide-title, h1.slide-title-career {
+h1.slide-title,
+h1.slide-title-career {
   font-family: var(--font-secondary);
   font-size: clamp(2.5rem, 8vw, 4.5rem);
   font-weight: 900;
@@ -220,7 +267,8 @@ h1.slide-title, h1.slide-title-career {
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
-p.slide-description, .career-details {
+p.slide-description,
+.career-details {
   font-size: clamp(1.1rem, 3vw, 1.4rem);
   max-width: 600px;
   margin: 1rem auto 0 auto;
@@ -229,58 +277,59 @@ p.slide-description, .career-details {
 }
 
 .career-details {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin-top: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 
 /* Tarjeta Final de Resumen */
 .summary-card {
-    background: rgba(255,255,255, 0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(4px);
 }
 
 .summary-title {
-    font-size: 1.5rem;
-    font-family: var(--font-secondary);
-    margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-family: var(--font-secondary);
+  margin-bottom: 1.5rem;
 }
-.summary-archetype, .summary-item {
-    margin-bottom: 1.5rem;
+.summary-archetype,
+.summary-item {
+  margin-bottom: 1.5rem;
 }
-.summary-archetype p, .summary-item h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
-    color: #a9d6e5;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.summary-archetype p,
+.summary-item h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: #a9d6e5;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 .summary-archetype h3 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-family: var(--font-secondary);
+  margin: 0;
+  font-size: 1.8rem;
+  font-family: var(--font-secondary);
 }
 .summary-item ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 1.1rem;
-    line-height: 1.8;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.8;
 }
 
 .summary-chart-container {
-    width: 100%;
-    height: 250px;
-    margin: 1rem auto;
+  width: 100%;
+  height: 250px;
+  margin: 1rem auto;
 }
 
 /* Botón de Reinicio en la pantalla de resultados */
@@ -302,12 +351,75 @@ p.slide-description, .career-details {
   transform: scale(1.05);
 }
 
+/* --- Enhanced Image Effects --- */
+.main-image-container {
+  position: relative;
+}
+
+.main-image-container::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, rgba(59, 167, 212, 0.2), rgba(30, 126, 188, 0.1));
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.main-image-container::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(182, 227, 247, 0.2));
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.main-image-enhanced {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 20px 40px rgba(0, 51, 102, 0.15), 0 8px 16px rgba(0, 51, 102, 0.1);
+}
+
+.main-image-enhanced:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(0, 51, 102, 0.2), 0 12px 24px rgba(0, 51, 102, 0.15);
+}
+
+/* --- Enhanced Header Styling --- */
+.logo-text-enhanced {
+  text-shadow: 0 2px 4px rgba(0, 51, 102, 0.1);
+  position: relative;
+}
+
+.logo-text-enhanced::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #0033a0, #dfaf3f);
+  transition: width 0.3s ease;
+}
+
+.logo-text-enhanced:hover::after {
+  width: 100%;
+}
 
 /* --- Animaciones --- */
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-fade-in {
@@ -324,16 +436,32 @@ p.slide-description, .career-details {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes popIn {
-  from { opacity: 0; transform: scale(0.6); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes fillProgress {
-    from { width: 0%; }
-    to { width: 100%; }
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }

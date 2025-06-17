@@ -18,13 +18,18 @@ const UcabHomePage = ({ onStartTest }) => {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Impact&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
         .ucab-home-page-wrapper {
           width: 100%;
           min-height: 100vh;
-          background: linear-gradient(45deg, #ffffff 0%, #A9D6E5 100%);
+          /* Softer gradient: more white in the bottom left, blue to top right */
+          background: 
+            radial-gradient(circle at 20% 80%, rgba(255,255,255,0.8) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(59,167,212,0.3) 0%, transparent 50%),
+            linear-gradient(120deg, #ffffff 0%, #b6e3f7 35%, #3ba7d4 80%, #1e7ebc 100%);
           display: flex;
           flex-direction: column;
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
         .ucab-home-page {
           width: 100%;
@@ -34,57 +39,69 @@ const UcabHomePage = ({ onStartTest }) => {
           flex-grow: 1;
           display: flex;
           flex-direction: column;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
         .ucab-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 24px 0;
-          border-bottom: 1px solid var(--border-color);
+          padding: 31.2px 0; /* 24px * 1.3 = 31.2px */
+          border-bottom: none;
+          background: transparent !important;
+          box-shadow: none;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
         .logo-container {
           display: flex;
           align-items: center;
           gap: 12px;
           text-decoration: none;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
-        .logo-ucab { height: 40px; }
+        .logo-ucab { height: 52px; } /* 40px * 1.3 = 52px */
         .logo-text-ucab {
           font-weight: 700;
-          font-size: 20px;
+          font-size: 26px; /* 20px * 1.3 = 26px */
           color: var(--dark-blue);
           letter-spacing: -0.5px;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
-        .header-actions { display: flex; align-items: center; gap: 24px; }
+        .header-actions { display: flex; align-items: center; gap: 31.2px; font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important; }
         .career-link {
-          font-size: 16px;
+          font-size: 20.8px; /* 16px * 1.3 = 20.8px */
           font-weight: 500;
           color: var(--text-secondary);
           text-decoration: none;
           transition: color 0.2s ease-in-out;
+          background: none !important;
+          box-shadow: none !important;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
         .career-link:hover { color: var(--dark-blue); }
         .test-button {
-          background-color: transparent;
-          color: var(--dark-blue);
-          border: 2px solid var(--dark-blue);
-          padding: 8px 24px;
-          font-size: 15px;
+          background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
+          color: #fff;
+          border: 2px solid #fff;
+          padding: 10.4px 31.2px; /* 8px * 1.3, 24px * 1.3 */
+          font-size: 19.5px; /* 15px * 1.3 */
           font-weight: 700;
           cursor: pointer;
-          border-radius: 8px;
+          border-radius: 10.4px; /* 8px * 1.3 */
           text-decoration: none;
           text-align: center;
           transition: all 0.2s ease-in-out;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
+          box-shadow: 0 2px 12px rgba(33,147,176,0.10);
         }
-        .test-button:hover { background-color: var(--dark-blue); color: var(--white); }
+        .test-button:hover { background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%); color: #003366; }
         .ucab-main-content {
           display: grid;
           grid-template-columns: 1fr 1.1fr;
           align-items: center;
           gap: 64px;
-          padding: 1px 0; /* was 80px 0, reduced for less space */
+          padding: 0 0 1px 0; /* Remove top padding, keep bottom for spacing */
           flex-grow: 1;
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
         .left-panel .main-image {
           width: 100%;
@@ -93,39 +110,52 @@ const UcabHomePage = ({ onStartTest }) => {
           border-radius: 16px;
           object-fit: cover;
         }
-        .right-panel { display: flex; flex-direction: column; }
+        .right-panel { display: flex; flex-direction: column; font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important; }
         .right-panel h1 {
-          font-size: clamp(2.5rem, 5vw, 3.5rem);
-          font-family: 'Impact', 'Arial Black', sans-serif;
+          font-size: clamp(3.575rem, 7.15vw, 5.005rem);
+          font-family: 'Impact', 'Arial Black', sans-serif !important;
           font-weight: normal;
-          color: var(--dark-blue);
-          margin: 0 0 16px 0;
-          line-height: 1.2;
+          color: #fff !important;
+          margin: 0 0 10px 0;
+          line-height: 1.05;
           letter-spacing: -1.5px;
+          background: none !important;
+          box-shadow: none !important;
+          position: relative;
+          top: -48px; /* move upwards */
+          text-shadow: 2px 2px 8px rgba(30, 60, 120, 0.35), 0 2px 16px rgba(0,0,0,0.18);
         }
         .subtitle {
           font-size: 1.125rem;
-          color: var(--text-secondary);
-          line-height: 1.7;
-          margin-bottom: 32px;
+          color: #fff;
+          line-height: 1.5;
+          margin-bottom: 24px;
           max-width: 550px;
+          position: relative;
+          top: -42px; /* move upwards */
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
         }
         .main-cta-button {
-           background-color: var(--dark-blue);
-           color: var(--white);
+           background: linear-gradient(90deg, #f6fbff 0%, #ffffff 100%);
+           color: #003366;
+           border: 2px solid #fff;
            align-self: flex-start;
            font-size: 18px;
            padding: 14px 40px;
-           border: none;
            border-radius: 8px;
            cursor: pointer;
-           font-weight: 700;
+           font-weight: 500;
            transition: all 0.2s ease-in-out;
+           position: relative;
+           top: -36px;
+           font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
+           box-shadow: 0 2px 12px rgba(33,147,176,0.10);
         }
         .main-cta-button:hover {
-            background-color: var(--medium-blue);
+            background: linear-gradient(90deg, #ffffff 0%, #eaf6fb 100%);
+            color: #003366;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.10);
         }
         @media (max-width: 992px) {
           .ucab-main-content { grid-template-columns: 1fr; gap: 48px; padding: 32px 0; text-align: center; }
@@ -136,51 +166,33 @@ const UcabHomePage = ({ onStartTest }) => {
         }
         @media (max-width: 768px) {
           .ucab-home-page { padding: 0 24px; }
-          .header-actions { gap: 12px; }
+          .header-actions { gap: 15.6px; }
           .career-link { display: none; }
         }
-    `}</style>
-      <div className="ucab-home-page-wrapper">
-        <div className="ucab-home-page">
+        body, html, * {
+          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
+        }
+      `}</style>
+      <div className="ucab-home-page-wrapper" style={{ position: "relative" }}>
+        <div className="ucab-home-page" style={{ position: "relative", zIndex: 2 }}>
           <header className="ucab-header">
-            <a href="/" className="logo-container">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_ucab_original.svg/1200px-Logo_ucab_original.svg.png"
-                alt="UCAB Logo"
-                className="logo-ucab"
-              />
-              <span className="logo-text-ucab">Portal Vocacional</span>
-            </a>
-            <div className="header-actions">
-              <a
-                href="https://www.ucab.edu.ve/pregrado/"
-                className="career-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Áreas Profesionales
-              </a>
-              <a href="/acerca" className="career-link">
-                Acerca del test
-              </a>
-              <button className="test-button" onClick={onStartTest}>
-                Haz el test
-              </button>
-            </div>
+            <span className="logo-text-ucab logo-text-enhanced">Portal Vocacional</span>
           </header>
           <main className="ucab-main-content">
             <div className="left-panel">
-              <img
-                src="https://placehold.co/500x500/E8F5E9/003366?text=Talento+UCAB"
-                alt="Estudiante descubriendo su vocación"
-                className="main-image"
-              />
+              <div className="main-image-container">
+                <img
+                  src="https://placehold.co/500x500/E8F5E9/003366?text=Talento+UCAB"
+                  alt="Estudiante descubriendo su vocación"
+                  className="main-image main-image-enhanced"
+                />
+              </div>
             </div>
             <div className="right-panel">
               <h1>TU PRIMER PASO A LLEGAR LEJOS.</h1>
               <p className="subtitle">
-                Completa nuestro test vocacional para descubrir qué profesión de futuro encaja mejor contigo y recibir
-                orientación formativa. ¡Elige tu futuro en la UCAB!
+                Responde unas preguntas y recibe una recomendación personalizada de carreras afines a tu perfil.
+                ¡Empieza tu futuro en la UCAB hoy!
               </p>
               <button className="main-cta-button" onClick={onStartTest}>
                 Comenzar mi prueba vocacional
@@ -193,14 +205,15 @@ const UcabHomePage = ({ onStartTest }) => {
   )
 }
 
-const Question = ({ question, onAnswer, questionNumber, totalQuestions, onBack }) => {
+const Question = ({ question, onAnswer, questionNumber, totalQuestions, onBack, sectionName }) => {
   const handleLikertClick = (value) => onAnswer(question.id, value)
   const handleYesNoClick = (value) => onAnswer(question.id, value)
   const progressPercent = Math.max(0, Math.min(100, ((questionNumber - 1) / totalQuestions) * 100))
+  const gradient = sectionGradients[sectionName] || "linear-gradient(120deg, #f4f6f8 0%, #a9d6e5 100%)"
   return (
     <>
       <style>{`
-        .question-screen-wrapper { width: 100%; min-height: 100vh; background-color: var(--neutral-bg); display: flex; justify-content: center; align-items: center; padding: 24px; }
+        .question-screen-wrapper { width: 100%; min-height: 100vh; background: ${gradient}; display: flex; justify-content: center; align-items: center; padding: 24px; transition: background 0.6s; }
         .question-card { width: 100%; max-width: 480px; background-color: var(--white); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow: hidden; }
         .question-card-header { padding: 16px 24px; text-align: center; border-bottom: 1px solid var(--border-color); }
         .question-card-header img { height: 32px; }
@@ -373,6 +386,16 @@ function getSectionsFromQuestions(questions) {
   }))
 }
 
+// UCAB section gradients for backgrounds (much lighter, more subtle)
+const sectionGradients = {
+  Intereses: "linear-gradient(120deg, #fafdff 0%, #eaf6fb 100%)", // azul muy pálido
+  Habilidades: "linear-gradient(120deg, #f7fcf9 0%, #eafaf1 100%)", // verde muy pálido
+  Valores: "linear-gradient(120deg, #fffeef 0%, #fffbe6 100%)", // amarillo muy pálido
+  Contextos: "linear-gradient(120deg, #f6fcfd 0%, #eaf6fa 100%)", // celeste muy pálido
+  Motivaciones: "linear-gradient(120deg, #fffaf3 0%, #fff4e6 100%)", // naranja muy pálido
+  Transversales: "linear-gradient(120deg, #f7fafd 0%, #eef3f6 100%)", // gris azulado muy pálido
+}
+
 function AppRoutes() {
   // Move sections to the top so it is available to all hooks and helpers
   const sections = useMemo(() => getSectionsFromQuestions(closedQuestions), [closedQuestions])
@@ -437,12 +460,19 @@ function AppRoutes() {
   const handleSubmitForAnalysis = async (finalAnswers) => {
     setIsLoading(true)
     navigate("/results")
-    // Genera el prompt con preguntas, carreras y nombre del usuario
-    const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name)
-    const parsedResults = await analyzeWithGemini(prompt)
-    console.log("Gemini raw response:", parsedResults)
-    setResults(parsedResults)
-    setIsLoading(false)
+    
+    try {
+      const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name)
+      const parsedResults = await analyzeWithGemini(prompt)
+      console.log("Gemini raw response:", parsedResults)
+      setResults(parsedResults)
+    } catch (error) {
+      console.error("Error analyzing results:", error)
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
+    }
   }
   const handleAnswer = (questionId, answerValue) => {
     const newAnswers = { ...answers, [questionId]: answerValue }
@@ -526,6 +556,7 @@ function AppRoutes() {
             alignItems: "center",
             justifyContent: "center",
           }}
+          onClick={() => setShowResumePrompt(false)}
         >
           <div
             style={{
@@ -536,6 +567,7 @@ function AppRoutes() {
               maxWidth: 350,
               textAlign: "center",
             }}
+            onClick={(e) => e.stopPropagation()}
           >
             <h2>¿Continuar tu test?</h2>
             <p>Ya tienes un test iniciado. ¿Quieres continuar donde lo dejaste o empezar de nuevo?</p>
@@ -589,6 +621,7 @@ function AppRoutes() {
               ) : closedQuestions[currentQuestionIndex] ? (
                 <Question
                   question={closedQuestions[currentQuestionIndex]}
+                  sectionName={sections[currentSection]?.title}
                   onAnswer={(qid, val) => {
                     // Solo avanza la sección, no muestres intro aquí
                     if (currentQuestionIndex === sections[currentSection]?.end) {

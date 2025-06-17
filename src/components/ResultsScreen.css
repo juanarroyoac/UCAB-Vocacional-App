@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Impact&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap");
 
 /* --- MAIN CONTAINER --- */
 .results-story-container {
@@ -10,114 +10,102 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   font-family: "Inter", sans-serif;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.results-story-container.loaded {
+  opacity: 1;
 }
 
 /* --- LOADING STATE --- */
 .results-story-container.loading {
-  background: linear-gradient(135deg, #003366 0%, #0056b3 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 1;
 }
 
 .loading-content {
   text-align: center;
   color: white;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  border-top: 4px solid #00ff88;
-  width: 50px;
-  height: 50px;
+  border-top: 3px solid #06d6a0;
+  width: 60px;
+  height: 60px;
   animation: spin 1s linear infinite;
-  margin: 0 auto 20px;
+  margin: 0 auto 30px;
 }
 
 .loader-text {
-  font-family: "Impact", sans-serif;
-  font-size: 1.2rem;
-  letter-spacing: 3px;
-  font-weight: 400;
-}
-
-/* --- ERROR STATE --- */
-.results-story-container.error {
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  font-weight: 500;
+  opacity: 0.9;
 }
 
 /* --- UCAB LOGO --- */
 .ucab-logo {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 50px;
+  top: 25px;
+  left: 25px;
+  width: 45px;
   height: auto;
   z-index: 100;
-  opacity: 0.9;
+  opacity: 0.95;
   filter: brightness(0) invert(1);
-}
-
-/* --- SHARE BUTTON --- */
-.share-button {
-  position: absolute;
-  top: 80px;
-  left: 20px;
-  z-index: 100;
-  background: rgba(0, 0, 0, 0.6);
-  border: none;
-  border-radius: 25px;
-  padding: 8px 16px;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 1px;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
-.share-button:hover {
-  background: rgba(0, 0, 0, 0.8);
-  transform: scale(1.05);
-}
-
-.share-button span {
-  font-family: "Impact", sans-serif;
-  font-weight: 400;
-  letter-spacing: 2px;
+.ucab-logo:hover {
+  transform: scale(1.1);
 }
 
 /* --- PROGRESS BAR --- */
 .progress-bar {
   position: absolute;
-  top: 15px;
-  left: 80px;
-  right: 80px;
+  top: 20px;
+  left: 90px;
+  right: 90px;
   display: flex;
-  gap: 4px;
+  gap: 6px;
   z-index: 100;
-  height: 3px;
+  height: 4px;
 }
 
 .progress-segment {
   flex: 1;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .progress-fill {
   width: 0%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(90deg, #06d6a0, #00b894);
+  border-radius: 3px;
   transition: width 0.3s ease;
 }
 
@@ -132,29 +120,30 @@
 /* --- PAUSE BUTTON --- */
 .pause-button {
   position: absolute;
-  top: 10px;
-  right: 20px;
+  top: 15px;
+  right: 25px;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   color: white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .pause-button:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.6);
   transform: scale(1.1);
 }
 
-/* --- SLIDES WITH SIMPLE FADE TRANSITIONS --- */
+/* --- SLIDES --- */
 .slide {
   position: absolute;
   inset: 0;
@@ -162,302 +151,268 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-  padding: 40px;
+  transform: scale(0.95);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 60px 40px;
   box-sizing: border-box;
 }
 
 .slide.active {
   opacity: 1;
-}
-
-.slide.transitioning {
-  opacity: 0;
+  transform: scale(1);
 }
 
 .slide-content {
-  max-width: 700px;
+  max-width: 800px;
   width: 100%;
   text-align: center;
   position: relative;
   z-index: 10;
 }
 
-/* --- TYPOGRAPHY WITH IMPROVED IMPACT FONT --- */
+/* --- TYPOGRAPHY --- */
 .slide-supertitle {
-  font-family: "Impact", sans-serif;
-  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
   font-size: clamp(0.9rem, 2vw, 1.1rem);
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1rem;
-  letter-spacing: 4px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
 .slide-title {
-  font-family: "Impact", sans-serif;
-  font-weight: 400;
-  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
   color: white;
-  margin: 0 0 1.5rem 0;
-  line-height: 0.9;
-  letter-spacing: 2px;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  margin: 0 0 2rem 0;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  text-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .slide-description {
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin: 0;
-  max-width: 600px;
+  line-height: 1.7;
   margin: 0 auto;
+  max-width: 650px;
+  font-weight: 400;
 }
 
-/* --- QUALITIES AS VERTICAL LIST --- */
+/* --- QUALITIES LIST --- */
 .qualities-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
-  max-width: 500px;
+  gap: 1.2rem;
+  margin-top: 3rem;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .quality-item {
-  background: rgba(255, 255, 255, 0.9);
-  color: #003366;
-  border-radius: 25px;
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   text-align: center;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .quality-item:hover {
   background: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
 }
 
-/* --- CAREER SLIDES (SIMPLIFIED) --- */
+/* --- CAREER SLIDES --- */
 .career-story {
-  background: rgba(255, 255, 255, 0.9);
-  color: #003366;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
   border-radius: 20px;
-  padding: 2rem;
-  margin: 2rem 0;
-  font-size: 1.1rem;
-  line-height: 1.6;
+  padding: 2.5rem;
+  margin: 2.5rem 0;
+  font-size: 1.2rem;
+  line-height: 1.7;
   font-weight: 500;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
 }
 
 .career-faculty {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   font-style: italic;
+  font-weight: 500;
 }
 
-/* --- SUMMARY SLIDE --- */
-.summary-section {
-  margin: 1.5rem 0;
-}
-
-.summary-section h3 {
-  font-family: "Impact", sans-serif;
-  font-weight: 400;
-  font-size: 1.2rem;
-  color: white;
-  margin-bottom: 1rem;
-  letter-spacing: 2px;
-}
-
-.summary-qualities {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
-.summary-quality {
-  background: rgba(255, 255, 255, 0.9);
-  color: #003366;
-  padding: 0.5rem 1rem;
-  border-radius: 15px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.summary-careers {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.summary-career {
-  background: rgba(255, 255, 255, 0.9);
-  color: #003366;
-  padding: 0.8rem 1.5rem;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-/* --- RANKING PAGE SPECIFIC STYLES --- */
-.slide-ranking .slide-title {
-  font-size: clamp(2rem, 6vw, 3.5rem);
+/* --- RANKING SLIDE --- */
+.slide-ranking {
+  background: linear-gradient(135deg, #06d6a0 0%, #00b894 50%, #00a085 100%);
 }
 
 .ranking-podium {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-  align-items: end;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+  align-items: stretch;
 }
 
 .podium-item {
-  background: rgba(255, 255, 255, 0.9);
-  color: #003366;
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   display: flex;
   flex-direction: column;
-  height: 280px;
   justify-content: space-between;
+  min-height: 320px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* --- RESTART BUTTON --- */
-.restart-button {
-  background: rgba(255, 255, 255, 0.9);
-  color: #003366;
-  border: none;
-  padding: 15px 35px;
-  border-radius: 25px;
-  font-family: "Impact", sans-serif;
-  font-weight: 400;
-  font-size: 1rem;
-  letter-spacing: 3px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 2rem;
-  text-transform: uppercase;
+.podium-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
 }
 
-.restart-button:hover {
-  background: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* --- FUN SHAPES (SIMPLIFIED) --- */
-.fun-shape {
+.podium-item::before {
+  content: "";
   position: absolute;
-  border-radius: 50%;
-  opacity: 0.1;
-  animation: float 8s ease-in-out infinite;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #06d6a0, #00b894);
 }
 
-.shape-1 {
-  width: 100px;
-  height: 100px;
-  background: #ff6b35;
-  top: 10%;
-  left: 10%;
-  animation-delay: 0s;
-}
-.shape-2 {
+.podium-rank {
+  background: linear-gradient(135deg, #06d6a0, #00b894);
+  color: white;
   width: 60px;
   height: 60px;
-  background: #003366;
-  top: 20%;
-  right: 15%;
-  animation-delay: 2s;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 24px rgba(6, 214, 160, 0.3);
 }
-.shape-3 {
-  width: 80px;
-  height: 80px;
-  background: #00ff88;
-  bottom: 20%;
-  left: 20%;
-  animation-delay: 1s;
+
+.podium-info h3 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
 }
-.shape-4 {
-  width: 120px;
-  height: 120px;
-  background: #ff6b35;
-  top: 15%;
-  right: 10%;
-  animation-delay: 3s;
+
+.podium-faculty {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
 }
-.shape-5 {
-  width: 90px;
-  height: 90px;
-  background: #003366;
-  top: 25%;
-  left: 15%;
-  animation-delay: 1.5s;
+
+.podium-link {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  display: inline-block;
 }
-.shape-6 {
-  width: 70px;
-  height: 70px;
-  background: #00ff88;
-  bottom: 15%;
-  right: 20%;
-  animation-delay: 2.5s;
+
+.podium-link:hover {
+  background: linear-gradient(135deg, #334155, #475569);
+  transform: translateY(-2px);
 }
-.shape-7 {
-  width: 110px;
-  height: 110px;
-  background: #ff6b35;
-  top: 10%;
-  left: 5%;
-  animation-delay: 0.5s;
+
+/* --- BUTTONS --- */
+.ranking-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  align-items: center;
 }
-.shape-8 {
-  width: 85px;
-  height: 85px;
-  background: #003366;
-  bottom: 25%;
-  right: 10%;
-  animation-delay: 3.5s;
+
+.restart-button,
+.share-button,
+.details-button {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 16px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 280px;
+  justify-content: center;
 }
-.shape-9 {
-  width: 95px;
-  height: 95px;
-  background: #ff6b35;
-  top: 20%;
-  left: 10%;
-  animation-delay: 1s;
+
+.restart-button:hover,
+.share-button:hover,
+.details-button:hover {
+  background: white;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
 }
-.shape-10 {
-  width: 75px;
-  height: 75px;
-  background: #003366;
-  bottom: 10%;
-  right: 15%;
-  animation-delay: 2s;
+
+/* --- BACKGROUND GRADIENTS --- */
+.slide:nth-child(1) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
-.shape-summary-1 {
-  width: 120px;
-  height: 120px;
-  background: #00ff88;
-  top: 5%;
-  right: 5%;
-  animation-delay: 1s;
+
+.slide:nth-child(2) {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
-.shape-summary-2 {
-  width: 80px;
-  height: 80px;
-  background: #ff6b35;
-  bottom: 5%;
-  left: 5%;
-  animation-delay: 2s;
+
+.slide:nth-child(3) {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.slide:nth-child(4) {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.slide:nth-child(5) {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
 }
 
 /* --- ANIMATIONS --- */
@@ -479,57 +434,31 @@
   }
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(180deg);
-  }
-}
-
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
   .slide {
-    padding: 20px;
+    padding: 40px 20px;
   }
+
   .progress-bar {
-    left: 60px;
-    right: 60px;
+    left: 70px;
+    right: 70px;
   }
-  .qualities-list {
-    max-width: 100%;
-  }
+
   .ranking-podium {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  .fun-shape {
-    opacity: 0.05;
-  }
-  .share-button {
-    top: 70px;
-    font-size: 0.7rem;
-    padding: 6px 12px;
-  }
-  .share-button span {
-    letter-spacing: 1px;
-  }
-}
 
-.share-button-ranking {
-  background: rgba(255, 255, 255, 0.9);
-  color: #003366;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 24px;
-  font-family: "Inter", sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  .podium-item {
+    min-height: 280px;
+    padding: 2rem 1.5rem;
+  }
+
+  .restart-button,
+  .share-button,
+  .details-button {
+    min-width: 250px;
+    padding: 14px 24px;
+  }
 }

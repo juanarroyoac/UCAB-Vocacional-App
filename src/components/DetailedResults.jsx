@@ -1,8 +1,34 @@
 "use client"
 import "./DetailedResults.css"
 import ucabCareers from "../ucab_carreras.json"
+import { useState, useEffect } from "react"
 
 function DetailedResults({ results, user, onBack, onRestart }) {
+  // Add animation hooks
+  const [isVisible, setIsVisible] = useState({})
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible((prev) => ({
+              ...prev,
+              [entry.target.id]: true,
+            }))
+          }
+        })
+      },
+      { threshold: 0.1 },
+    )
+
+    document.querySelectorAll("[data-animate]").forEach((el) => {
+      observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   // Helper to enrich careers with URL and faculty
   const enrichCareer = (career) => {
     const found = ucabCareers.find((c) => c.carrera === career.name)
@@ -28,6 +54,37 @@ function DetailedResults({ results, user, onBack, onRestart }) {
       </div>
     )
   }
+
+  // Enhanced career cards with scores
+  const renderCareerCard = (career, index) => (
+    <div
+      key={index}
+      className={`career-card ${isVisible[`career-${index}`] ? "animate-in" : ""}`}
+      id={`career-${index}`}
+      data-animate
+      style={{ "--delay": `${index * 0.1}s` }}
+    >
+      <div className="career-rank">#{career.rank}</div>
+      <h3>{career.name}</h3>
+      <div className="career-faculty">{career.facultad}</div>
+      <div className="career-story">{career.story}</div>
+
+      {/* Add compatibility score */}
+      <div className="career-score">
+        <div className="score-label">Compatibilidad</div>
+        <div className="score-bar">
+          <div className="score-fill" style={{ "--score-percentage": `${career.compatibility || 85}%` }} />
+        </div>
+        <div className="score-text">{career.compatibility || 85}%</div>
+      </div>
+
+      {career.url && (
+        <a href={career.url} target="_blank" rel="noopener noreferrer" className="career-link">
+          Ver carrera en UCAB
+        </a>
+      )}
+    </div>
+  )
 
   return (
     <div className="detailed-results-container">
@@ -85,21 +142,7 @@ function DetailedResults({ results, user, onBack, onRestart }) {
           <div className="section-header">
             <h2>Tus Carreras Recomendadas</h2>
           </div>
-          <div className="careers-grid">
-            {enrichedCareers.map((career, i) => (
-              <div key={i} className="career-card">
-                <div className="career-rank">#{career.rank}</div>
-                <h3>{career.name}</h3>
-                <div className="career-faculty">{career.facultad}</div>
-                <div className="career-story">{career.story}</div>
-                {career.url && (
-                  <a href={career.url} target="_blank" rel="noopener noreferrer" className="career-link">
-                    Ver carrera en UCAB
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
+          <div className="careers-grid">{enrichedCareers.map((career, i) => renderCareerCard(career, i))}</div>
         </section>
 
         {/* Actions Section */}

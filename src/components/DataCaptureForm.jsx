@@ -22,13 +22,10 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    dob: '',
     gender: '',
-    state: '',
     city: '',
+    state: '',
     school: '',
-    gradYear: '',
     heardAbout: '',
   });
   const [textTransition, setTextTransition] = useState(false);
@@ -64,33 +61,31 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       validationField: 'name',
     },
     {
-      title: 'Tu correo electrónico y teléfono',
+      title: 'Tu correo electrónico',
       isForm: true,
       content: (
-        <>
-          <div className="form-field center-field">
-            <label htmlFor="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} maxLength={50} placeholder="tu.correo@ejemplo.com"/>
-          </div>
-          <div className="form-field center-field">
-            <label htmlFor="phone">Teléfono (opcional)</label>
-            <input id="phone" name="phone" value={formData.phone} onChange={handleInputChange} maxLength={20} placeholder="Ej: 0412-1234567" pattern="[0-9\-\+\s]*" inputMode="numeric" />
-          </div>
-          <p className="disclaimer">Al continuar, aceptas que podríamos enviarte información sobre eventos y novedades de orientación vocacional.</p>
-        </>
+        <div className="form-field center-field">
+          <label htmlFor="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} maxLength={50} placeholder="tu.correo@ejemplo.com"/>
+        </div>
       ),
       validationField: 'email',
     },
     {
-      title: 'Fecha de nacimiento',
+      title: 'Ciudad y estado',
       isForm: true,
       content: (
-        <div className="form-field">
-          <label htmlFor="dob">Fecha de nacimiento</label>
-          <input type="date" id="dob" name="dob" value={formData.dob} onChange={handleInputChange} />
+        <div className="form-field center-field">
+          <label htmlFor="city">Ciudad</label>
+          <input id="city" name="city" value={formData.city} onChange={handleInputChange} maxLength={50} placeholder="Ej: Caracas" />
+          <label htmlFor="state" style={{marginTop: 16}}>Estado</label>
+          <select id="state" name="state" value={formData.state} onChange={handleInputChange} className="modern-select">
+            <option value="">Selecciona tu estado</option>
+            {VENEZUELAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
         </div>
       ),
-      validationField: 'dob',
+      validationField: ['city', 'state'],
     },
     {
       title: 'Género',
@@ -107,37 +102,15 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       validationField: 'gender',
     },
     {
-      title: 'Estado y ciudad',
+      title: 'Colegio',
       isForm: true,
       content: (
-        <div className="form-field center-field">
-          <label htmlFor="state">Estado</label>
-          <select id="state" name="state" value={formData.state} onChange={handleInputChange} className="modern-select">
-            <option value="">Selecciona tu estado</option>
-            {VENEZUELAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-          <label htmlFor="city" style={{marginTop: 16}}>Ciudad</label>
-          <input id="city" name="city" value={formData.city} onChange={handleInputChange} maxLength={50} placeholder="Ej: Caracas" />
+        <div className="form-field">
+          <label htmlFor="school">Nombre del colegio</label>
+          <input id="school" name="school" value={formData.school} onChange={handleInputChange} maxLength={50} placeholder="Nombre del colegio" />
         </div>
       ),
-      validationField: ['state', 'city'],
-    },
-    {
-      title: 'Colegio y año de graduación',
-      isForm: true,
-      content: (
-        <>
-          <div className="form-field">
-            <label htmlFor="school">Nombre del colegio</label>
-            <input id="school" name="school" value={formData.school} onChange={handleInputChange} maxLength={50} placeholder="Nombre del colegio" />
-          </div>
-          <div className="form-field" style={{marginTop: 8}}>
-            <label htmlFor="gradYear">Año de graduación</label>
-            <input id="gradYear" name="gradYear" value={formData.gradYear} onChange={handleInputChange} maxLength={4} placeholder="Ej: 2025" />
-          </div>
-        </>
-      ),
-      validationField: ['school', 'gradYear'],
+      validationField: 'school',
     },
     {
       title: '¿Cómo supiste de nosotros?',
@@ -194,14 +167,12 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
 
   // Basic email validation for enabling the next button
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
-  // Phone validation: allow empty or valid Venezuelan phone number (7-15 digits, optional +, -, spaces)
-  const isPhoneValid = !formData.phone || /^[0-9\-\+\s]{7,15}$/.test(formData.phone);
   let isNextDisabled = false;
   if (currentStepConfig.isForm) {
     if (Array.isArray(currentStepConfig.validationField)) {
       isNextDisabled = !currentStepConfig.validationField.every(f => formData[f]);
     } else if (currentStepConfig.validationField === 'email') {
-      isNextDisabled = !isEmailValid || !isPhoneValid;
+      isNextDisabled = !isEmailValid;
     } else {
       isNextDisabled = !formData[currentStepConfig.validationField];
     }

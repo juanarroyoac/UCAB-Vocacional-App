@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Impact&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Impact&display=swap"); */
 
 /* Onboarding.css - Styles for the multi-step data collection form */
 .onboarding-wrapper {
@@ -30,8 +30,8 @@
 }
 
 .onboarding-header h1 {
-  font-family: "Impact", "Arial Black", sans-serif;
-  font-weight: normal;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: clamp(1.75rem, 5vw, 2.25rem);
   color: #003366;
   margin: 0 0 8px 0;
