@@ -27,7 +27,7 @@ const UcabHomePage = ({ onStartTest }) => {
         .ucab-home-page-wrapper {
           width: 100%;
           min-height: 100vh;
-          background: linear-gradient(20deg, #ffffff 0%, #b6e3f7 30%, #1a6bb8 70%);
+          background: linear-gradient(20deg, #ffffff 0%, #b6e3f7 10%, #1a6bb8 20%);
           display: flex;
           flex-direction: column;
           font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
@@ -40,8 +40,7 @@ const UcabHomePage = ({ onStartTest }) => {
           top: 0;
           left: 0;
           right: 0;
-          height: 95vh;
-          background: linear-gradient(20deg, #ffffff 0%, #b6e3f7 35%, #1a6bb8 80%);
+          background: linear-gradient(20deg, #ffffff 0%, #b6e3f7 85%,rgb(129, 194, 255) 20%);
           z-index: 1;
         }
 
@@ -251,7 +250,8 @@ const UcabHomePage = ({ onStartTest }) => {
         @media (max-width: 992px) {
           .steps-row {
             flex-direction: column;
-            gap: 24px;
+            gap: 0px;
+            margin-top: 18px;
           }
           .step-inline {
             max-width: 100%;
@@ -461,7 +461,8 @@ const UcabHomePage = ({ onStartTest }) => {
           
           .steps-row {
             flex-direction: column;
-            gap: 24px;
+            gap: 12px;
+            margin-top: 18px;
           }
           
           .testimonials-grid {
@@ -473,13 +474,21 @@ const UcabHomePage = ({ onStartTest }) => {
         @media (max-width: 768px) {
           .ucab-home-page { padding: 0 24px; }
           .section-container { padding: 0 12px; }
-          
-          .modern-section {
-            padding: 8px 0;
+          .modern-section { padding: 8px 0; }
+          .how-it-works-section { padding-bottom: 44px !important; }
+          .steps-row {
+            display: block !important;
+            gap: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
           }
-          
           .step-inline {
-            max-width: 100%;
+            display: flex !important;
+            align-items: flex-start !important;
+            margin: 0 !important;
+            padding: 0 0 34px 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
           }
           
           .testimonial-card {
