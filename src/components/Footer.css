@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+.ucab-footer-new {
+  border-top: 4px solid #40B4E5;
+  background: #bcbcbc !important;
+  font-family: 'Open Sans', Arial, sans-serif;
+  padding: 20px 0 8px 0;
+  text-align: center;
+  margin-top: 0;
+}
+
+.footer-links-new {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.footer-links-new a {
+  color: #343434 !important;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: none;
+}
+
+.footer-social-new {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 14px;
+}
+
+.footer-social-new a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  color: #343434 !important;
+  transition: none;
+}
+
+.footer-social-new svg {
+  stroke: #343434 !important;
+  transition: none;
+}
+
+.footer-copyright-new {
+  color: #343434 !important;
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .footer-links-new {
+    gap: 14px;
+    font-size: 0.95rem;
+  }
+  .footer-social-new {
+    gap: 16px;
+  }
+} 
