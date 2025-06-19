@@ -7,203 +7,11 @@ import AboutTest from "./components/AboutTest"
 import SectionIntro from "./components/SectionIntro"
 import LightParticles from "./components/LightParticles"
 import DetailedResults from "./components/DetailedResults"
+import UcabHomePage from "./components/UcabHomePage"
 
 // ===================================================================================
 //  COMPONENT DEFINITIONS
-//  All components are now in this single file to resolve import errors.
 // ===================================================================================
-
-const UcabHomePage = ({ onStartTest }) => {
-  return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Impact&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
-        .ucab-home-page-wrapper {
-          width: 100%;
-          min-height: 100vh;
-          /* Softer gradient: more white in the bottom left, blue to top right */
-          background: 
-            radial-gradient(circle at 20% 80%, rgba(255,255,255,0.8) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(59,167,212,0.3) 0%, transparent 50%),
-            linear-gradient(120deg, #ffffff 0%, #b6e3f7 35%, #3ba7d4 80%, #1e7ebc 100%);
-          display: flex;
-          flex-direction: column;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .ucab-home-page {
-          width: 100%;
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 32px;
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .ucab-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 31.2px 0; /* 24px * 1.3 = 31.2px */
-          border-bottom: none;
-          background: transparent !important;
-          box-shadow: none;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .logo-container {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          text-decoration: none;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .logo-ucab { height: 52px; } /* 40px * 1.3 = 52px */
-        .logo-text-ucab {
-          font-weight: 700;
-          font-size: 26px; /* 20px * 1.3 = 26px */
-          color: var(--dark-blue);
-          letter-spacing: -0.5px;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .header-actions { display: flex; align-items: center; gap: 31.2px; font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important; }
-        .career-link {
-          font-size: 20.8px; /* 16px * 1.3 = 20.8px */
-          font-weight: 500;
-          color: var(--text-secondary);
-          text-decoration: none;
-          transition: color 0.2s ease-in-out;
-          background: none !important;
-          box-shadow: none !important;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .career-link:hover { color: var(--dark-blue); }
-        .test-button {
-          background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
-          color: #fff;
-          border: 2px solid #fff;
-          padding: 10.4px 31.2px; /* 8px * 1.3, 24px * 1.3 */
-          font-size: 19.5px; /* 15px * 1.3 */
-          font-weight: 700;
-          cursor: pointer;
-          border-radius: 10.4px; /* 8px * 1.3 */
-          text-decoration: none;
-          text-align: center;
-          transition: all 0.2s ease-in-out;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-          box-shadow: 0 2px 12px rgba(33,147,176,0.10);
-        }
-        .test-button:hover { background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%); color: #003366; }
-        .ucab-main-content {
-          display: grid;
-          grid-template-columns: 1fr 1.1fr;
-          align-items: center;
-          gap: 64px;
-          padding: 0 0 1px 0; /* Remove top padding, keep bottom for spacing */
-          flex-grow: 1;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .left-panel .main-image {
-          width: 100%;
-          max-width: 500px;
-          height: auto;
-          border-radius: 16px;
-          object-fit: cover;
-        }
-        .right-panel { display: flex; flex-direction: column; font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important; }
-        .right-panel h1 {
-          font-size: clamp(3.575rem, 7.15vw, 5.005rem);
-          font-family: 'Impact', 'Arial Black', sans-serif !important;
-          font-weight: normal;
-          color: #fff !important;
-          margin: 0 0 10px 0;
-          line-height: 1.05;
-          letter-spacing: -1.5px;
-          background: none !important;
-          box-shadow: none !important;
-          position: relative;
-          top: -48px; /* move upwards */
-          text-shadow: 2px 2px 8px rgba(30, 60, 120, 0.35), 0 2px 16px rgba(0,0,0,0.18);
-        }
-        .subtitle {
-          font-size: 1.125rem;
-          color: #fff;
-          line-height: 1.5;
-          margin-bottom: 24px;
-          max-width: 550px;
-          position: relative;
-          top: -42px; /* move upwards */
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-        .main-cta-button {
-           background: linear-gradient(90deg, #f6fbff 0%, #ffffff 100%);
-           color: #003366;
-           border: 2px solid #fff;
-           align-self: flex-start;
-           font-size: 18px;
-           padding: 14px 40px;
-           border-radius: 8px;
-           cursor: pointer;
-           font-weight: 500;
-           transition: all 0.2s ease-in-out;
-           position: relative;
-           top: -36px;
-           font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-           box-shadow: 0 2px 12px rgba(33,147,176,0.10);
-        }
-        .main-cta-button:hover {
-            background: linear-gradient(90deg, #ffffff 0%, #eaf6fb 100%);
-            color: #003366;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.10);
-        }
-        @media (max-width: 992px) {
-          .ucab-main-content { grid-template-columns: 1fr; gap: 48px; padding: 32px 0; text-align: center; }
-          .left-panel { order: 2; display: flex; justify-content: center; }
-          .left-panel .main-image { max-width: 400px; }
-          .right-panel { order: 1; align-items: center; }
-          .main-cta-button { align-self: center; }
-        }
-        @media (max-width: 768px) {
-          .ucab-home-page { padding: 0 24px; }
-          .header-actions { gap: 15.6px; }
-          .career-link { display: none; }
-        }
-        body, html, * {
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
-        }
-      `}</style>
-      <div className="ucab-home-page-wrapper" style={{ position: "relative" }}>
-        <div className="ucab-home-page" style={{ position: "relative", zIndex: 2 }}>
-          <header className="ucab-header">
-            <span className="logo-text-ucab logo-text-enhanced">Portal Vocacional</span>
-          </header>
-          <main className="ucab-main-content">
-            <div className="left-panel">
-              <div className="main-image-container">
-                <img
-                  src="https://placehold.co/500x500/E8F5E9/003366?text=Talento+UCAB"
-                  alt="Estudiante descubriendo su vocación"
-                  className="main-image main-image-enhanced"
-                />
-              </div>
-            </div>
-            <div className="right-panel">
-              <h1>TU PRIMER PASO A LLEGAR LEJOS.</h1>
-              <p className="subtitle">
-                Responde unas preguntas y recibe una recomendación personalizada de carreras afines a tu perfil.
-                ¡Empieza tu futuro en la UCAB hoy!
-              </p>
-              <button className="main-cta-button" onClick={onStartTest}>
-                Comenzar mi prueba vocacional
-              </button>
-            </div>
-          </main>
-        </div>
-      </div>
-    </>
-  )
-}
 
 const Question = ({ question, onAnswer, questionNumber, totalQuestions, onBack, sectionName }) => {
   const handleLikertClick = (value) => onAnswer(question.id, value)
@@ -410,6 +218,7 @@ function AppRoutes() {
   const [showSectionIntro, setShowSectionIntro] = useState(true)
   const [showDetailedResults, setShowDetailedResults] = useState(false)
   const navigate = useNavigate()
+
   const handleStartTest = () => {
     const saved = localStorage.getItem("vocacional-progress")
     if (saved) {
@@ -426,6 +235,7 @@ function AppRoutes() {
     }
     navigate("/intro")
   }
+
   const handleResume = () => {
     setShowResumePrompt(false)
     if (resumeTarget && resumeTarget.userData) {
@@ -437,6 +247,7 @@ function AppRoutes() {
       navigate("/intro")
     }
   }
+
   const handleForceRestart = () => {
     setShowResumePrompt(false)
     setAnswers({})
@@ -447,6 +258,7 @@ function AppRoutes() {
     localStorage.removeItem("vocacional-progress")
     navigate("/intro")
   }
+
   const handleOnboardingComplete = (formData) => {
     setUserData(formData)
     setAnswers({})
@@ -457,10 +269,11 @@ function AppRoutes() {
     localStorage.removeItem("vocacional-progress")
     navigate("/test")
   }
+
   const handleSubmitForAnalysis = async (finalAnswers) => {
     setIsLoading(true)
     navigate("/results")
-    
+
     try {
       const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name)
       const parsedResults = await analyzeWithGemini(prompt)
@@ -474,6 +287,7 @@ function AppRoutes() {
       }, 500)
     }
   }
+
   const handleAnswer = (questionId, answerValue) => {
     const newAnswers = { ...answers, [questionId]: answerValue }
     setAnswers(newAnswers)
@@ -483,7 +297,9 @@ function AppRoutes() {
       handleSubmitForAnalysis(newAnswers)
     }
   }
+
   const handleBack = () => setCurrentQuestionIndex((idx) => Math.max(0, idx - 1))
+
   const handleRestart = () => {
     setAnswers({})
     setCurrentQuestionIndex(0)
@@ -675,15 +491,22 @@ function AppRoutes() {
   )
 }
 
+const gradientStyle = {
+  minHeight: "100vh",
+  background: "linear-gradient(75deg, #b3e0ff 0%, #4fc3f7 100%)",
+}
+
 function App() {
   return (
-    <Router>
-      <GlobalStyles />
-      <div className="app-container" style={{ position: "relative", overflow: "hidden" }}>
-        <LightParticles />
-        <AppRoutes />
-      </div>
-    </Router>
+    <div style={gradientStyle}>
+      <Router>
+        <GlobalStyles />
+        <div className="app-container" style={{ position: "relative", overflow: "hidden" }}>
+          <LightParticles />
+          <AppRoutes />
+        </div>
+      </Router>
+    </div>
   )
 }
 
