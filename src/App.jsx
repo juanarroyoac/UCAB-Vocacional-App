@@ -10,6 +10,7 @@ import DetailedResults from "./components/DetailedResults"
 import UcabHomePage from "./components/UcabHomePage"
 import LoadingScreen from "./components/LoadingScreen"
 import AdminDashboard from "./components/AdminDashboard"
+import { createTestSession, saveTestProgress, loadTestProgress } from "./testSessionApi"
 
 // ===================================================================================
 //  COMPONENT DEFINITIONS
@@ -297,16 +298,19 @@ function AppRoutes() {
     navigate("/intro")
   }
 
-  const handleOnboardingComplete = (formData) => {
-    setUserData(formData)
-    setAnswers({})
-    setCurrentQuestionIndex(0)
-    setResults(null)
-    setIsLoading(false)
-    setShowLoadingScreen(false)
-    // Clear previous progress
-    localStorage.removeItem("vocacional-progress")
-    navigate("/test")
+  const handleOnboardingComplete = async (formData) => {
+    // Create a new test session in Firestore
+    const sessionId = await createTestSession(formData);
+    setUserData(formData);
+    setAnswers({});
+    setCurrentQuestionIndex(0);
+    setResults(null);
+    setIsLoading(false);
+    setShowLoadingScreen(false);
+    // Save sessionId in state and localStorage
+    localStorage.setItem("vocacional-session-id", sessionId);
+    localStorage.removeItem("vocacional-progress");
+    navigate(`/test/${sessionId}`);
   }
 
   const handleSubmitForAnalysis = async (finalAnswers) => {
@@ -399,6 +403,35 @@ function AppRoutes() {
       }),
     )
   }, [answers, userData, currentQuestionIndex])
+
+  // Load progress from Firestore if sessionId in URL
+  useEffect(() => {
+    const path = window.location.pathname;
+    const match = path.match(/^\/test\/(.+)$/);
+    if (match) {
+      const sessionId = match[1];
+      localStorage.setItem("vocacional-session-id", sessionId);
+      loadTestProgress(sessionId).then((data) => {
+        if (data) {
+          if (data.answers) setAnswers(data.answers);
+          if (data.userData) setUserData(data.userData);
+          if (typeof data.currentQuestionIndex === "number") setCurrentQuestionIndex(data.currentQuestionIndex);
+        }
+      });
+    }
+  }, [])
+
+  // Save progress to Firestore whenever relevant state changes and sessionId exists
+  useEffect(() => {
+    const sessionId = localStorage.getItem("vocacional-session-id");
+    if (sessionId) {
+      saveTestProgress(sessionId, {
+        answers,
+        userData,
+        currentQuestionIndex,
+      });
+    }
+  }, [answers, userData, currentQuestionIndex]);
 
   // Helper to get section for current question
   const getSectionForQuestion = (qIdx) => {
@@ -537,7 +570,7 @@ function AppRoutes() {
           </>
         } />
         <Route
-          path="/test"
+          path="/test/:sessionId"
           element={
             userData ? (
               showSectionIntro ? (
@@ -553,11 +586,9 @@ function AppRoutes() {
                   question={closedQuestions[currentQuestionIndex]}
                   sectionName={sections[currentSection]?.title}
                   onAnswer={(qid, val) => {
-                    // Solo avanza la sección, no muestres intro aquí
                     if (currentQuestionIndex === sections[currentSection]?.end) {
                       handleAnswer(qid, val)
                       setCurrentSection((cs) => cs + 1)
-                      // NO setShowSectionIntro(true) aquí
                     } else {
                       handleAnswer(qid, val)
                     }

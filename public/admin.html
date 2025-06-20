@@ -7,39 +7,43 @@
   <title>OrientaUCAB - Admin Dashboard</title>
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* Encapsulate all styles under #vocacional-dashboard */
     #vocacional-dashboard {
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
       background: #f7f9fb;
-      color: #222;
+      color: #343434;
       padding: 32px 0;
       min-height: 100vh;
     }
     #vocacional-dashboard .dashboard-container {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-      padding: 32px 40px 40px 40px;
+      border-radius: 18px;
+      box-shadow: 0 2px 24px rgba(52,52,52,0.08);
+      padding: 36px 48px 48px 48px;
       position: relative;
     }
     #vocacional-dashboard h1 {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       margin-bottom: 8px;
       font-weight: 700;
+      color: #343434;
     }
     #vocacional-dashboard .disclaimer {
       position: absolute;
       top: 24px;
-      right: 40px;
-      background: #e9ecef;
+      right: 48px;
+      background: #f3f4f6;
       color: #555;
-      font-size: 0.95rem;
-      padding: 6px 16px;
+      font-size: 0.97rem;
+      padding: 7px 18px;
       border-radius: 8px;
-      border: 1px solid #d1d5db;
+      border: 1px solid #e5e7eb;
       z-index: 2;
     }
     #vocacional-dashboard .metrics {
@@ -49,23 +53,25 @@
       flex-wrap: wrap;
     }
     #vocacional-dashboard .metric {
-      background: #f1f5fa;
+      background: #f7f7fa;
       border-radius: 10px;
-      padding: 18px 28px;
+      padding: 20px 32px;
       min-width: 180px;
       flex: 1 1 180px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      box-shadow: 0 1px 4px rgba(52,52,52,0.04);
       text-align: center;
+      color: #343434;
     }
     #vocacional-dashboard .metric-title {
-      font-size: 1.05rem;
-      color: #4b5563;
+      font-size: 1.08rem;
+      color: #6b7280;
       margin-bottom: 6px;
+      font-weight: 500;
     }
     #vocacional-dashboard .metric-value {
-      font-size: 1.7rem;
-      font-weight: 600;
-      color: #1d3557;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #343434;
     }
     #vocacional-dashboard .charts {
       display: flex;
@@ -76,17 +82,17 @@
     #vocacional-dashboard .chart-block {
       background: #f8fafc;
       border-radius: 12px;
-      padding: 18px 18px 8px 18px;
-      flex: 1 1 320px;
-      min-width: 320px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+      padding: 20px 20px 10px 20px;
+      flex: 1 1 340px;
+      min-width: 340px;
+      box-shadow: 0 1px 4px rgba(52,52,52,0.03);
       margin-bottom: 12px;
     }
     #vocacional-dashboard .chart-block h3 {
-      font-size: 1.1rem;
+      font-size: 1.13rem;
       margin-bottom: 8px;
-      color: #374151;
-      font-weight: 500;
+      color: #343434;
+      font-weight: 600;
     }
     #vocacional-dashboard .table-section {
       margin-top: 32px;
@@ -97,13 +103,13 @@
       align-items: center;
       gap: 12px;
     }
-    #vocacional-dashboard .search-bar input {
+    #vocacional-dashboard .search-bar input, #vocacional-dashboard .search-bar select {
       padding: 7px 14px;
       border-radius: 6px;
       border: 1px solid #cbd5e1;
       font-size: 1rem;
-      width: 260px;
       background: #f9fafb;
+      color: #343434;
     }
     #vocacional-dashboard table {
       width: 100%;
@@ -111,18 +117,25 @@
       background: #fff;
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      box-shadow: 0 1px 4px rgba(52,52,52,0.03);
     }
     #vocacional-dashboard th, #vocacional-dashboard td {
-      padding: 10px 12px;
+      padding: 12px 14px;
       text-align: left;
       border-bottom: 1px solid #e5e7eb;
-      font-size: 0.98rem;
+      font-size: 1rem;
     }
     #vocacional-dashboard th {
-      background: #f1f5fa;
-      font-weight: 600;
-      color: #374151;
+      background: #f3f4f6;
+      font-weight: 700;
+      color: #343434;
+      cursor: pointer;
+    }
+    #vocacional-dashboard tr:nth-child(even) td {
+      background: #f7f7fa;
+    }
+    #vocacional-dashboard tr:nth-child(odd) td {
+      background: #fff;
     }
     #vocacional-dashboard tr:last-child td {
       border-bottom: none;
@@ -131,6 +144,74 @@
       text-align: center;
       color: #888;
       padding: 18px 0;
+    }
+    /* Placeholders for new features */
+    #vocacional-dashboard .user-details-modal {
+      display: none; /* Will be shown on click */
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(52,52,52,0.18);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    #vocacional-dashboard .user-details-content {
+      background: #fff;
+      border-radius: 14px;
+      padding: 32px 40px;
+      min-width: 340px;
+      max-width: 96vw;
+      box-shadow: 0 4px 32px rgba(52,52,52,0.13);
+      color: #343434;
+    }
+    #vocacional-dashboard .user-details-content h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    #vocacional-dashboard .user-details-content .notes {
+      margin-top: 18px;
+      font-size: 1rem;
+      color: #6b7280;
+    }
+    #vocacional-dashboard .export-btn {
+      background: #343434;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      margin-left: 12px;
+    }
+    #vocacional-dashboard .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    #vocacional-dashboard .filter-bar label {
+      font-size: 1rem;
+      color: #343434;
+      font-weight: 500;
+    }
+    #vocacional-dashboard .admin-section {
+      margin-top: 40px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 24px 32px;
+      color: #343434;
+    }
+    #vocacional-dashboard .audit-log {
+      margin-top: 18px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 0.97rem;
+      color: #6b7280;
+      max-height: 180px;
+      overflow-y: auto;
     }
     @media (max-width: 900px) {
       #vocacional-dashboard .dashboard-container {
@@ -200,6 +281,7 @@ const NAMES = [
   'Isabel Rangel', 'Felipe Sosa', 'Carolina Méndez', 'Ignacio Torres', 'Mía Peña',
   'Francisco Rivas', 'Martín Suárez', 'Julia Cordero', 'Emilia Paredes', 'Gabriel León'
 ];
+const BUTTONS = ['Comenzar Test', 'Ver Resultados', 'Descargar PDF', 'Compartir'];
 function randomFrom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -218,7 +300,14 @@ function generateMockUsers(n = 100) {
     const gender = randomFrom(GENDERS);
     const school = randomFrom(SCHOOLS);
     const heardAbout = randomFrom(HEARD_ABOUT_US);
-    users.push({ name, email, city, state, gender, school, heardAbout });
+    // Mock button clicks: random subset
+    const buttonClicks = {};
+    BUTTONS.forEach(btn => {
+      buttonClicks[btn] = Math.random() < 0.7 ? Math.floor(Math.random()*3) : 0;
+    });
+    // Mock time spent (in seconds)
+    const timeOnResults = 30 + Math.floor(Math.random()*300); // 30s to 5min
+    users.push({ name, email, city, state, gender, school, heardAbout, buttonClicks, timeOnResults });
   }
   return users;
 }
@@ -233,11 +322,17 @@ function getMetrics(users) {
   let mostCommonState = '';
   let mostCommonSchool = '';
   let schoolCounts = {};
+  let buttonClickTotals = {};
+  let totalTimeOnResults = 0;
   users.forEach(u => {
     genderCounts[u.gender] = (genderCounts[u.gender] || 0) + 1;
     stateCounts[u.state] = (stateCounts[u.state] || 0) + 1;
     heardCounts[u.heardAbout] = (heardCounts[u.heardAbout] || 0) + 1;
     schoolCounts[u.school] = (schoolCounts[u.school] || 0) + 1;
+    Object.entries(u.buttonClicks || {}).forEach(([btn, count]) => {
+      buttonClickTotals[btn] = (buttonClickTotals[btn] || 0) + count;
+    });
+    totalTimeOnResults += u.timeOnResults || 0;
   });
   mostCommonState = Object.entries(stateCounts).sort((a,b)=>b[1]-a[1])[0][0];
   mostCommonSchool = Object.entries(schoolCounts).sort((a,b)=>b[1]-a[1])[0][0];
@@ -247,7 +342,9 @@ function getMetrics(users) {
     stateCounts,
     heardCounts,
     mostCommonState,
-    mostCommonSchool
+    mostCommonSchool,
+    buttonClickTotals,
+    avgTimeOnResults: users.length ? Math.round(totalTimeOnResults / users.length) : 0
   };
 }
 function renderMetrics(metrics) {
@@ -267,6 +364,14 @@ function renderMetrics(metrics) {
     <div class="metric">
       <div class="metric-title">Género más frecuente</div>
       <div class="metric-value">${Object.entries(metrics.genderCounts).sort((a,b)=>b[1]-a[1])[0][0]}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Clicks en 'Ver Resultados'</div>
+      <div class="metric-value">${metrics.buttonClickTotals['Ver Resultados'] || 0}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Tiempo promedio en resultados</div>
+      <div class="metric-value">${metrics.avgTimeOnResults}s</div>
     </div>
   `;
 }
@@ -321,14 +426,28 @@ function renderCharts(users, metrics) {
 
 // --- Table ---
 let filteredUsers = users;
-function renderTable(users) {
+function applyFilters() {
+  const state = document.getElementById('stateFilter').value;
+  const school = document.getElementById('schoolFilter').value;
+  const gender = document.getElementById('genderFilter').value;
+  const heard = document.getElementById('heardFilter').value;
+  let filtered = users;
+  if (state) filtered = filtered.filter(u => u.state === state);
+  if (school) filtered = filtered.filter(u => u.school === school);
+  if (gender) filtered = filtered.filter(u => u.gender === gender);
+  if (heard) filtered = filtered.filter(u => u.heardAbout === heard);
+  const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (searchVal) filtered = filtered.filter(u => u.name.toLowerCase().includes(searchVal));
+  return filtered;
+}
+function renderTable(usersToRender) {
   const tbody = document.querySelector('#userTable tbody');
-  if (!tbody) return; // Prevent error if table is not rendered yet
-  if (!users.length) {
-    tbody.innerHTML = `<tr><td colspan="7" class="no-results">No se encontraron resultados.</td></tr>`;
+  if (!tbody) return;
+  if (!usersToRender.length) {
+    tbody.innerHTML = `<tr><td colspan="10" class="no-results">No se encontraron resultados.</td></tr>`;
     return;
   }
-  tbody.innerHTML = users.slice(0, 30).map(u => `
+  tbody.innerHTML = usersToRender.slice(0, 30).map((u, idx) => `
     <tr>
       <td>${u.name}</td>
       <td>${u.email}</td>
@@ -337,37 +456,93 @@ function renderTable(users) {
       <td>${u.gender}</td>
       <td>${u.school}</td>
       <td>${u.heardAbout}</td>
+      <td>${u.buttonClicks['Ver Resultados'] || 0}</td>
+      <td>${u.timeOnResults || 0}s</td>
+      <td><button onclick="showUserDetails(${idx})" style="background:#343434;color:#fff;border:none;border-radius:5px;padding:4px 10px;cursor:pointer;">Ver</button></td>
     </tr>
   `).join('');
 }
-function setupTableSearch() {
-  const searchInput = document.getElementById('searchInput');
-  if (!searchInput) return;
-  searchInput.addEventListener('input', function(e) {
-    const val = e.target.value.trim().toLowerCase();
-    filteredUsers = users.filter(u => u.name.toLowerCase().includes(val));
-    renderTable(filteredUsers);
-  });
+function setupTableSearchAndFilters() {
+  document.getElementById('searchInput').addEventListener('input', updateTable);
+  document.getElementById('stateFilter').addEventListener('change', updateTable);
+  document.getElementById('schoolFilter').addEventListener('change', updateTable);
+  document.getElementById('genderFilter').addEventListener('change', updateTable);
+  document.getElementById('heardFilter').addEventListener('change', updateTable);
 }
-
-// --- UI Navigation ---
-const dashboardView = document.getElementById('dashboard-view');
-const tableView = document.getElementById('table-view');
-const chatbotView = document.getElementById('chatbot-view');
-const navBtns = document.querySelectorAll('.nav-btn');
-function showView(view) {
-  dashboardView.style.display = view === 'dashboard' ? '' : 'none';
-  tableView.style.display = view === 'table' ? '' : 'none';
-  chatbotView.style.display = view === 'chatbot' ? '' : 'none';
-  navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+function updateTable() {
+  filteredUsers = applyFilters();
+  renderTable(filteredUsers);
 }
-navBtns.forEach(btn => btn.addEventListener('click', () => {
-  showView(btn.dataset.view);
-  if (btn.dataset.view === 'table') {
+// Sorting
+let sortKey = null, sortAsc = true;
+document.addEventListener('click', function(e) {
+  if (e.target.tagName === 'TH' && e.target.dataset.sort) {
+    const key = e.target.dataset.sort;
+    if (sortKey === key) sortAsc = !sortAsc; else { sortKey = key; sortAsc = true; }
+    filteredUsers.sort((a, b) => {
+      let va = a[key], vb = b[key];
+      if (typeof va === 'string') va = va.toLowerCase();
+      if (typeof vb === 'string') vb = vb.toLowerCase();
+      if (va < vb) return sortAsc ? -1 : 1;
+      if (va > vb) return sortAsc ? 1 : -1;
+      return 0;
+    });
     renderTable(filteredUsers);
-    setupTableSearch();
   }
-}));
+});
+// Export CSV
+function exportCSV() {
+  const rows = [
+    ['Nombre','Email','Ciudad','Estado','Género','Colegio','¿Cómo supo?','Clicks Ver Resultados','Tiempo en resultados']
+  ];
+  filteredUsers.forEach(u => {
+    rows.push([
+      u.name, u.email, u.city, u.state, u.gender, u.school, u.heardAbout, u.buttonClicks['Ver Resultados'] || 0, u.timeOnResults || 0
+    ]);
+  });
+  const csv = rows.map(r => r.map(x => '"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], {type: 'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'usuarios.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'exportBtn') {
+    exportCSV();
+  }
+});
+// User Details Modal
+window.showUserDetails = function(idx) {
+  const user = filteredUsers[idx];
+  const modal = document.getElementById('userDetailsModal');
+  const content = document.getElementById('userDetailsContent');
+  content.innerHTML = `
+    <h2>Perfil de Usuario</h2>
+    <div><b>Nombre:</b> ${user.name}</div>
+    <div><b>Email:</b> ${user.email}</div>
+    <div><b>Ciudad:</b> ${user.city}</div>
+    <div><b>Estado:</b> ${user.state}</div>
+    <div><b>Género:</b> ${user.gender}</div>
+    <div><b>Colegio:</b> ${user.school}</div>
+    <div><b>¿Cómo supo?:</b> ${user.heardAbout}</div>
+    <div><b>Clicks 'Ver Resultados':</b> ${user.buttonClicks['Ver Resultados'] || 0}</div>
+    <div><b>Tiempo en resultados:</b> ${user.timeOnResults || 0}s</div>
+    <div class='notes'><b>Notas/Tags:</b> <input type='text' style='width:80%' placeholder='Agregar nota o tag...' /></div>
+    <button onclick="document.getElementById('userDetailsModal').style.display='none'" style="margin-top:18px;background:#343434;color:#fff;border:none;border-radius:6px;padding:8px 18px;">Cerrar</button>
+  `;
+  modal.style.display = 'flex';
+}
+document.getElementById('userDetailsModal').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = 'none';
+});
+// Initial setup
+setupTableSearchAndFilters();
+updateTable();
 
 // --- Render Dashboard View ---
 dashboardView.innerHTML = `
@@ -386,11 +561,64 @@ dashboardView.innerHTML = `
       <canvas id="heardChart" height="180"></canvas>
     </div>
   </div>
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:12px;">Actividad Reciente</h2>
+    <ul id="recent-activity" style="background:#fff;border-radius:8px;padding:18px 24px;box-shadow:0 1px 4px rgba(52,52,52,0.04);list-style:none;">
+      <li><b>20/06/2025 10:15</b> - Ana Pérez completó el test</li>
+      <li><b>20/06/2025 10:12</b> - Luis Rodríguez se registró</li>
+      <li><b>20/06/2025 10:10</b> - María González completó el test</li>
+      <li><b>20/06/2025 10:08</b> - Carlos Hernández se registró</li>
+    </ul>
+  </section>
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:12px;">Reportes Personalizados</h2>
+    <div style="background:#fff;border-radius:8px;padding:18px 24px;box-shadow:0 1px 4px rgba(52,52,52,0.04);">
+      <p>Genera y descarga reportes personalizados según filtros seleccionados.</p>
+      <button class="export-btn" style="margin-top:8px;">Descargar Reporte</button>
+    </div>
+  </section>
+  <section style="margin-top:40px;">
+    <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:12px;">Herramientas de Comunicación</h2>
+    <div style="background:#fff;border-radius:8px;padding:18px 24px;box-shadow:0 1px 4px rgba(52,52,52,0.04);">
+      <p>Envía emails masivos a usuarios seleccionados.</p>
+      <input type="text" placeholder="Asunto" style="width:60%;margin-bottom:8px;padding:6px 10px;border-radius:5px;border:1px solid #e5e7eb;"/><br/>
+      <textarea placeholder="Mensaje" style="width:80%;height:60px;padding:6px 10px;border-radius:5px;border:1px solid #e5e7eb;"></textarea><br/>
+      <button class="export-btn" style="margin-top:8px;">Enviar Email</button>
+      <p style="margin-top:10px;font-size:0.97rem;color:#6b7280;">Gestiona plantillas de email desde la sección de configuración.</p>
+    </div>
+  </section>
+  <section class="admin-section">
+    <h2>Gestión de Administradores y Permisos</h2>
+    <p>Administre roles, permisos y vea el registro de auditoría de acciones administrativas.</p>
+    <div style="margin-bottom:12px;">
+      <b>Administradores:</b>
+      <ul style="margin:8px 0 0 0;padding:0;list-style:none;">
+        <li>admin@ucab.edu.ve <span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:5px;font-size:0.95rem;">Superadmin</span></li>
+        <li>soporte@ucab.edu.ve <span style="background:#f59e42;color:#fff;padding:2px 8px;border-radius:5px;font-size:0.95rem;">Soporte</span></li>
+      </ul>
+    </div>
+    <div class="audit-log" id="auditLog">
+      <div>20/06/2025 10:00 - Usuario admin inició sesión</div>
+      <div>20/06/2025 10:05 - Usuario admin exportó datos</div>
+      <div>20/06/2025 10:10 - Usuario admin cambió permisos de usuario</div>
+    </div>
+  </section>
 `;
 
 // --- Render Table View ---
 tableView.innerHTML = `
   <div class="table-section">
+    <div class="filter-bar">
+      <label for="stateFilter">Estado:</label>
+      <select id="stateFilter"><option value="">Todos</option>${STATES.map(s=>`<option value="${s}">${s}</option>`).join('')}</select>
+      <label for="schoolFilter">Colegio:</label>
+      <select id="schoolFilter"><option value="">Todos</option>${SCHOOLS.map(s=>`<option value="${s}">${s}</option>`).join('')}</select>
+      <label for="genderFilter">Género:</label>
+      <select id="genderFilter"><option value="">Todos</option>${GENDERS.map(g=>`<option value="${g}">${g}</option>`).join('')}</select>
+      <label for="heardFilter">¿Cómo supo?:</label>
+      <select id="heardFilter"><option value="">Todos</option>${HEARD_ABOUT_US.map(h=>`<option value="${h}">${h}</option>`).join('')}</select>
+      <button class="export-btn" id="exportBtn">Exportar CSV</button>
+    </div>
     <div class="search-bar">
       <label for="searchInput">Buscar por nombre:</label>
       <input type="text" id="searchInput" placeholder="Ej: Ana Pérez...">
@@ -399,17 +627,25 @@ tableView.innerHTML = `
       <table id="userTable">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Ciudad</th>
-            <th>Estado</th>
-            <th>Género</th>
-            <th>Colegio</th>
-            <th>¿Cómo supo?</th>
+            <th data-sort="name">Nombre</th>
+            <th data-sort="email">Email</th>
+            <th data-sort="city">Ciudad</th>
+            <th data-sort="state">Estado</th>
+            <th data-sort="gender">Género</th>
+            <th data-sort="school">Colegio</th>
+            <th data-sort="heardAbout">¿Cómo supo?</th>
+            <th data-sort="verResultados">Clicks 'Ver Resultados'</th>
+            <th data-sort="timeOnResults">Tiempo en resultados</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
+    </div>
+  </div>
+  <div class="user-details-modal" id="userDetailsModal">
+    <div class="user-details-content" id="userDetailsContent">
+      <!-- User details will be rendered here -->
     </div>
   </div>
 `;
@@ -547,7 +783,7 @@ const metrics = getMetrics(users);
 renderMetrics(metrics);
 renderCharts(users, metrics);
 renderTable(users);
-setupTableSearch();
+setupTableSearchAndFilters();
 showView('dashboard');
 </script>
 </body>

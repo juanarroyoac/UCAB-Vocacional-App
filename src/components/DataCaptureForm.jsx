@@ -55,7 +55,7 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       content: (
         <div className="form-field">
           <label htmlFor="name">Nombre completo</label>
-          <input id="name" name="name" value={formData.name} onChange={handleInputChange} autoFocus maxLength={50} placeholder="Escribe tu nombre" />
+          <input id="name" name="name" value={formData.name} onChange={handleInputChange} autoFocus maxLength={50} placeholder="Escribe tu nombre" autocomplete="name" />
         </div>
       ),
       validationField: 'name',
@@ -107,7 +107,7 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       content: (
         <div className="form-field">
           <label htmlFor="school">Nombre del colegio</label>
-          <input id="school" name="school" value={formData.school} onChange={handleInputChange} maxLength={50} placeholder="Nombre del colegio" />
+          <input id="school" name="school" value={formData.school} onChange={handleInputChange} maxLength={50} placeholder="Nombre del colegio" autocomplete="off" />
         </div>
       ),
       validationField: 'school',
