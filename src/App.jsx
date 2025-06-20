@@ -255,6 +255,7 @@ function AppRoutes() {
   const [showSectionIntro, setShowSectionIntro] = useState(true)
   const [showDetailedResults, setShowDetailedResults] = useState(false)
   const [showLoadingScreen, setShowLoadingScreen] = useState(false)
+  const [progressLoaded, setProgressLoaded] = useState(false)
   const navigate = useNavigate()
 
   const handleStartTest = () => {
@@ -357,6 +358,15 @@ function AppRoutes() {
     } else {
       handleSubmitForAnalysis(newAnswers)
     }
+    // Save immediately to Firestore
+    const sessionId = localStorage.getItem("vocacional-session-id")
+    if (sessionId) {
+      saveTestProgress(sessionId, {
+        answers: newAnswers,
+        userData,
+        currentQuestionIndex: currentQuestionIndex < closedQuestions.length - 1 ? currentQuestionIndex + 1 : currentQuestionIndex,
+      })
+    }
   }
 
   const handleBack = () => setCurrentQuestionIndex((idx) => Math.max(0, idx - 1))
@@ -375,22 +385,22 @@ function AppRoutes() {
   const handleShowDetailedResults = () => setShowDetailedResults(true)
   const handleBackToStory = () => setShowDetailedResults(false)
 
-  // Load progress from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("vocacional-progress")
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved)
-        if (parsed) {
-          if (parsed.answers) setAnswers(parsed.answers)
-          if (parsed.userData) setUserData(parsed.userData)
-          if (typeof parsed.currentQuestionIndex === "number") setCurrentQuestionIndex(parsed.currentQuestionIndex)
-        }
-      } catch (e) {
-        /* ignore */
-      }
-    }
-  }, [])
+  // Remove localStorage progress loading on mount (it overrides Firestore progress)
+  // useEffect(() => {
+  //   const saved = localStorage.getItem("vocacional-progress")
+  //   if (saved) {
+  //     try {
+  //       const parsed = JSON.parse(saved)
+  //       if (parsed) {
+  //         if (parsed.answers) setAnswers(parsed.answers)
+  //         if (parsed.userData) setUserData(parsed.userData)
+  //         if (typeof parsed.currentQuestionIndex === "number") setCurrentQuestionIndex(parsed.currentQuestionIndex)
+  //       }
+  //     } catch (e) {
+  //       /* ignore */
+  //     }
+  //   }
+  // }, [])
 
   // Save progress to localStorage whenever relevant state changes
   useEffect(() => {
@@ -404,25 +414,46 @@ function AppRoutes() {
     )
   }, [answers, userData, currentQuestionIndex])
 
-  // Load progress from Firestore if sessionId in URL
+  // Load progress from Firestore if sessionId in URL and localStorage, and set userData before rendering
   useEffect(() => {
     const path = window.location.pathname;
     const match = path.match(/^\/test\/(.+)$/);
-    if (match) {
-      const sessionId = match[1];
-      localStorage.setItem("vocacional-session-id", sessionId);
-      loadTestProgress(sessionId).then((data) => {
+    const localSessionId = localStorage.getItem("vocacional-session-id");
+    if (match && match[1] === localSessionId) {
+      loadTestProgress(localSessionId).then((data) => {
         if (data) {
-          if (data.answers) setAnswers(data.answers);
           if (data.userData) setUserData(data.userData);
-          if (typeof data.currentQuestionIndex === "number") setCurrentQuestionIndex(data.currentQuestionIndex);
+          if (data.answers) setAnswers(data.answers);
+          if (typeof data.currentQuestionIndex === "number") {
+            setCurrentQuestionIndex(data.currentQuestionIndex);
+            const sectionIdx = getSectionForQuestion(data.currentQuestionIndex);
+            setCurrentSection(sectionIdx);
+            if (sectionIdx !== -1 && data.currentQuestionIndex === sections[sectionIdx].start) {
+              setShowSectionIntro(true);
+            } else {
+              setShowSectionIntro(false);
+            }
+          }
         }
+        setProgressLoaded(true);
       });
+    } else {
+      setProgressLoaded(true);
     }
-  }, [])
+  }, [sections]);
+
+  const isTestRoute = window.location.pathname.startsWith("/test/");
+  const shouldShowLoading = isTestRoute && !userData && !progressLoaded;
+
+  // If on /test/:sessionId and userData is not loaded yet, show loading instead of redirecting
+  // REMOVE EARLY RETURN! Instead, use conditional rendering in the return block below.
+  // if (shouldShowLoading) {
+  //   return <div style={{textAlign:'center',marginTop:'20vh',fontSize:'1.3rem'}}>Cargando tu progreso...</div>;
+  // }
 
   // Save progress to Firestore whenever relevant state changes and sessionId exists
   useEffect(() => {
+    if (!progressLoaded) return; // Prevent saving before progress is loaded
     const sessionId = localStorage.getItem("vocacional-session-id");
     if (sessionId) {
       saveTestProgress(sessionId, {
@@ -431,7 +462,7 @@ function AppRoutes() {
         currentQuestionIndex,
       });
     }
-  }, [answers, userData, currentQuestionIndex]);
+  }, [answers, userData, currentQuestionIndex, progressLoaded]);
 
   // Helper to get section for current question
   const getSectionForQuestion = (qIdx) => {
@@ -449,192 +480,198 @@ function AppRoutes() {
 
   return (
     <>
-      {showResumePrompt && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0,0,0,0.4)",
-            zIndex: 1000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onClick={() => setShowResumePrompt(false)}
-        >
-          <div
-            style={{
-              background: "#fff",
-              padding: 32,
-              borderRadius: 12,
-              boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
-              maxWidth: 350,
-              textAlign: "center",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2>¿Continuar tu test?</h2>
-            <p>Ya tienes un test iniciado. ¿Quieres continuar donde lo dejaste o empezar de nuevo?</p>
-            <button
-              style={{
-                margin: "12px 0",
-                padding: "10px 24px",
-                fontWeight: 700,
-                background: "#003366",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                cursor: "pointer",
-              }}
-              onClick={handleResume}
-            >
-              Continuar donde lo dejé
-            </button>
-            <br />
-            <button
-              style={{
-                padding: "8px 20px",
-                background: "none",
-                color: "#003366",
-                border: "1px solid #003366",
-                borderRadius: 6,
-                cursor: "pointer",
-              }}
-              onClick={handleForceRestart}
-            >
-              Empezar de nuevo
-            </button>
-          </div>
-        </div>
+      {shouldShowLoading && (
+        <div style={{textAlign:'center',marginTop:'20vh',fontSize:'1.3rem'}}>Cargando tu progreso...</div>
       )}
-      <Routes>
-        <Route path="/" element={<UcabHomePage onStartTest={handleStartTest} />} />
-        <Route path="/intro" element={
-          <>
-            <style>{`
-              @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
-              @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
-              .onboarding-header h1, .onboarding-header h2, .onboarding-header h3 {
-                font-family: 'Poppins', 'Arial', sans-serif !important;
-                font-weight: 700 !important;
-                color: #343434 !important;
-                text-transform: uppercase !important;
-              }
-              .onboarding-nav .btn-primary {
-                background: #40b4e5 !important;
-                color: #fff !important;
-                font-family: 'Poppins', 'Arial', sans-serif !important;
-                font-weight: 700 !important;
-                text-transform: uppercase !important;
-                letter-spacing: 1px;
-              }
-              .onboarding-nav .btn-primary:hover:not(:disabled) {
-                background: #199fd9 !important;
-                color: #fff !important;
-              }
-              .onboarding-header, .onboarding-header h1, .onboarding-header h2, .onboarding-header h3, .onboarding-nav .btn-primary, .form-field label {
-                --ucab-blue: #343434;
-              }
-              .form-field label {
-                color: #40b4e5 !important;
-                font-family: 'Poppins', 'Arial', sans-serif !important;
-                font-weight: 700 !important;
-                text-transform: uppercase !important;
-              }
-              .step-description {
-                font-family: 'Open Sans', 'Arial', sans-serif !important;
-                color: #343434 !important;
-                text-transform: none !important;
-              }
-              .onboarding-container, .onboarding-wrapper, .form-field, .form-field input, .form-field select {
-                font-family: 'Poppins', 'Arial', sans-serif !important;
-                color: #343434 !important;
-                text-transform: none !important;
-              }
-              .onboarding-header h1, .onboarding-header h2, .onboarding-header h3, .onboarding-nav .btn-primary {
-                text-transform: uppercase !important;
-              }
-              .progress-dot {
-                background-color: #b6e3f7 !important;
-                border: none !important;
-              }
-              .progress-dot.active {
-                background-color: #40b4e5 !important;
-                box-shadow: 0 0 0 4px #b6e3f7 !important;
-              }
-            `}</style>
-            <DataCaptureForm onOnboardingComplete={handleOnboardingComplete} />
-          </>
-        } />
-        <Route
-          path="/test/:sessionId"
-          element={
-            userData ? (
-              showSectionIntro ? (
-                <SectionIntro
-                  title={sections[currentSection]?.title}
-                  description={sections[currentSection]?.description}
-                  onContinue={() => {
-                    setShowSectionIntro(false)
+      {!shouldShowLoading && (
+        <>
+          {showResumePrompt && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                background: "rgba(0,0,0,0.4)",
+                zIndex: 1000,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={() => setShowResumePrompt(false)}
+            >
+              <div
+                style={{
+                  background: "#fff",
+                  padding: 32,
+                  borderRadius: 12,
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+                  maxWidth: 350,
+                  textAlign: "center",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h2>¿Continuar tu test?</h2>
+                <p>Ya tienes un test iniciado. ¿Quieres continuar donde lo dejaste o empezar de nuevo?</p>
+                <button
+                  style={{
+                    margin: "12px 0",
+                    padding: "10px 24px",
+                    fontWeight: 700,
+                    background: "#003366",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 6,
+                    cursor: "pointer",
                   }}
-                />
-              ) : closedQuestions[currentQuestionIndex] ? (
-                <Question
-                  question={closedQuestions[currentQuestionIndex]}
-                  sectionName={sections[currentSection]?.title}
-                  onAnswer={(qid, val) => {
-                    if (currentQuestionIndex === sections[currentSection]?.end) {
-                      handleAnswer(qid, val)
-                      setCurrentSection((cs) => cs + 1)
-                    } else {
-                      handleAnswer(qid, val)
-                    }
+                  onClick={handleResume}
+                >
+                  Continuar donde lo dejé
+                </button>
+                <br />
+                <button
+                  style={{
+                    padding: "8px 20px",
+                    background: "none",
+                    color: "#003366",
+                    border: "1px solid #003366",
+                    borderRadius: 6,
+                    cursor: "pointer",
                   }}
-                  questionNumber={currentQuestionIndex + 1}
-                  totalQuestions={closedQuestions.length}
-                  onBack={handleBack}
-                />
-              ) : (
-                <div>Cargando...</div>
-              )
-            ) : (
-              <Navigate to="/intro" replace />
-            )
-          }
-        />
-        <Route
-          path="/results"
-          element={
-            results && userData ? (
-              showDetailedResults ? (
-                <DetailedResults
-                  results={results}
-                  user={userData}
-                  onBack={handleBackToStory}
-                  onRestart={handleRestart}
-                />
-              ) : (
-                <ResultsScreen
-                  results={results}
-                  isLoading={isLoading}
-                  onRestart={handleRestart}
-                  user={userData}
-                  onShowDetailed={handleShowDetailedResults}
-                />
-              )
-            ) : (
-              <Navigate to={userData ? "/test" : "/intro"} replace />
-            )
-          }
-        />
-        <Route path="/acerca" element={<AboutTest />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
-      {showLoadingScreen && (
-        <LoadingScreen />
+                  onClick={handleForceRestart}
+                >
+                  Empezar de nuevo
+                </button>
+              </div>
+            </div>
+          )}
+          <Routes>
+            <Route path="/" element={<UcabHomePage onStartTest={handleStartTest} />} />
+            <Route path="/intro" element={
+              <>
+                <style>{`
+                  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+                  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+                  .onboarding-header h1, .onboarding-header h2, .onboarding-header h3 {
+                    font-family: 'Poppins', 'Arial', sans-serif !important;
+                    font-weight: 700 !important;
+                    color: #343434 !important;
+                    text-transform: uppercase !important;
+                  }
+                  .onboarding-nav .btn-primary {
+                    background: #40b4e5 !important;
+                    color: #fff !important;
+                    font-family: 'Poppins', 'Arial', sans-serif !important;
+                    font-weight: 700 !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 1px;
+                  }
+                  .onboarding-nav .btn-primary:hover:not(:disabled) {
+                    background: #199fd9 !important;
+                    color: #fff !important;
+                  }
+                  .onboarding-header, .onboarding-header h1, .onboarding-header h2, .onboarding-header h3, .onboarding-nav .btn-primary, .form-field label {
+                    --ucab-blue: #343434;
+                  }
+                  .form-field label {
+                    color: #40b4e5 !important;
+                    font-family: 'Poppins', 'Arial', sans-serif !important;
+                    font-weight: 700 !important;
+                    text-transform: uppercase !important;
+                  }
+                  .step-description {
+                    font-family: 'Open Sans', 'Arial', sans-serif !important;
+                    color: #343434 !important;
+                    text-transform: none !important;
+                  }
+                  .onboarding-container, .onboarding-wrapper, .form-field, .form-field input, .form-field select {
+                    font-family: 'Poppins', 'Arial', sans-serif !important;
+                    color: #343434 !important;
+                    text-transform: none !important;
+                  }
+                  .onboarding-header h1, .onboarding-header h2, .onboarding-header h3, .onboarding-nav .btn-primary {
+                    text-transform: uppercase !important;
+                  }
+                  .progress-dot {
+                    background-color: #b6e3f7 !important;
+                    border: none !important;
+                  }
+                  .progress-dot.active {
+                    background-color: #40b4e5 !important;
+                    box-shadow: 0 0 0 4px #b6e3f7 !important;
+                  }
+                `}</style>
+                <DataCaptureForm onOnboardingComplete={handleOnboardingComplete} />
+              </>
+            } />
+            <Route
+              path="/test/:sessionId"
+              element={
+                userData &&
+                localStorage.getItem("vocacional-session-id") === window.location.pathname.split("/test/")[1] ? (
+                  showSectionIntro ? (
+                    <SectionIntro
+                      title={sections[currentSection]?.title}
+                      description={sections[currentSection]?.description}
+                      onContinue={() => {
+                        setShowSectionIntro(false)
+                      }}
+                    />
+                  ) : closedQuestions[currentQuestionIndex] ? (
+                    <Question
+                      question={closedQuestions[currentQuestionIndex]}
+                      sectionName={sections[currentSection]?.title}
+                      onAnswer={(qid, val) => {
+                        if (currentQuestionIndex === sections[currentSection]?.end) {
+                          handleAnswer(qid, val)
+                          setCurrentSection((cs) => cs + 1)
+                        } else {
+                          handleAnswer(qid, val)
+                        }
+                      }}
+                      questionNumber={currentQuestionIndex + 1}
+                      totalQuestions={closedQuestions.length}
+                      onBack={handleBack}
+                    />
+                  ) : (
+                    <div>Cargando...</div>
+                  )
+                ) : (
+                  <Navigate to="/intro" replace />
+                )
+              }
+            />
+            <Route
+              path="/results"
+              element={
+                results && userData ? (
+                  showDetailedResults ? (
+                    <DetailedResults
+                      results={results}
+                      user={userData}
+                      onBack={handleBackToStory}
+                      onRestart={handleRestart}
+                    />
+                  ) : (
+                    <ResultsScreen
+                      results={results}
+                      isLoading={isLoading}
+                      onRestart={handleRestart}
+                      user={userData}
+                      onShowDetailed={handleShowDetailedResults}
+                    />
+                  )
+                ) : (
+                  <Navigate to={userData ? "/test" : "/intro"} replace />
+                )
+              }
+            />
+            <Route path="/acerca" element={<AboutTest />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+          {showLoadingScreen && <LoadingScreen />}
+        </>
       )}
     </>
   )
