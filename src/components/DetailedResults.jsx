@@ -4,8 +4,9 @@ import ucabCareers from "../ucab_carreras.json"
 import { useState, useEffect } from "react"
 
 function DetailedResults({ results, user, onBack, onRestart }) {
-  // Add animation hooks
+  const [activeSection, setActiveSection] = useState('personality')
   const [isVisible, setIsVisible] = useState({})
+  const [selectedCareer, setSelectedCareer] = useState(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,9 +38,22 @@ function DetailedResults({ results, user, onBack, onRestart }) {
 
   const enrichedCareers = results?.careers?.slice(0, 3).map(enrichCareer) || []
 
-  // Share function (placeholder)
-  const handleShare = () => {
-    alert("¡Función de compartir próximamente!")
+  // Share function
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Mi Perfil Vocacional UCAB 2024",
+          text: `🎓 ¡Descubrí mi arquetipo vocacional! Soy: ${results.personality?.name}. ¿Cuál será el tuyo?`,
+          url: window.location.href,
+        })
+      } catch (err) {
+        console.log("Error sharing:", err)
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+      alert("¡Enlace copiado! Compártelo con tus amigos 🎉")
+    }
   }
 
   if (!results) {
@@ -55,109 +69,159 @@ function DetailedResults({ results, user, onBack, onRestart }) {
     )
   }
 
-  // Enhanced career cards with scores
-  const renderCareerCard = (career, index) => (
-    <div
-      key={index}
-      className={`career-card ${isVisible[`career-${index}`] ? "animate-in" : ""}`}
-      id={`career-${index}`}
-      data-animate
-      style={{ "--delay": `${index * 0.1}s` }}
-    >
-      <div className="career-rank">#{career.rank}</div>
-      <h3>{career.name}</h3>
-      <div className="career-faculty">{career.facultad}</div>
-      <div className="career-story">{career.story}</div>
-
-      {/* Add compatibility score */}
-      <div className="career-score">
-        <div className="score-label">Compatibilidad</div>
-        <div className="score-bar">
-          <div className="score-fill" style={{ "--score-percentage": `${career.compatibility || 85}%` }} />
-        </div>
-        <div className="score-text">{career.compatibility || 85}%</div>
-      </div>
-
-      {career.url && (
-        <a href={career.url} target="_blank" rel="noopener noreferrer" className="career-link">
-          Ver carrera en UCAB
-        </a>
-      )}
-    </div>
-  )
-
   return (
     <div className="detailed-results-container">
-      {/* Header */}
-      <header className="detailed-header">
-        <button onClick={onBack} className="back-button">
-          ← Volver a resultados
-        </button>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_ucab_original.svg/1200px-Logo_ucab_original.svg.png"
-          alt="UCAB Logo"
-          className="header-logo"
-        />
-      </header>
+      {/* Navigation */}
+      <nav className="detailed-nav">
+        <div className="nav-bar-left">
+          <button onClick={onBack} className="nav-back-arrow" aria-label="Volver">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 24L10 16L18 8" stroke="#343434" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div className="nav-container">
+          {[
+            { id: 'personality', label: 'Arquetipo', icon: '🌟' },
+            { id: 'qualities', label: 'Cualidades', icon: '💎' },
+            { id: 'careers', label: 'Carreras', icon: '🎓' },
+          ].map((section) => (
+            <button
+              key={section.id}
+              className={`nav-button ${activeSection === section.id ? 'active' : ''}`}
+              onClick={() => setActiveSection(section.id)}
+            >
+              <span className="nav-icon">{section.icon}</span>
+              <span className="nav-label">{section.label}</span>
+            </button>
+          ))}
+        </div>
+        <div className="nav-bar-right">
+          <img
+            src="/OrientaUcab.png"
+            alt="OrientaUCAB Logo"
+            className="header-logo"
+          />
+        </div>
+      </nav>
 
       {/* Main Content */}
-      <main className="detailed-content">
-        <div className="results-hero">
-          <h1>¡Hola {user?.name || "Estudiante"}!</h1>
-          <p>Aquí tienes el análisis completo de tu perfil vocacional</p>
-        </div>
-
+      <main className="detailed-main">
+        {/* Overview Section */}
+        {/* Removed overview section as requested */}
         {/* Personality Section */}
-        {results.personality && (
-          <section className="personality-section">
+        {activeSection === 'personality' && (
+          <section className="content-section personality-section" id="personality" data-animate>
             <div className="section-header">
               <h2>Tu Arquetipo Vocacional</h2>
+              <p>Descubre el patrón único que define tu perfil profesional</p>
             </div>
-            <div className="personality-card">
-              <h3>{results.personality.name}</h3>
-              <p>{results.personality.description}</p>
+
+            <div className="personality-content">
+              <div className="personality-hero">
+                <h3 className="personality-main-title">{results.personality?.name}</h3>
+                <p className="personality-description">{results.personality?.description}</p>
+              </div>
+
+              <div className="personality-details">
+                <div className="detail-item">
+                  <h4>¿Qué significa este arquetipo?</h4>
+                  <p>{results.personality?.meaning}</p>
+                </div>
+                
+                <div className="detail-item">
+                  <h4>Características principales</h4>
+                  <ul>
+                    {results.personality?.characteristics?.map((char, index) => (
+                      <li key={index}>{char}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           </section>
         )}
 
         {/* Qualities Section */}
-        {results.qualities && (
-          <section className="qualities-section">
+        {activeSection === 'qualities' && (
+          <section className="content-section qualities-section" id="qualities" data-animate>
             <div className="section-header">
-              <h2>Tus 5 Cualidades Destacadas</h2>
+              <h2>Tus Cualidades Destacadas</h2>
+              <p>Las fortalezas que te hacen único en el mundo profesional</p>
             </div>
-            <div className="qualities-grid">
-              {results.qualities.map((quality, i) => (
-                <div key={i} className="quality-card">
-                  <div className="quality-number">{i + 1}</div>
-                  <p>{quality}</p>
-                </div>
-              ))}
+
+            <div className="qualities-content">
+              <div className="qualities-grid">
+                {results.qualities?.map((quality, index) => (
+                  <div key={index} className="quality-item" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="quality-number">{index + 1}</div>
+                    <div className="quality-content">
+                      <h4>{quality.name}</h4>
+                      <p>{quality.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="qualities-summary" style={{ marginTop: '64px' }}>
+                <h3>¿Por qué estas cualidades son importantes?</h3>
+                <p>Estas cualidades fueron identificadas a partir de tus respuestas en el test vocacional. Representan las fortalezas que te distinguen y que serán fundamentales para tu éxito en las carreras recomendadas.</p>
+              </div>
             </div>
           </section>
         )}
 
         {/* Careers Section */}
-        <section className="careers-section">
-          <div className="section-header">
-            <h2>Tus Carreras Recomendadas</h2>
-          </div>
-          <div className="careers-grid">{enrichedCareers.map((career, i) => renderCareerCard(career, i))}</div>
-        </section>
+        {activeSection === 'careers' && (
+          <section className="content-section careers-section" id="careers" data-animate>
+            <div className="section-header">
+              <h2>Tus Carreras Recomendadas</h2>
+              <p>Las mejores opciones académicas alineadas con tu perfil</p>
+            </div>
 
-        {/* Actions Section */}
-        <section className="actions-section">
-          <button onClick={handleShare} className="share-button">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" />
-            </svg>
-            Compartir mis resultados
-          </button>
-          <button onClick={onRestart} className="restart-button">
-            Hacer test de nuevo
-          </button>
-        </section>
+            <div className="careers-content">
+              <div className="careers-grid">
+                {enrichedCareers.map((career, index) => (
+                  <div 
+                    key={index} 
+                    className={`career-item ${selectedCareer === index ? 'selected' : ''}`}
+                    onClick={() => setSelectedCareer(selectedCareer === index ? null : index)}
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    <div className="career-header">
+                      <div className="career-rank">#{index + 1}</div>
+                      <div className="career-info">
+                        <h3>{career.name}</h3>
+                        <span className="career-faculty">{career.facultad}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="career-body">
+                      <p className="career-explanation">{career.explanation}</p>
+                      
+                      {selectedCareer === index && (
+                        <div className="career-details">
+                          <a href={career.url} target="_blank" rel="noopener noreferrer" className="career-link">
+                            Ver Pénsum
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="careers-summary">
+                <h3>¿Cómo se seleccionaron estas carreras?</h3>
+                <p>Las carreras recomendadas se basan en un análisis de tus respuestas, alineando tus intereses y aptitudes con los perfiles profesionales de la oferta académica de la UCAB.</p>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
+
+      {/* Footer Actions */}
+      {/* Footer removed as requested */}
     </div>
   )
 }

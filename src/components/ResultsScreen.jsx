@@ -3,171 +3,162 @@ import "./ResultsScreen.css"
 import { useState, useEffect, useMemo, useRef } from "react"
 import ucabCareers from "../ucab_carreras.json"
 
-const AUTO_ADVANCE_MS = 8000 // Slower slides - 8 seconds
-
-// --- LOADING SPINNER ---
-const LoadingSpinner = () => (
-  <div className="results-story-container loading">
-    <div className="loading-content">
-      <div className="spinner"></div>
-      <div className="loader-text">ANALIZANDO TU VOCACIÓN...</div>
+// Enhanced Loading Component
+const EnhancedLoading = () => (
+  <div className="enhanced-loading">
+    <div className="loading-animation">
+      <div className="loading-spinner">
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+      </div>
+      <div className="loading-text">
+        <h2>Preparando tu experiencia personalizada</h2>
+        <p>Analizando tu perfil vocacional único...</p>
+      </div>
     </div>
   </div>
 )
 
-// --- ERROR DISPLAY ---
+// Error Display Component
 const ErrorDisplay = ({ onRestart }) => (
-  <div className="results-story-container error">
-    <div className="slide-content">
-      <h1 className="slide-title">ERROR EN LOS RESULTADOS</h1>
-      <p className="slide-description">
-        No se pudieron generar las diapositivas porque los datos recibidos estaban incompletos.
-        <br />
-        Por favor, asegúrate de que el análisis vocacional se completó correctamente.
-      </p>
-      <button className="restart-button" onClick={onRestart}>
-        VOLVER A EMPEZAR
+  <div className="error-display">
+    <div className="error-content">
+      <div className="error-icon">⚠️</div>
+      <h1>Algo salió mal</h1>
+      <p>No pudimos procesar tu análisis vocacional. Vamos a intentarlo de nuevo.</p>
+      <button className="error-button" onClick={onRestart}>
+        Reintentar Análisis
       </button>
     </div>
   </div>
 )
 
-// --- MAIN RESULTS SCREEN ---
+// Main Results Screen Component
 function ResultsScreen({ results, isLoading, onRestart, user, onShowDetailed }) {
-  const [activeSlide, setActiveSlide] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const timerRef = useRef()
 
-  // Add touch gesture handling
-  const [touchStart, setTouchStart] = useState(null)
-  const [touchEnd, setTouchEnd] = useState(null)
-
-  // Handle initial loading state
-  useEffect(() => {
-    if (!isLoading && results) {
-      // Add a small delay to ensure smooth transition
-      const timer = setTimeout(() => {
-        setIsLoaded(true)
-      }, 100)
-      return () => clearTimeout(timer)
-    }
-  }, [isLoading, results])
-
-  const handleTouchStart = (e) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > 50
-    const isRightSwipe = distance < -50
-
-    if (isLeftSwipe) {
-      goToNextSlide()
-    }
-    if (isRightSwipe) {
-      goToPrevSlide()
-    }
-  }
-
-  // Helper to enrich careers with URL and faculty
+  // Enrich career data with UCAB info
   const enrichCareer = (career) => {
     const found = ucabCareers.find((c) => c.carrera === career.name)
     return found ? { ...career, url: found.url, facultad: found.facultad } : { ...career }
   }
 
-  // Build slides array from results
+  // Helper function to get first name
+  const getFirstName = (fullName) => {
+    return fullName ? fullName.split(' ')[0] : "Estudiante"
+  }
+
+  const enrichedCareers = useMemo(() => {
+    return results?.careers?.slice(0, 3).map(enrichCareer) || []
+  }, [results])
+
+  // Build slides array
   const slides = useMemo(() => {
     if (!results) return []
     const arr = []
 
     // Welcome slide
     arr.push({
-      type: "welcome",
-      content: { name: user?.name || "Estudiante" },
+      type: 'welcome',
+      content: { name: getFirstName(user?.name) }
     })
 
     // Personality slide
     if (results.personality) {
       arr.push({
-        type: "personality",
-        content: results.personality,
+        type: 'personality',
+        content: results.personality
       })
     }
 
     // Qualities slide
     if (Array.isArray(results.qualities)) {
       arr.push({
-        type: "qualities",
-        content: results.qualities,
+        type: 'qualities',
+        content: results.qualities
       })
     }
 
-    // Individual career slides (simplified)
+    // Individual career slides
     if (Array.isArray(results.careers)) {
       for (let i = 0; i < Math.min(3, results.careers.length); i++) {
         arr.push({
-          type: "career",
-          content: enrichCareer(results.careers[i]),
+          type: 'career',
+          content: enrichCareer(results.careers[i])
         })
       }
 
-      // Final ranking slide
+      // Final summary slide
       arr.push({
-        type: "ranking",
-        content: results.careers.slice(0, 3).map(enrichCareer),
+        type: 'summary',
+        content: enrichedCareers
       })
     }
 
     return arr
-  }, [results, user])
+  }, [results, user, enrichedCareers])
 
-  // Auto-advance logic with smooth transitions
+  const getSlideDuration = (slideType) => {
+    switch (slideType) {
+      case "personality":
+        return 15000 // 15 seconds
+      case "qualities":
+        return 20000 // 20 seconds
+      case "career":
+        return 15000 // 15 seconds
+      default:
+        return 5000 // 5 seconds for welcome and others
+    }
+  }
+
+  // Auto-advance logic
   useEffect(() => {
-    if (isPaused || activeSlide === slides.length - 1 || isTransitioning) return
+    if (isPaused || currentSlide === slides.length - 1 || isTransitioning) return
+
+    const duration = getSlideDuration(slides[currentSlide].type)
 
     timerRef.current = setTimeout(() => {
       goToNextSlide()
-    }, AUTO_ADVANCE_MS)
+    }, duration) // dynamic duration
 
     return () => clearTimeout(timerRef.current)
-  }, [activeSlide, isPaused, slides.length, isTransitioning])
+  }, [currentSlide, isPaused, slides.length, isTransitioning])
 
   // Navigation functions
   const goToNextSlide = () => {
-    if (activeSlide >= slides.length - 1 || isTransitioning) return
+    if (currentSlide >= slides.length - 1 || isTransitioning) return
     setIsTransitioning(true)
     setTimeout(() => {
-      setActiveSlide((prev) => prev + 1)
+      setCurrentSlide(prev => prev + 1)
       setIsTransitioning(false)
-    }, 600)
+    }, 300)
   }
 
   const goToPrevSlide = () => {
-    if (activeSlide <= 0 || isTransitioning) return
+    if (currentSlide <= 0 || isTransitioning) return
     setIsTransitioning(true)
     setTimeout(() => {
-      setActiveSlide((prev) => prev - 1)
+      setCurrentSlide(prev => prev - 1)
       setIsTransitioning(false)
-    }, 600)
+    }, 300)
   }
 
-  // Handle click/tap navigation
-  const handleInteraction = (e) => {
-    if (e.target.closest("a,button,.pause-button")) return
-    const bounds = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX
-    if (x < bounds.left + bounds.width / 2) {
+  // Handle screen clicks for navigation
+  const handleScreenClick = (e) => {
+    // Don't navigate if clicking on interactive elements
+    if (e.target.closest('button, a, .career-card, .quality-card')) return
+    
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const clickPosition = x / rect.width
+
+    if (clickPosition < 0.3) {
       goToPrevSlide()
-    } else {
+    } else if (clickPosition > 0.7) {
       goToNextSlide()
     }
   }
@@ -175,152 +166,169 @@ function ResultsScreen({ results, isLoading, onRestart, user, onShowDetailed }) 
   // Toggle pause
   const togglePause = (e) => {
     e.stopPropagation()
-    setIsPaused((p) => !p)
+    setIsPaused(prev => !prev)
   }
 
-  // Enhanced share functionality
+  // Share functionality
   const handleShare = async (e) => {
     e.stopPropagation()
-
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Mis Resultados Vocacionales UCAB",
-          text: `¡Descubrí mi perfil vocacional! Mi arquetipo es: ${results.personality?.name}`,
+          title: "Mi Perfil Vocacional UCAB 2024",
+          text: `🎓 ¡Descubrí mi arquetipo vocacional! Soy: ${results.personality?.name}. ¿Cuál será el tuyo?`,
           url: window.location.href,
         })
       } catch (err) {
         console.log("Error sharing:", err)
       }
     } else {
-      // Fallback to clipboard
       navigator.clipboard.writeText(window.location.href)
-      alert("¡Enlace copiado al portapapeles!")
+      alert("¡Enlace copiado! Compártelo con tus amigos 🎉")
     }
   }
 
-  // Loading or error states
-  if (isLoading) return <LoadingSpinner />
-  if (!results || slides.length === 0) return <ErrorDisplay onRestart={onRestart} />
+  // Loading and error states
+  if (isLoading) return <EnhancedLoading />
+  if (!results) return <ErrorDisplay onRestart={onRestart} />
 
-  // Progress bar segments
-  const progressSegments = slides.map((_, idx) => (
-    <div key={idx} className="progress-segment">
-      <div
-        className={`progress-fill ${idx < activeSlide ? "visited" : ""} ${
-          idx === activeSlide && !isPaused && !isTransitioning ? "active" : ""
-        }`}
-        style={{ animationDuration: `${AUTO_ADVANCE_MS}ms` }}
+  const currentSlideData = slides[currentSlide]
+
+  return (
+    <div className="results-story-container" onClick={handleScreenClick}>
+      {/* UCAB Logo */}
+      <img
+        src="/Logo_UCAB_blanco_.png"
+        alt="UCAB Logo"
+        className="ucab-logo"
       />
+
+      {/* Progress Bar */}
+      <div className="progress-bar">
+        {slides.map((_, index) => (
+          <div key={index} className="progress-segment">
+            <div
+              className={`progress-fill ${index < currentSlide ? 'completed' : ''} ${
+                index === currentSlide && !isPaused ? 'active' : ''
+              }`}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Pause Button */}
+      <button className="pause-button" onClick={togglePause}>
+        {/* White pause/play icon using SVG */}
+        {isPaused ? (
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="6,4 20,12 6,20" fill="white" />
+          </svg>
+        ) : (
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="4" width="4" height="16" fill="white"/>
+            <rect x="14" y="4" width="4" height="16" fill="white"/>
+          </svg>
+        )}
+      </button>
+
+      {/* Main Content */}
+      <div className="slide-container">
+        {currentSlideData && (
+          <div className={`slide ${isTransitioning ? 'transitioning' : ''}`}>
+            {renderSlide(currentSlideData)}
+          </div>
+        )}
+      </div>
+
+      {/* Navigation Hints */}
+      <div className="navigation-hints">
+        <div className="hint left-hint">← Anterior</div>
+        <div className="hint right-hint">Siguiente →</div>
+      </div>
     </div>
-  ))
+  )
 
   // Render individual slides
-  const renderSlide = (slide, idx) => {
-    const slideClass = `slide slide-${slide.type} ${idx === activeSlide ? "active" : ""} ${
-      isTransitioning ? "transitioning" : ""
-    }`
-
+  function renderSlide(slide) {
     switch (slide.type) {
-      case "welcome":
+      case 'welcome':
         return (
-          <div className={slideClass} style={{ background: "linear-gradient(135deg, #00ff88 0%, #00cc6a 100%)" }}>
-            <div className="slide-content">
-              <div className="fun-shape shape-1"></div>
-              <div className="fun-shape shape-2"></div>
-              <h1 className="slide-title">¡HOLA {slide.content.name.toUpperCase()}!</h1>
-              <p className="slide-description">
-                Tu test vocacional está listo. Descubre qué carrera es perfecta para ti.
-              </p>
+          <div className="slide-content welcome-slide">
+            <div className="welcome-icon">🎓</div>
+            <h1>¡Hola {slide.content.name}!</h1>
+            <p>Tu análisis vocacional está listo. Prepárate para descubrir tu futuro profesional.</p>
+          </div>
+        )
+
+      case 'personality':
+        return (
+          <div className="slide-content personality-slide">
+            <div className="personality-header">
+              <h2>Tu Arquetipo Vocacional</h2>
+            </div>
+            <div className="personality-card">
+              <h3>{slide.content.name}</h3>
+              <p>{slide.content.description}</p>
             </div>
           </div>
         )
 
-      case "personality":
+      case 'qualities':
         return (
-          <div className={slideClass} style={{ background: "linear-gradient(135deg, #003366 0%, #0056b3 100%)" }}>
-            <div className="slide-content">
-              <div className="fun-shape shape-3"></div>
-              <div className="fun-shape shape-4"></div>
-              <p className="slide-supertitle">TU ARQUETIPO VOCACIONAL</p>
-              <h1 className="slide-title">{slide.content.name.toUpperCase()}</h1>
-              <p className="slide-description">{slide.content.description}</p>
+          <div className="slide-content qualities-slide">
+            <h2>Tus Cualidades Destacadas</h2>
+            <div className="qualities-grid">
+              {slide.content.map((quality, index) => (
+                <div key={index} className="quality-card" style={{ animationDelay: `${index * 0.2}s` }}>
+                  <div className="quality-number">{index + 1}</div>
+                  <p>{quality.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         )
 
-      case "qualities":
+      case 'career':
         return (
-          <div className={slideClass} style={{ background: "linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)" }}>
-            <div className="slide-content">
-              <div className="fun-shape shape-5"></div>
-              <div className="fun-shape shape-6"></div>
-              <p className="slide-supertitle">TUS 5 CUALIDADES DESTACADAS</p>
-              <div className="qualities-list">
-                {slide.content.map((quality, i) => (
-                  <div key={i} className="quality-item">
-                    {quality}
-                  </div>
-                ))}
-              </div>
+          <div className="slide-content career-slide">
+            <div className="career-header">
+              <h2>Tu Recomendación #{slide.content.rank}</h2>
+            </div>
+            <div className="career-card">
+              <div className="career-rank">#{slide.content.rank}</div>
+              <h3>{slide.content.name}</h3>
+              <p className="career-explanation">{slide.content.explanation}</p>
+              {slide.content.url && (
+                <a href={slide.content.url} target="_blank" rel="noopener noreferrer" className="career-link">
+                  Ver más información
+                </a>
+              )}
             </div>
           </div>
         )
 
-      case "career":
-        const gradients = [
-          "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-          "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-        ]
+      case 'summary':
         return (
-          <div className={slideClass} style={{ background: gradients[(slide.content.rank - 1) % 3] }}>
-            <div className="slide-content">
-              <div className="fun-shape shape-7"></div>
-              <div className="fun-shape shape-8"></div>
-              <p className="slide-supertitle">RECOMENDACIÓN #{slide.content.rank}</p>
-              <h1 className="slide-title">{slide.content.name.toUpperCase()}</h1>
-              <div className="career-story">{slide.content.story}</div>
-              {slide.content.facultad && <div className="career-faculty">Facultad: {slide.content.facultad}</div>}
+          <div className="slide-content summary-slide">
+            <h2 className="summary-heading">¡TU FUTURO TE ESPERA!</h2>
+            <p className="summary-subtitle">Has completado tu análisis vocacional personalizado</p>
+            <div className="summary-cards">
+              {slide.content.map((career, index) => (
+                <div key={index} className="summary-card">
+                  <div className="summary-rank">#{index + 1}</div>
+                  <h3 className="summary-career-title">{career.name}</h3>
+                </div>
+              ))}
             </div>
-          </div>
-        )
-
-      case "ranking":
-        return (
-          <div className={slideClass} style={{ background: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)" }}>
-            <div className="slide-content">
-              <div className="fun-shape shape-9"></div>
-              <div className="fun-shape shape-10"></div>
-              <h1 className="slide-title">TU RANKING PERSONALIZADO</h1>
-              <div className="ranking-podium">
-                {slide.content.map((career, i) => (
-                  <div key={i} className="podium-item">
-                    <div className="podium-rank">#{career.rank}</div>
-                    <div className="podium-info">
-                      <h3>{career.name}</h3>
-                      <p className="podium-faculty">{career.facultad}</p>
-                      {career.url && (
-                        <a href={career.url} target="_blank" rel="noopener noreferrer" className="podium-link">
-                          VER CARRERA
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="ranking-buttons">
-                <button className="restart-button" onClick={onRestart}>
-                  HACER TEST DE NUEVO
-                </button>
-                <button className="share-button" onClick={handleShare} aria-label="Compartir resultados">
-                  {shareIcon}
-                  <span>COMPARTIR MIS RESULTADOS</span>
-                </button>
-                <button className="details-button" onClick={onShowDetailed}>
-                  VER RESULTADOS DETALLADOS
-                </button>
-              </div>
+            <div className="summary-actions">
+              <button className="summary-cta-button summary-details-button" onClick={onShowDetailed}>
+                <span>📊</span>
+                <span>VER ANÁLISIS COMPLETO</span>
+              </button>
+              <button className="summary-cta-button summary-restart-button" onClick={onRestart}>
+                <span>🔄</span>
+                <span>HACER TEST NUEVAMENTE</span>
+              </button>
             </div>
           </div>
         )
@@ -329,52 +337,6 @@ function ResultsScreen({ results, isLoading, onRestart, user, onShowDetailed }) 
         return null
     }
   }
-
-  // Icons
-  const pauseIcon = (
-    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <rect x="6" y="4" width="4" height="16" rx="2" />
-      <rect x="14" y="4" width="4" height="16" rx="2" />
-    </svg>
-  )
-  const playIcon = (
-    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <polygon points="5,3 19,12 5,21" />
-    </svg>
-  )
-  const shareIcon = (
-    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" />
-    </svg>
-  )
-
-  return (
-    <div
-      className={`results-story-container ${isLoaded ? 'loaded' : ''}`}
-      onClick={handleInteraction}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* UCAB Logo */}
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_ucab_original.svg/1200px-Logo_ucab_original.svg.png"
-        alt="UCAB Logo"
-        className="ucab-logo"
-      />
-
-      {/* Progress Bar */}
-      <div className="progress-bar">{progressSegments}</div>
-
-      {/* Pause Button */}
-      <button className="pause-button" onClick={togglePause} aria-label={isPaused ? "Reanudar" : "Pausar"}>
-        {isPaused ? playIcon : pauseIcon}
-      </button>
-
-      {/* Slides */}
-      {slides.map((slide, idx) => renderSlide(slide, idx))}
-    </div>
-  )
 }
 
 export default ResultsScreen

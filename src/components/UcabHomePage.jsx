@@ -27,21 +27,15 @@ const UcabHomePage = ({ onStartTest }) => {
         .ucab-home-page-wrapper {
           width: 100%;
           min-height: 100vh;
-          background: linear-gradient(20deg, #ffffff 0%, #b6e3f7 10%, #1a6bb8 20%);
+          /* Gradient: azul 40B4E5, azul fuerte a la derecha, azul claro intermedio, luego blanco */
+          background: linear-gradient(320deg, #40B4E5 10%, #0090c5 65%, #b6e3f7 85%, #ffffff 110%);
           display: flex;
           flex-direction: column;
           font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
           position: relative;
         }
-        
         .ucab-home-page-wrapper::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          background: linear-gradient(20deg, #ffffff 0%, #b6e3f7 85%,rgb(129, 194, 255) 20%);
-          z-index: 1;
+          content: none;
         }
 
         .ucab-home-page-wrapper::after {
@@ -81,11 +75,13 @@ const UcabHomePage = ({ onStartTest }) => {
         }
         
         .logo-text-ucab {
-          font-weight: 700;
-          font-size: 26px;
-          color: #003366;
-          letter-spacing: -0.5px;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
+          display: none;
+        }
+        .ucab-header-logo {
+          height: 44px;
+          width: auto;
+          margin-left: 8px;
+          filter: drop-shadow(0 0 8px rgba(255,255,255,0.85));
         }
         
         .ucab-main-content {
@@ -100,7 +96,7 @@ const UcabHomePage = ({ onStartTest }) => {
         
         .left-panel .main-image {
           width: 100%;
-          max-width: 320px;
+          max-width: 540px;
           height: auto;
           border-radius: 16px;
           object-fit: cover;
@@ -113,15 +109,15 @@ const UcabHomePage = ({ onStartTest }) => {
         }
         
         .right-panel h1 {
-          font-size: clamp(3.9rem, 7.8vw, 5.7rem);
-          font-family: 'Impact', 'Arial Black', sans-serif !important;
-          font-weight: normal;
+          font-size: 3.9rem !important;
+          line-height: 1.05;
+          font-family: 'Poppins', 'Arial', sans-serif !important;
+          font-weight: 700 !important;
           color: #fff !important;
           margin: 0 0 10px 0;
-          line-height: 1.05;
-          letter-spacing: -1.5px;
+          letter-spacing: 0.1px !important;
           position: relative;
-          top: -20px;
+          top: 0;
           text-shadow: 2px 2px 8px rgba(30, 60, 120, 0.35), 0 2px 16px rgba(0,0,0,0.18);
         }
         
@@ -149,7 +145,7 @@ const UcabHomePage = ({ onStartTest }) => {
           transition: all 0.2s ease-in-out;
           position: relative;
           top: -8px;
-          font-family: 'Inter', 'Helvetica', 'Arimo', 'Arial', sans-serif !important;
+          font-family: 'Open Sans', 'Arial', sans-serif !important;
           box-shadow: 0 2px 12px rgba(33,147,176,0.10);
         }
         
@@ -194,7 +190,7 @@ const UcabHomePage = ({ onStartTest }) => {
           background: #fff !important;
           border-top: 1px solid #e5e7eb;
           border-bottom: 1px solid #e5e7eb;
-          padding: 27px 0 60px 0;
+          padding: 27px 0 100px 0; /* Increased bottom padding */
         }
         .steps-row {
           display: flex;
@@ -256,6 +252,7 @@ const UcabHomePage = ({ onStartTest }) => {
           .step-inline {
             max-width: 100%;
           }
+          .left-panel .main-image { max-width: 440px; }
         }
 
         /* Testimonials section */
@@ -475,7 +472,7 @@ const UcabHomePage = ({ onStartTest }) => {
           .ucab-home-page { padding: 0 24px; }
           .section-container { padding: 0 12px; }
           .modern-section { padding: 8px 0; }
-          .how-it-works-section { padding-bottom: 44px !important; }
+          .how-it-works-section { padding-bottom: 80px !important; } /* Increased bottom padding for mobile */
           .steps-row {
             display: block !important;
             gap: 0 !important;
@@ -502,6 +499,30 @@ const UcabHomePage = ({ onStartTest }) => {
           
           .footer-links-new {
             gap: 20px;
+          }
+
+          .ucab-home-page-wrapper {
+            /* Mobile-specific gradient: strong blue to light blue to white for better vertical visibility */
+            background: linear-gradient(180deg, #40B4E5 0%, #b6e3f7 70%, #ffffff 100%);
+          }
+        }
+
+        @media (max-width: 600px) {
+          .right-panel h1 {
+            font-size: 3.6rem !important;
+            line-height: 1.08;
+            letter-spacing: 0.3px !important;
+          }
+          .ucab-header-logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.95));
+          }
+          .right-panel {
+            align-items: center !important;
+            text-align: center;
+            justify-content: center !important;
           }
         }
 
@@ -569,7 +590,7 @@ const UcabHomePage = ({ onStartTest }) => {
           width: 100%;
           height: 110px;
           object-fit: cover;
-          border-radius: 8px;
+          border-radius: 0 !important;
           margin-bottom: 12px;
         }
         .canal-card-title {
@@ -616,26 +637,113 @@ const UcabHomePage = ({ onStartTest }) => {
             width: 100%;
           }
         }
+
+        .ucab-hero-title {
+          font-family: 'Poppins', 'Arial', sans-serif !important;
+          font-weight: 600 !important;
+          text-transform: uppercase;
+          font-size: 1.1rem;
+          line-height: 1.1;
+          color: #fff;
+          letter-spacing: 8px;
+          margin-bottom: 16px;
+          text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+
+        .ver-carreras-btn {
+          background: #f6fafd;
+          border: 1px solid #e5e7eb;
+          color: #003366;
+          text-decoration: none;
+          padding: 12px 28px;
+          border-radius: 50px;
+          font-weight: 700;
+          font-family: 'Poppins', 'Arial', sans-serif !important;
+          font-size: 1rem;
+          margin-left: 18px;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          box-shadow: 0 2px 8px #f9b23322;
+        }
+        .ver-carreras-btn:hover {
+          background: #eaf6fb;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        @media (max-width: 992px) {
+          .ver-carreras-btn {
+            display: none !important;
+          }
+        }
+
+        .scroll-down-indicator-wrapper {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          margin-top: -18px;
+          z-index: 10;
+          pointer-events: none;
+        }
+        .scroll-down-indicator {
+          background: none;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          pointer-events: auto;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.2s;
+        }
+        .scroll-down-indicator:hover {
+          transform: translateY(4px) scale(1.08);
+        }
+        .arrow-down-svg svg {
+          display: block;
+        }
+        @media (max-width: 992px) {
+          .scroll-down-indicator-wrapper {
+            display: none !important;
+          }
+        }
       `}</style>
 
       <div className="ucab-home-page-wrapper" style={{ position: "relative" }}>
         <div className="ucab-home-page" style={{ position: "relative", zIndex: 2 }}>
           <header className="ucab-header">
-            <span className="logo-text-ucab">Portal Vocacional</span>
+            <img src="/OrientaUcab.png" alt="Orienta UCAB Logo" className="ucab-header-logo" />
+            <a
+              href="https://www.ucab.edu.ve/oferta-academica/pregrado/"
+              className="ver-carreras-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver carreras UCAB
+            </a>
           </header>
 
           <main className="ucab-main-content">
             <div className="left-panel">
               <div className="main-image-container">
                 <img
-                  src="https://placehold.co/500x500/E8F5E9/003366?text=Talento+UCAB"
+                  src="/HeroSection.png"
                   alt="Estudiante descubriendo su vocación"
                   className="main-image"
                 />
               </div>
             </div>
             <div className="right-panel">
-              <h1>TU PRIMER PASO A LLEGAR LEJOS.</h1>
+              <h1 className="ucab-hero-title">EL PRIMER PASO HACIA TU FUTURO UCABISTA</h1>
               <p className="subtitle">
                 Responde unas preguntas y recibe una recomendación personalizada de carreras afines a tu perfil.
                 ¡Empieza tu futuro en la UCAB hoy!
@@ -647,8 +755,26 @@ const UcabHomePage = ({ onStartTest }) => {
           </main>
         </div>
 
+        <div className="scroll-down-indicator-wrapper">
+          <button
+            className="scroll-down-indicator"
+            aria-label="Bajar a la sección ¿Cómo funciona?"
+            onClick={() => {
+              const section = document.getElementById('como-funciona-section');
+              if (section) section.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            <span className="arrow-down-svg" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="13" stroke="#40B4E5" strokeWidth="2" fill="#fff" />
+                <path d="M9 13l5 5 5-5" stroke="#40B4E5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+
         {/* Modern How it works section */}
-        <section className="modern-section how-it-works-section">
+        <section id="como-funciona-section" className="modern-section how-it-works-section">
           <div className="section-container">
             <h2 className="section-title">¿CÓMO FUNCIONA?</h2>
             <div className="steps-row">

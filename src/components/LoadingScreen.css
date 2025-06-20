@@ -1,0 +1,460 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+/* UCAB Color Palette */
+:root {
+  --ucab-blue: #003366;
+  --ucab-light-blue: #0056b3;
+  --ucab-accent-blue: #0077cc;
+  --ucab-gold: #ffd700;
+  --ucab-dark-gold: #b8860b;
+  --ucab-white: #ffffff;
+  --ucab-gray: #f5f5f5;
+  --ucab-dark-gray: #333333;
+  --ucab-gradient: linear-gradient(135deg, #003366 0%, #0056b3 50%, #0077cc 100%);
+  --ucab-gradient-gold: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--ucab-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Open Sans', sans-serif;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.loading-centered-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Main Container */
+.loading-container {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  width: 90%;
+  text-align: center;
+  color: var(--ucab-white);
+}
+
+/* Header */
+.loading-header {
+  margin-bottom: 4rem;
+}
+
+.ucab-logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 2rem;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+  transition: all 0.4s ease;
+}
+
+.ucab-logo:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.loading-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 800;
+  margin: 0 0 2.5rem 0;
+  background: linear-gradient(90deg, #fff 10%, #a9d6e5 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -2px;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.loading-title-large {
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.10);
+}
+
+.loading-subtitle {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.90);
+  margin-top: 2.5rem;
+  margin-bottom: 0;
+  text-align: center;
+  max-width: 400px;
+}
+
+.loading-subtitle-below {
+  margin-top: 2.5rem;
+  font-size: 1.3rem;
+  color: #e3f2fd;
+  font-weight: 500;
+}
+
+/* Main Content */
+.loading-content {
+  margin-bottom: 3rem;
+}
+
+/* Step Display */
+.step-display {
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.step-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: bounce 2s infinite;
+}
+
+.step-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--ucab-white);
+}
+
+.step-description {
+  font-family: 'Open Sans', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Progress Section */
+.progress-section {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 260px;
+  height: 260px;
+  margin: 0 auto;
+}
+
+.progress-ring-large {
+  width: 260px;
+  height: 260px;
+}
+
+.progress-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.progress-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.18);
+  stroke-width: 16;
+}
+
+.progress-fill {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-dasharray: 565.48;
+  stroke-dashoffset: 565.48;
+  transition: stroke-dashoffset 0.2s linear;
+  filter: drop-shadow(0 0 16px #a9d6e5);
+}
+
+.progress-inner-fill {
+  fill: #1976d2;
+  opacity: 0.25;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+
+.progress-percentage {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+.progress-label {
+  display: block;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e3f2fd;
+  opacity: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Step Indicators */
+.step-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.step-indicator.active {
+  opacity: 1;
+}
+
+.step-indicator.current {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.indicator-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.step-indicator.active .indicator-dot {
+  background: var(--ucab-gold);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.step-indicator.current .indicator-dot {
+  background: var(--ucab-gold);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  animation: pulse 2s infinite;
+}
+
+.indicator-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  max-width: 100px;
+  line-height: 1.3;
+}
+
+/* Completion State */
+.completion-state {
+  animation: fadeInScale 0.8s ease-out;
+}
+
+.completion-icon {
+  font-size: 5rem;
+  margin-bottom: 2rem;
+  animation: celebration 1s ease-out;
+}
+
+.completion-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--ucab-gold);
+}
+
+.completion-description {
+  font-family: 'Open Sans', sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  margin: 0 0 2rem 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.completion-animation {
+  position: relative;
+  display: inline-block;
+}
+
+.pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--ucab-gold);
+  border-radius: 50%;
+  animation: pulseRing 2s infinite;
+}
+
+.pulse-ring:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.pulse-ring:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Footer */
+.loading-footer {
+  opacity: 0.7;
+}
+
+.footer-text {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes celebration {
+  0% {
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loading-container {
+    width: 95%;
+  }
+  
+  .step-indicators {
+    gap: 1rem;
+  }
+  
+  .indicator-label {
+    font-size: 0.7rem;
+    max-width: 80px;
+  }
+  
+  .progress-ring, .progress-ring-large {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .loading-title, .loading-title-large {
+    font-size: 2.2rem;
+  }
+  
+  .progress-percentage {
+    font-size: 2rem;
+  }
+  
+  .loading-subtitle, .loading-subtitle-below {
+    font-size: 1rem;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .progress-ring, .progress-ring-large {
+    width: 120px;
+    height: 120px;
+  }
+  .loading-title, .loading-title-large {
+    font-size: 1.3rem;
+  }
+}

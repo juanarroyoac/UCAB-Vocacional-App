@@ -8,6 +8,7 @@ import SectionIntro from "./components/SectionIntro"
 import LightParticles from "./components/LightParticles"
 import DetailedResults from "./components/DetailedResults"
 import UcabHomePage from "./components/UcabHomePage"
+import LoadingScreen from "./components/LoadingScreen"
 
 // ===================================================================================
 //  COMPONENT DEFINITIONS
@@ -21,30 +22,30 @@ const Question = ({ question, onAnswer, questionNumber, totalQuestions, onBack, 
   return (
     <>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
         .question-screen-wrapper { width: 100%; min-height: 100vh; background: ${gradient}; display: flex; justify-content: center; align-items: center; padding: 24px; transition: background 0.6s; }
         .question-card { width: 100%; max-width: 480px; background-color: var(--white); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow: hidden; }
         .question-card-header { padding: 16px 24px; text-align: center; border-bottom: 1px solid var(--border-color); }
-        .question-card-header img { height: 32px; }
+        .question-card-header img { height: 32px; margin-top: 10px; }
         .question-main-content { padding: 32px 24px; text-align: center; flex-grow: 1; }
-        .question-text { font-size: clamp(1.25rem, 4vw, 1.5rem); font-weight: 700; color: var(--text-primary); line-height: 1.4; min-height: 100px; display: flex; align-items: center; justify-content: center; margin: 0 0 32px 0; }
+        .question-text { font-family: 'Open Sans', 'Arial', sans-serif; font-size: clamp(1.25rem, 4vw, 1.5rem); font-weight: 700; color: var(--text-primary); line-height: 1.4; min-height: 100px; display: flex; align-items: center; justify-content: center; margin: 0 0 32px 0; }
         .options-container { display: flex; flex-direction: column; gap: 12px; }
         .likert-scale, .yes-no-options { display: flex; justify-content: center; gap: 10px; }
         .likert-scale button, .yes-no-options button { border: 1px solid var(--border-color); background-color: var(--white); color: var(--text-primary); border-radius: 8px; padding: 12px 0; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex-grow: 1; }
-        .likert-scale button:hover, .yes-no-options button:hover { background-color: var(--light-green); border-color: var(--accent-green); color: var(--dark-blue); }
+        .likert-scale button:hover, .yes-no-options button:hover { background-color: #e8f6fc; border-color: #40b4e5; color: #343434; }
         .likert-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); padding: 4px 8px 0 8px; }
         .question-card-footer { padding: 16px 24px; display: flex; align-items: center; gap: 16px; border-top: 1px solid var(--border-color); }
         .back-button { background: none; border: none; cursor: pointer; padding: 8px; color: var(--text-secondary); font-size: 24px; line-height: 1; }
         .back-button:disabled { opacity: 0.3; cursor: not-allowed; }
-        .back-button:hover:not(:disabled) { color: var(--dark-blue); }
         .progress-bar-container { flex-grow: 1; height: 8px; background-color: var(--neutral-bg); border-radius: 4px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--light-blue) 0%, var(--accent-green) 100%); border-radius: 4px; transition: width 0.4s ease-in-out; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #40b4e5 0%, #199fd9 100%); border-radius: 4px; transition: width 0.4s ease-in-out; }
       `}</style>
       <div className="question-screen-wrapper">
         <div className="question-card">
           <header className="question-card-header">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_ucab_original.svg/1200px-Logo_ucab_original.svg.png"
-              alt="UCAB Logo"
+              src="/OrientaUcab.png"
+              alt="OrientaUCAB Logo"
             />
           </header>
           <main className="question-main-content">
@@ -165,6 +166,40 @@ const GlobalStyles = () => (
     html, body, #root { margin: 0; padding: 0; width: 100%; min-height: 100%; }
     body { font-family: 'Inter', sans-serif; background-color: var(--neutral-bg); color: var(--text-primary); overflow-x: hidden; }
     .app-container { width: 100%; min-height: 100vh; }
+    .form-field input,
+    .form-field select {
+      border: 2px solid #40b4e5 !important;
+      color: #343434 !important;
+      font-family: 'Open Sans', 'Arial', sans-serif !important;
+      font-weight: 400 !important;
+    }
+    .form-field input::placeholder,
+    .form-field select::placeholder {
+      font-family: 'Open Sans', 'Arial', sans-serif !important;
+      font-weight: 400 !important;
+      color: #888 !important;
+    }
+    .form-field input:focus,
+    .form-field select:focus {
+      border-color: #40b4e5 !important;
+      box-shadow: 0 0 0 4px #e4e4e4 !important;
+      background: #fff !important;
+    }
+    .form-field label {
+      color: #40b4e5 !important;
+      font-family: 'Poppins', 'Arial', sans-serif !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+    }
+    .btn-secondary {
+      background: #f6fafd !important;
+      color: #343434 !important;
+      font-family: 'Poppins', 'Arial', sans-serif !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
   `}</style>
 )
 
@@ -181,12 +216,12 @@ function getSectionsFromQuestions(questions) {
   })
   // Add descriptions for each section (customize as needed)
   const descriptions = {
-    Intereses: "Estas preguntas exploran tus intereses generales.",
-    Habilidades: "Ahora vamos a conocer tus habilidades.",
-    Valores: "Reflexiona sobre los valores que guían tus decisiones.",
-    Contextos: "¿En qué contextos te gustaría desarrollarte profesionalmente?",
-    Motivaciones: "¿Qué te impulsa y motiva en tu vida académica y profesional?",
-    Transversales: "Competencias y actitudes clave para cualquier área.",
+    Intereses: "Descubre qué actividades y temas te apasionan realmente. Esta sección te ayudará a identificar las áreas que más te motivan y te mantienen comprometido.",
+    Habilidades: "Evalúa tus fortalezas y capacidades actuales. Identifica qué se te da bien naturalmente y en qué áreas tienes mayor potencial de desarrollo.",
+    Valores: "Explora los principios que guían tus decisiones más importantes. Conoce qué es realmente significativo para ti en tu desarrollo personal y profesional.",
+    Contextos: "Imagina tu entorno laboral ideal. Descubre en qué tipo de organizaciones, industrias y ambientes te sentirías más realizado y productivo.",
+    Motivaciones: "Identifica qué te impulsa a alcanzar tus metas. Conoce los factores que te mantienen motivado y comprometido con tu crecimiento académico y profesional.",
+    Transversales: "Evalúa las competencias que te harán destacar en cualquier campo. Desarrolla las habilidades blandas que complementan tu formación técnica.",
   }
   return Array.from(sectionMap.values()).map((sec) => ({
     ...sec,
@@ -196,12 +231,12 @@ function getSectionsFromQuestions(questions) {
 
 // UCAB section gradients for backgrounds (much lighter, more subtle)
 const sectionGradients = {
-  Intereses: "linear-gradient(120deg, #fafdff 0%, #eaf6fb 100%)", // azul muy pálido
-  Habilidades: "linear-gradient(120deg, #f7fcf9 0%, #eafaf1 100%)", // verde muy pálido
-  Valores: "linear-gradient(120deg, #fffeef 0%, #fffbe6 100%)", // amarillo muy pálido
-  Contextos: "linear-gradient(120deg, #f6fcfd 0%, #eaf6fa 100%)", // celeste muy pálido
-  Motivaciones: "linear-gradient(120deg, #fffaf3 0%, #fff4e6 100%)", // naranja muy pálido
-  Transversales: "linear-gradient(120deg, #f7fafd 0%, #eef3f6 100%)", // gris azulado muy pálido
+  Intereses: "linear-gradient(120deg, #ffffff 0%, #e8f6fc 100%)", // lightest blue
+  Habilidades: "linear-gradient(120deg, #f7fcfe 0%, #d9f0f9 100%)", // light blue
+  Valores: "linear-gradient(120deg, #f0f9fd 0%, #cae9f6 100%)", // medium light blue
+  Contextos: "linear-gradient(120deg, #e8f6fc 0%, #b6e3f7 100%)", // medium blue
+  Motivaciones: "linear-gradient(120deg, #e0f3fa 0%, #a3ddf5 100%)", // deeper blue
+  Transversales: "linear-gradient(120deg, #d9f0f9 0%, #90d7f3 100%)", // deepest blue
 }
 
 function AppRoutes() {
@@ -217,6 +252,7 @@ function AppRoutes() {
   const [currentSection, setCurrentSection] = useState(0)
   const [showSectionIntro, setShowSectionIntro] = useState(true)
   const [showDetailedResults, setShowDetailedResults] = useState(false)
+  const [showLoadingScreen, setShowLoadingScreen] = useState(false)
   const navigate = useNavigate()
 
   const handleStartTest = () => {
@@ -254,6 +290,7 @@ function AppRoutes() {
     setCurrentQuestionIndex(0)
     setResults(null)
     setIsLoading(false)
+    setShowLoadingScreen(false)
     setUserData(null)
     localStorage.removeItem("vocacional-progress")
     navigate("/intro")
@@ -265,26 +302,45 @@ function AppRoutes() {
     setCurrentQuestionIndex(0)
     setResults(null)
     setIsLoading(false)
+    setShowLoadingScreen(false)
     // Clear previous progress
     localStorage.removeItem("vocacional-progress")
     navigate("/test")
   }
 
   const handleSubmitForAnalysis = async (finalAnswers) => {
-    setIsLoading(true)
-    navigate("/results")
+    // Show loading screen immediately
+    setShowLoadingScreen(true)
+    setIsLoading(true) // Set loading state for ResultsScreen
 
     try {
-      const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name)
-      const parsedResults = await analyzeWithGemini(prompt)
-      console.log("Gemini raw response:", parsedResults)
-      setResults(parsedResults)
-    } catch (error) {
-      console.error("Error analyzing results:", error)
-    } finally {
+      // Start both analysis and a 10-second timer
+      const analysisPromise = (async () => {
+        const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name)
+        const parsedResults = await analyzeWithGemini(prompt)
+        console.log("Gemini raw response:", parsedResults)
+        setResults(parsedResults)
+      })()
+
+      const timerPromise = new Promise(resolve => setTimeout(resolve, 10000))
+
+      // Wait for both to complete
+      await Promise.all([analysisPromise, timerPromise])
+
+      // Navigate to results and hide loading screen after analysis is complete
+      navigate("/results")
+      setShowLoadingScreen(false)
+      
+      // Small delay to ensure smooth transition on results screen
       setTimeout(() => {
         setIsLoading(false)
-      }, 500)
+      }, 100)
+    } catch (error) {
+      console.error("Error analyzing results:", error)
+      // Hide loading screen on error and show error state
+      setShowLoadingScreen(false)
+      setIsLoading(false)
+      // You might want to show an error message here
     }
   }
 
@@ -305,6 +361,7 @@ function AppRoutes() {
     setCurrentQuestionIndex(0)
     setResults(null)
     setIsLoading(false)
+    setShowLoadingScreen(false)
     setUserData(null)
     localStorage.removeItem("vocacional-progress")
     navigate("/")
@@ -421,7 +478,63 @@ function AppRoutes() {
       )}
       <Routes>
         <Route path="/" element={<UcabHomePage onStartTest={handleStartTest} />} />
-        <Route path="/intro" element={<DataCaptureForm onOnboardingComplete={handleOnboardingComplete} />} />
+        <Route path="/intro" element={
+          <>
+            <style>{`
+              @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+              @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+              .onboarding-header h1, .onboarding-header h2, .onboarding-header h3 {
+                font-family: 'Poppins', 'Arial', sans-serif !important;
+                font-weight: 700 !important;
+                color: #343434 !important;
+                text-transform: uppercase !important;
+              }
+              .onboarding-nav .btn-primary {
+                background: #40b4e5 !important;
+                color: #fff !important;
+                font-family: 'Poppins', 'Arial', sans-serif !important;
+                font-weight: 700 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px;
+              }
+              .onboarding-nav .btn-primary:hover:not(:disabled) {
+                background: #199fd9 !important;
+                color: #fff !important;
+              }
+              .onboarding-header, .onboarding-header h1, .onboarding-header h2, .onboarding-header h3, .onboarding-nav .btn-primary, .form-field label {
+                --ucab-blue: #343434;
+              }
+              .form-field label {
+                color: #40b4e5 !important;
+                font-family: 'Poppins', 'Arial', sans-serif !important;
+                font-weight: 700 !important;
+                text-transform: uppercase !important;
+              }
+              .step-description {
+                font-family: 'Open Sans', 'Arial', sans-serif !important;
+                color: #343434 !important;
+                text-transform: none !important;
+              }
+              .onboarding-container, .onboarding-wrapper, .form-field, .form-field input, .form-field select {
+                font-family: 'Poppins', 'Arial', sans-serif !important;
+                color: #343434 !important;
+                text-transform: none !important;
+              }
+              .onboarding-header h1, .onboarding-header h2, .onboarding-header h3, .onboarding-nav .btn-primary {
+                text-transform: uppercase !important;
+              }
+              .progress-dot {
+                background-color: #b6e3f7 !important;
+                border: none !important;
+              }
+              .progress-dot.active {
+                background-color: #40b4e5 !important;
+                box-shadow: 0 0 0 4px #b6e3f7 !important;
+              }
+            `}</style>
+            <DataCaptureForm onOnboardingComplete={handleOnboardingComplete} />
+          </>
+        } />
         <Route
           path="/test"
           element={
@@ -487,6 +600,9 @@ function AppRoutes() {
         />
         <Route path="/acerca" element={<AboutTest />} />
       </Routes>
+      {showLoadingScreen && (
+        <LoadingScreen />
+      )}
     </>
   )
 }

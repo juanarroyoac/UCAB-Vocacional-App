@@ -117,7 +117,7 @@ const DataCaptureForm = ({ onOnboardingComplete }) => {
       isForm: true,
       content: (
         <div className="form-field">
-          <label htmlFor="heardAbout">¿Cómo supiste de nosotros?</label>
+          <label htmlFor="heardAbout">Selecciona una opción:</label>
           <select id="heardAbout" name="heardAbout" value={formData.heardAbout} onChange={handleInputChange} className="modern-select">
             <option value="">Selecciona una opción</option>
             {HEARD_ABOUT_US.map(opt => <option key={opt} value={opt}>{opt}</option>)}

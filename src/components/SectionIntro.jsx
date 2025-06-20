@@ -1,5 +1,13 @@
 "use client"
 import { useState } from "react"
+import { 
+  HeartIcon, 
+  AcademicCapIcon, 
+  StarIcon, 
+  BuildingOfficeIcon, 
+  RocketLaunchIcon, 
+  PuzzlePieceIcon 
+} from '@heroicons/react/24/outline'
 
 const SectionIntro = ({ title, description, onContinue }) => {
   const [fadeOut, setFadeOut] = useState(false)
@@ -11,21 +19,34 @@ const SectionIntro = ({ title, description, onContinue }) => {
     }, 700) // Duration matches fadeOut animation
   }
 
+  // Icon mapping for each section
+  const getSectionIcon = (sectionTitle) => {
+    const iconMap = {
+      'Intereses': HeartIcon,
+      'Habilidades': AcademicCapIcon,
+      'Valores': StarIcon,
+      'Contextos': BuildingOfficeIcon,
+      'Motivaciones': RocketLaunchIcon,
+      'Transversales': PuzzlePieceIcon
+    }
+    return iconMap[sectionTitle] || HeartIcon
+  }
+
+  const IconComponent = getSectionIcon(title)
+
   return (
     <div className={`section-intro-fade${fadeOut ? " fade-out" : ""}`}>
       <div className="section-intro-content">
         <div className="section-intro-icon">
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-            <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
+          <IconComponent width="40" height="40" />
         </div>
         <h2>{title}</h2>
         <p>{description}</p>
         <button onClick={handleContinue}>Continuar</button>
       </div>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
         
         .section-intro-fade {
           position: fixed;
@@ -65,37 +86,50 @@ const SectionIntro = ({ title, description, onContinue }) => {
         }
         
         .section-intro-icon {
-          color: #003366;
+          color: #fff;
           margin-bottom: 24px;
-          opacity: 0.8;
+          opacity: 1;
+          background: #40b4e5;
+          border-radius: 50%;
+          width: 80px;
+          height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 24px auto;
+          box-shadow: 0 8px 32px rgba(64, 180, 229, 0.3);
         }
         
         .section-intro-fade h2 {
-          font-family: 'Inter', sans-serif;
-          font-weight: 700;
+          font-family: 'Poppins', 'Arial', sans-serif !important;
+          font-weight: 700 !important;
           font-size: clamp(2rem, 5vw, 2.5rem);
-          color: #003366;
+          color: #343434 !important;
           margin: 0 0 16px 0;
           letter-spacing: -0.5px;
           line-height: 1.2;
+          text-transform: uppercase !important;
         }
         
         .section-intro-fade p {
-          color: #334155;
-          font-size: 1.125rem;
+          font-family: 'Open Sans', 'Arial', sans-serif !important;
+          color: #343434 !important;
+          font-size: 1rem;
           line-height: 1.6;
           margin: 0 0 32px 0;
           font-weight: 400;
         }
         
         .section-intro-fade button {
-          background: #003366;
-          color: #fff;
+          background: #40b4e5 !important;
+          color: #fff !important;
           border: none;
           border-radius: 12px;
           padding: 16px 40px;
           font-size: 1.1rem;
-          font-weight: 700;
+          font-family: 'Poppins', 'Arial', sans-serif !important;
+          font-weight: 700 !important;
+          text-transform: uppercase !important;
           cursor: pointer;
           transition: all 0.3s ease;
           box-shadow: 0 4px 20px rgba(0, 51, 102, 0.2);
@@ -104,7 +138,8 @@ const SectionIntro = ({ title, description, onContinue }) => {
         }
         
         .section-intro-fade button:hover {
-          background: #005A9C;
+          background: #199fd9 !important;
+          color: #fff !important;
           transform: translateY(-2px);
           box-shadow: 0 8px 30px rgba(0, 51, 102, 0.3);
         }

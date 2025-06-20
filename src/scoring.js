@@ -1,20 +1,20 @@
 // src/scoring.js
-// Este archivo ya no calcula puntajes. Ahora construye el prompt para el análisis de la IA.
+// Enhanced prompt generation for Spotify Wrapped-style analysis
 
 /**
- * Construye un prompt detallado para que la IA de Gemini analice las respuestas de un test vocacional.
- * @param {object} answers - Objeto con las respuestas del usuario (id: valor).
- * @param {Array<object>} questions - El array completo de preguntas para dar contexto.
- * @param {Array<object>} careers - El array completo de datos de las carreras.
- * @param {string} userName - Nombre del usuario.
- * @returns {string} - El prompt listo para ser enviado a la IA.
+ * Generates an enhanced prompt for Spotify Wrapped-style vocational analysis
+ * @param {object} answers - User's answers (id: value)
+ * @param {Array<object>} questions - Complete questions array
+ * @param {Array<object>} careers - Complete careers data
+ * @param {string} userName - User's name
+ * @returns {string} - Enhanced prompt for AI analysis
  */
 export function generateAnalysisPrompt(answers, questions, careers, userName) {
-  // Formatea las respuestas del usuario en texto legible
+  // Format answers with context
   const answersText = questions
     .map((q) => {
       const value = answers[q.id]
-      let answerText = `No contestada (Valor: ${value})`
+      let answerText = "No contestada"
       if (value === 5) answerText = "Totalmente de acuerdo"
       if (value === 4) answerText = "De acuerdo"
       if (value === 3) answerText = "Neutral"
@@ -25,50 +25,85 @@ export function generateAnalysisPrompt(answers, questions, careers, userName) {
     })
     .join("\n")
 
-  // Formatea la lista de carreras en texto legible
+  // Format careers list
   const careersText = careers.map((c) => `- ${c.carrera} (${c.facultad})`).join("\n")
 
-  // Prompt para el LLM
+  // Enhanced prompt for Wrapped-style experience
   const prompt = `
-Eres un orientador vocacional experto de la Universidad Católica Andrés Bello (UCAB). Analiza el perfil del estudiante según sus respuestas y recomienda las carreras más adecuadas de la UCAB. Sé directo, breve y usa solo los datos proporcionados.
+Eres un orientador vocacional experto de la UCAB que crea experiencias estilo "Spotify Wrapped" para estudiantes. Tu tarea es analizar el perfil vocacional y explicar de manera clara y convincente POR QUÉ cada carrera es recomendada.
 
 **Respuestas del estudiante:**
 ${answersText}
 
-**Oferta académica de la UCAB:**
+**Oferta académica UCAB:**
 ${careersText}
 
-**Tu tarea:**
-Devuelve SOLO un objeto JSON con la siguiente estructura EXACTA (no incluyas explicaciones, ni texto adicional):
+**INSTRUCCIONES CRÍTICAS:**
+1. Crea contenido ALTAMENTE PERSONALIZADO basado en las respuestas específicas
+2. EXPLICA el razonamiento detrás de cada recomendación
+3. Conecta directamente las respuestas del estudiante con las características de cada carrera
+4. Usa un tono cálido, inspirador y motivacional pero ANALÍTICO
+5. Evita nombres propios - usa "tú" o referencias generales
+6. Las explicaciones deben ser convincentes y basadas en evidencia
+
+**Devuelve SOLO este JSON (sin explicaciones adicionales):**
 
 {
   "personality": {
-    "name": "Un nombre creativo y simpático para el arquetipo de personalidad (ej: 'El Arquitecto de Ideas', 'El Conector Humano').",
-    "description": "Explicación breve (2-3 líneas), ingeniosa y alentadora para este arquetipo, conectando con las respuestas del usuario. No uses el nombre del estudiante."
+    "name": "Un arquetipo único y memorable (ej: 'El Analista Estratégico', 'La Mente Creativa', 'El Constructor de Soluciones')",
+    "description": "Una descripción breve y directa de 1-2 líneas que explique este arquetipo basándose en las respuestas. Debe ser concisa y potente.",
+    "meaning": "Una explicación de 2-3 líneas sobre qué representa este arquetipo, basado en las respuestas. Explica cómo se relaciona con el trabajo, qué motiva al estudiante y cómo prefiere desarrollarse.",
+    "characteristics": [
+      "Exactamente 4 características principales en formato de lista, derivadas de las respuestas. Deben ser frases cortas que resuman los puntos clave del arquetipo (ej: 'Perfil único y personalizado', 'Basado en análisis de tus respuestas')."
+    ]
   },
   "qualities": [
-    "Una lista de exactamente 5 cualidades observadas, enunciadas de forma positiva y directa (ej: 'Tienes una curiosidad insaciable por la tecnología', 'Tu empatía abre puertas'). No uses el nombre del estudiante."
+    {
+      "name": "Título de la cualidad 1 (1-2 palabras)",
+      "description": "Descripción de la cualidad 1."
+    },
+    {
+      "name": "Título de la cualidad 2 (1-2 palabras)",
+      "description": "Descripción de la cualidad 2."
+    },
+    {
+      "name": "Título de la cualidad 3 (1-2 palabras)",
+      "description": "Descripción de la cualidad 3."
+    },
+    {
+      "name": "Título de la cualidad 4 (1-2 palabras)",
+      "description": "Descripción de la cualidad 4."
+    }
   ],
   "careers": [
     {
       "rank": 1,
-      "name": "Nombre de la carrera #1 recomendada",
-      "story": "Crea una historia corta, inspiradora y futurista (3-4 líneas) imaginando al estudiante triunfando en esta carrera. Debe sentirse personal y evocadora. No uses el nombre del estudiante."
+      "name": "Nombre exacto de la carrera #1",
+      "explanation": "Una explicación CONCISA de 1-2 líneas que conecte DIRECTAMENTE las respuestas con esta carrera. Sé breve y ve al grano."
     },
     {
-      "rank": 2,
-      "name": "Nombre de la carrera #2 recomendada",
-      "story": "Crea una historia inspiradora similar para la segunda carrera. No uses el nombre del estudiante."
+      "rank": 2, 
+      "name": "Nombre exacto de la carrera #2",
+      "explanation": "Explicación breve (1-2 líneas) para la segunda opción, enfocada en diferentes aspectos de tu perfil."
     },
     {
       "rank": 3,
-      "name": "Nombre de la carrera #3 recomendada",
-      "story": "Crea una historia inspiradora similar para la tercera carrera. No uses el nombre del estudiante."
+      "name": "Nombre exacto de la carrera #3", 
+      "explanation": "Explicación muy concisa (1-2 líneas) para la tercera opción, resaltando otras conexiones relevantes."
     }
   ]
 }
 
-Recuerda: Devuelve SOLO el objeto JSON, sin explicaciones ni texto adicional. Sé cálido, motivador y directo. No uses el nombre del estudiante excepto en saludos como 'Hola, (nombre)'. Las historias deben ser breves pero inspiradoras.`
+**REGLAS ESTRICTAS:**
+- Las explicaciones deben ser CORTAS y directas.
+- Cada recomendación debe tener un razonamiento único y diferenciado.
+- Usa un lenguaje analítico pero accesible.
+- Las carreras deben ser nombres EXACTOS de la lista UCAB.
+- NO uses nombres propios del estudiante.
+- Prioriza la lógica y conexión directa entre respuestas y recomendaciones.
+- Evita generalidades y sé específico.
+
+Crea un análisis que el estudiante entienda completamente y encuentre convincente.`
 
   return prompt
 }

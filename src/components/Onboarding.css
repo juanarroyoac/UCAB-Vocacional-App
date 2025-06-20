@@ -1,4 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Impact&display=swap"); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap');
 
 /* Onboarding.css - Styles for the multi-step data collection form */
 .onboarding-wrapper {
@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  font-family: "Inter", sans-serif;
+  font-family: 'Open Sans', 'Arial', sans-serif !important;
 }
 
 .onboarding-container {
@@ -30,10 +30,10 @@
 }
 
 .onboarding-header h1 {
-  font-family: "Inter", sans-serif;
+  font-family: 'Poppins', 'Arial', sans-serif !important;
   font-weight: 700;
   font-size: clamp(1.75rem, 5vw, 2.25rem);
-  color: #003366;
+  color: #e4e4e4;
   margin: 0 0 8px 0;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -72,7 +72,7 @@
   border-radius: 12px;
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.8);
-  font-family: "Inter", sans-serif;
+  font-family: 'Open Sans', 'Arial', sans-serif !important;
 }
 
 .form-field input:focus,
