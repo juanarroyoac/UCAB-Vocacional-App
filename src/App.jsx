@@ -9,6 +9,7 @@ import LightParticles from "./components/LightParticles"
 import DetailedResults from "./components/DetailedResults"
 import UcabHomePage from "./components/UcabHomePage"
 import LoadingScreen from "./components/LoadingScreen"
+import AdminDashboard from "./components/AdminDashboard"
 
 // ===================================================================================
 //  COMPONENT DEFINITIONS
@@ -599,6 +600,7 @@ function AppRoutes() {
           }
         />
         <Route path="/acerca" element={<AboutTest />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
       {showLoadingScreen && (
         <LoadingScreen />

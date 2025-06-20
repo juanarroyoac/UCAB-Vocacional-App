@@ -342,21 +342,25 @@
 }
 
 .personality-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 30px;
-  padding: 3rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  border: 2px solid rgba(255, 215, 0, 0.3);
-  animation: slideInUp 0.8s ease-out;
+  border: 3px solid #6fd6ff; /* azul muy clarito, no amarillo */
+  border-radius: 28px;
+  background: rgba(255,255,255,0.05);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem; /* menos padding para reducir espacio */
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.10);
+  margin: 0 auto;
+  max-width: 700px;
+  text-align: center;
 }
 
 .personality-card h3 {
+  color: #6fd6ff; /* azul muy clarito */
+  text-transform: uppercase;
   font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
   font-weight: 700;
-  margin: 0 0 1.5rem 0;
-  color: var(--ucab-gold);
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem; /* Menos espacio debajo del nombre */
+  margin-top: 0; /* Sin espacio arriba */
+  line-height: 1.1; /* Reduce el espacio entre líneas */
 }
 
 .personality-card p {
@@ -365,6 +369,7 @@
   line-height: 1.6;
   margin: 0;
   opacity: 0.9;
+  color: #fff; /* Cambia el texto descriptivo a blanco */
 }
 
 /* Qualities Slide */
@@ -458,6 +463,9 @@
     top: -7px;
     left: -7px;
   }
+  .qualities-slide h2 {
+    margin-bottom: 2.2rem; /* Más espacio debajo del título en móvil */
+  }
 
   /* CAREER SLIDE */
   .career-card {
@@ -517,6 +525,17 @@
   text-align: center;
 }
 
+.career-card.career-slide h3,
+.career-slide .career-card h3 {
+  text-transform: uppercase !important;
+  color: #fff !important;
+}
+
+.career-card.career-slide .career-explanation,
+.career-slide .career-card .career-explanation {
+  color: #fff !important;
+}
+
 .career-rank {
   position: absolute;
   top: -20px;
@@ -536,11 +555,13 @@
 }
 
 .career-card h3 {
+  display: block !important;
+  color: #fff;
   font-family: 'Poppins', sans-serif;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #40B4E5;
-  margin: 0 0 1rem 0;
+  text-transform: none;
+  margin: 0;
 }
 
 .career-faculty {
@@ -569,12 +590,16 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s ease;
+  /* Elimina cualquier box-shadow amarillo */
+  box-shadow: none;
 }
 
 .career-link:hover {
   background: #0056b3;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+  /* Elimina el glow amarillo al hacer hover */
+  box-shadow: none;
+  color: #fff; /* Asegura texto blanco en hover */
 }
 
 /* Summary Slide */
@@ -605,23 +630,16 @@
 .summary-card {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
-  padding: 1.5rem;
-  width: 30%; /* Adjust width to fit */
-  min-width: 180px; /* Set a minimum width */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2.2rem 1.5rem; /* Increased padding for bigger cards */
+  min-width: 220px; /* Increased min-width */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   position: relative;
   text-align: center;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.summary-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .summary-rank {
@@ -642,18 +660,19 @@
 }
 
 .summary-card h3 {
+  display: block !important;
+  color: #fff;
   font-family: 'Poppins', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.6rem; /* Larger font size */
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  color: #40B4E5;
+  text-transform: uppercase; /* All caps */
+  margin: 0;
+  letter-spacing: 0.03em;
 }
 
-.summary-faculty {
-  font-size: 0.8rem;
-  opacity: 0.8;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.summary-faculty,
+.summary-card p {
+  display: none !important;
 }
 
 .summary-actions {
@@ -722,6 +741,17 @@
   transform: translateY(-2px) scale(1.04);
 }
 
+.summary-cta-button.summary-details-button {
+  background: #fff !important;
+  color: #1e88e5 !important;
+  border: 2px solid #1e88e5 !important;
+}
+.summary-cta-button.summary-details-button:hover {
+  background: #e3f2fd !important; /* subtle blue tint on hover */
+  color: #1565c0 !important;
+  border: 2px solid #1565c0 !important;
+}
+
 @media (max-width: 600px) {
   .summary-actions {
     flex-direction: column;
@@ -739,6 +769,22 @@
   }
   .summary-career-title {
     font-size: 0.95rem;
+  }
+
+  .summary-cards {
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: 1.2rem;
+    padding: 0;
+  }
+  .summary-card {
+    min-width: 0;
+    width: 100%;
+    padding: 4.4rem 0.5rem; /* Double the previous top/bottom padding */
+  }
+  .summary-card h3 {
+    font-size: 2.2rem !important;
+    line-height: 1.1;
   }
 }
 
@@ -896,6 +942,9 @@
     top: -7px;
     left: -7px;
   }
+  .qualities-slide h2 {
+    margin-bottom: 2.2rem; /* Más espacio debajo del título en móvil */
+  }
 
   /* CAREER SLIDE */
   .career-card {
@@ -916,4 +965,14 @@
   .summary-card h3 {
     font-size: 1rem;
   }
+}
+
+.main-cta-button.summary-details-button {
+  background: #1e88e5 !important; /* Changed to a stronger blue */
+  color: #fff !important;
+}
+
+.main-cta-button.summary-details-button:hover {
+  background: #1565c0 !important; /* Darker blue on hover */
+  color: #fff !important;
 }

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Analítico - Vocacional UCAB</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Encapsulate all styles under #vocacional-dashboard */
+    #vocacional-dashboard {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f9fb;
+      color: #222;
+      padding: 32px 0;
+      min-height: 100vh;
+    }
+    #vocacional-dashboard .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      padding: 32px 40px 40px 40px;
+      position: relative;
+    }
+    #vocacional-dashboard h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    #vocacional-dashboard .disclaimer {
+      position: absolute;
+      top: 24px;
+      right: 40px;
+      background: #e9ecef;
+      color: #555;
+      font-size: 0.95rem;
+      padding: 6px 16px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      z-index: 2;
+    }
+    #vocacional-dashboard .metrics {
+      display: flex;
+      gap: 32px;
+      margin: 32px 0 24px 0;
+      flex-wrap: wrap;
+    }
+    #vocacional-dashboard .metric {
+      background: #f1f5fa;
+      border-radius: 10px;
+      padding: 18px 28px;
+      min-width: 180px;
+      flex: 1 1 180px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      text-align: center;
+    }
+    #vocacional-dashboard .metric-title {
+      font-size: 1.05rem;
+      color: #4b5563;
+      margin-bottom: 6px;
+    }
+    #vocacional-dashboard .metric-value {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #1d3557;
+    }
+    #vocacional-dashboard .charts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+    #vocacional-dashboard .chart-block {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 18px 18px 8px 18px;
+      flex: 1 1 320px;
+      min-width: 320px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+      margin-bottom: 12px;
+    }
+    #vocacional-dashboard .chart-block h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: #374151;
+      font-weight: 500;
+    }
+    #vocacional-dashboard .table-section {
+      margin-top: 32px;
+    }
+    #vocacional-dashboard .search-bar {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #vocacional-dashboard .search-bar input {
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+      width: 260px;
+      background: #f9fafb;
+    }
+    #vocacional-dashboard table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    #vocacional-dashboard th, #vocacional-dashboard td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 0.98rem;
+    }
+    #vocacional-dashboard th {
+      background: #f1f5fa;
+      font-weight: 600;
+      color: #374151;
+    }
+    #vocacional-dashboard tr:last-child td {
+      border-bottom: none;
+    }
+    #vocacional-dashboard .no-results {
+      text-align: center;
+      color: #888;
+      padding: 18px 0;
+    }
+    @media (max-width: 900px) {
+      #vocacional-dashboard .dashboard-container {
+        padding: 18px 4vw 24px 4vw;
+      }
+      #vocacional-dashboard .charts {
+        flex-direction: column;
+      }
+    }
+    @media (max-width: 600px) {
+      #vocacional-dashboard .metrics {
+        flex-direction: column;
+        gap: 16px;
+      }
+      #vocacional-dashboard .dashboard-container {
+        padding: 8px 0 16px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="vocacional-dashboard">
+  <div class="dashboard-container">
+    <div class="disclaimer">Este es un demostrativo usando datos simulados.</div>
+    <h1>Dashboard Analítico de Usuarios</h1>
+    <nav class="dashboard-nav">
+      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+      <button class="nav-btn" data-view="table">Tabla</button>
+      <button class="nav-btn" data-view="chatbot">Chatbot</button>
+    </nav>
+    <div id="dashboard-view" class="dashboard-view-section"></div>
+    <div id="table-view" class="dashboard-view-section" style="display:none"></div>
+    <div id="chatbot-view" class="dashboard-view-section" style="display:none"></div>
+  </div>
+</div>
+<script>
+// --- Mock Data Generation ---
+const STATES = [
+  'Amazonas', 'Anzoátegui', 'Apure', 'Aragua', 'Barinas', 'Bolívar', 'Carabobo',
+  'Cojedes', 'Delta Amacuro', 'Distrito Capital', 'Falcón', 'Guárico', 'Lara',
+  'Mérida', 'Miranda', 'Monagas', 'Nueva Esparta', 'Portuguesa', 'Sucre',
+  'Táchira', 'Trujillo', 'La Guaira', 'Yaracuy', 'Zulia'
+];
+const GENDERS = ['Masculino', 'Femenino', 'Otro', 'Prefiero no decirlo'];
+const HEARD_ABOUT_US = ['Redes Sociales', 'Colegio', 'Amigo/a', 'Otro'];
+const SCHOOLS = [
+  'Colegio San Ignacio', 'Colegio Champagnat', 'Colegio La Salle', 'Colegio El Peñón',
+  'Colegio Santa Rosa', 'Colegio Humboldt', 'Colegio Los Arcos', 'Colegio Jefferson',
+  'Colegio San José', 'Colegio María Auxiliadora', 'Colegio San Agustín', 'Colegio Cristo Rey',
+  'Colegio San Luis', 'Colegio San Francisco', 'Colegio San Pedro', 'Colegio San Gabriel',
+  'Colegio San Juan', 'Colegio San Pablo', 'Colegio San Rafael', 'Colegio San Antonio'
+];
+const CITIES = [
+  'Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana',
+  'Barcelona', 'Maturín', 'Puerto La Cruz', 'San Cristóbal', 'Mérida', 'Cumaná',
+  'Cabimas', 'Barinas', 'Los Teques', 'Guarenas', 'Punto Fijo', 'Acarigua', 'Turmero', 'Guacara'
+];
+const NAMES = [
+  'Ana Pérez', 'Luis Rodríguez', 'María González', 'Carlos Hernández', 'Andrea Romero',
+  'José Martínez', 'Valentina Torres', 'Miguel López', 'Gabriela Díaz', 'Juan Castro',
+  'Sofía Morales', 'Pedro Rivas', 'Daniela Mendoza', 'Alejandro Vargas', 'Camila Herrera',
+  'Diego Silva', 'Lucía Figueroa', 'Javier Peña', 'Isabella Soto', 'Samuel Ortega',
+  'Victoria Ruiz', 'Emilio Blanco', 'Martina Gil', 'Sebastián León', 'Paula Méndez',
+  'Tomás Paredes', 'Renata Salazar', 'David Cordero', 'Natalia Acosta', 'Matías Guzmán',
+  'Julieta Ponce', 'Santiago Ferrer', 'Marina Rojas', 'Agustín Bravo', 'Elena Duarte',
+  'Maximiliano Vera', 'Sara Zambrano', 'Emmanuel Parra', 'Ariana Lugo', 'Bruno Molina',
+  'Isabel Rangel', 'Felipe Sosa', 'Carolina Méndez', 'Ignacio Torres', 'Mía Peña',
+  'Francisco Rivas', 'Martín Suárez', 'Julia Cordero', 'Emilia Paredes', 'Gabriel León'
+];
+function randomFrom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function randomEmail(name) {
+  const base = name.toLowerCase().replace(/[^a-záéíóúüñ ]/gi, '').replace(/ /g, '.');
+  const domains = ['gmail.com', 'hotmail.com', 'ucab.edu.ve', 'yahoo.com'];
+  return `${base}${Math.floor(Math.random()*100)}@${randomFrom(domains)}`;
+}
+function generateMockUsers(n = 100) {
+  const users = [];
+  for (let i = 0; i < n; i++) {
+    const name = randomFrom(NAMES);
+    const email = randomEmail(name);
+    const city = randomFrom(CITIES);
+    const state = randomFrom(STATES);
+    const gender = randomFrom(GENDERS);
+    const school = randomFrom(SCHOOLS);
+    const heardAbout = randomFrom(HEARD_ABOUT_US);
+    users.push({ name, email, city, state, gender, school, heardAbout });
+  }
+  return users;
+}
+const users = generateMockUsers(100);
+
+// --- Metrics ---
+function getMetrics(users) {
+  const total = users.length;
+  const genderCounts = {};
+  const stateCounts = {};
+  const heardCounts = {};
+  let mostCommonState = '';
+  let mostCommonSchool = '';
+  let schoolCounts = {};
+  users.forEach(u => {
+    genderCounts[u.gender] = (genderCounts[u.gender] || 0) + 1;
+    stateCounts[u.state] = (stateCounts[u.state] || 0) + 1;
+    heardCounts[u.heardAbout] = (heardCounts[u.heardAbout] || 0) + 1;
+    schoolCounts[u.school] = (schoolCounts[u.school] || 0) + 1;
+  });
+  mostCommonState = Object.entries(stateCounts).sort((a,b)=>b[1]-a[1])[0][0];
+  mostCommonSchool = Object.entries(schoolCounts).sort((a,b)=>b[1]-a[1])[0][0];
+  return {
+    total,
+    genderCounts,
+    stateCounts,
+    heardCounts,
+    mostCommonState,
+    mostCommonSchool
+  };
+}
+function renderMetrics(metrics) {
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric">
+      <div class="metric-title">Total de usuarios</div>
+      <div class="metric-value">${metrics.total}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Estado más frecuente</div>
+      <div class="metric-value">${metrics.mostCommonState}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Colegio más frecuente</div>
+      <div class="metric-value">${metrics.mostCommonSchool}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Género más frecuente</div>
+      <div class="metric-value">${Object.entries(metrics.genderCounts).sort((a,b)=>b[1]-a[1])[0][0]}</div>
+    </div>
+  `;
+}
+
+// --- Charts ---
+function renderCharts(users, metrics) {
+  // Estado
+  new Chart(document.getElementById('stateChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(metrics.stateCounts),
+      datasets: [{
+        label: 'Usuarios',
+        data: Object.values(metrics.stateCounts),
+        backgroundColor: '#2563eb',
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { autoSkip: false } } }
+    }
+  });
+  // Género
+  new Chart(document.getElementById('genderChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(metrics.genderCounts),
+      datasets: [{
+        data: Object.values(metrics.genderCounts),
+        backgroundColor: ['#2563eb', '#f59e42', '#10b981', '#a1a1aa'],
+      }]
+    },
+    options: {
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+  // ¿Cómo supo?
+  new Chart(document.getElementById('heardChart').getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: Object.keys(metrics.heardCounts),
+      datasets: [{
+        data: Object.values(metrics.heardCounts),
+        backgroundColor: ['#2563eb', '#f59e42', '#10b981', '#a1a1aa'],
+      }]
+    },
+    options: {
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+}
+
+// --- Table ---
+let filteredUsers = users;
+function renderTable(users) {
+  const tbody = document.querySelector('#userTable tbody');
+  if (!tbody) return; // Prevent error if table is not rendered yet
+  if (!users.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="no-results">No se encontraron resultados.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = users.slice(0, 30).map(u => `
+    <tr>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>${u.city}</td>
+      <td>${u.state}</td>
+      <td>${u.gender}</td>
+      <td>${u.school}</td>
+      <td>${u.heardAbout}</td>
+    </tr>
+  `).join('');
+}
+function setupTableSearch() {
+  const searchInput = document.getElementById('searchInput');
+  if (!searchInput) return;
+  searchInput.addEventListener('input', function(e) {
+    const val = e.target.value.trim().toLowerCase();
+    filteredUsers = users.filter(u => u.name.toLowerCase().includes(val));
+    renderTable(filteredUsers);
+  });
+}
+
+// --- UI Navigation ---
+const dashboardView = document.getElementById('dashboard-view');
+const tableView = document.getElementById('table-view');
+const chatbotView = document.getElementById('chatbot-view');
+const navBtns = document.querySelectorAll('.nav-btn');
+function showView(view) {
+  dashboardView.style.display = view === 'dashboard' ? '' : 'none';
+  tableView.style.display = view === 'table' ? '' : 'none';
+  chatbotView.style.display = view === 'chatbot' ? '' : 'none';
+  navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+}
+navBtns.forEach(btn => btn.addEventListener('click', () => {
+  showView(btn.dataset.view);
+  if (btn.dataset.view === 'table') {
+    renderTable(filteredUsers);
+    setupTableSearch();
+  }
+}));
+
+// --- Render Dashboard View ---
+dashboardView.innerHTML = `
+  <div class="metrics" id="metrics"></div>
+  <div class="charts">
+    <div class="chart-block">
+      <h3>Distribución por Estado</h3>
+      <canvas id="stateChart" height="180"></canvas>
+    </div>
+    <div class="chart-block">
+      <h3>Distribución por Género</h3>
+      <canvas id="genderChart" height="180"></canvas>
+    </div>
+    <div class="chart-block">
+      <h3>¿Cómo supieron de nosotros?</h3>
+      <canvas id="heardChart" height="180"></canvas>
+    </div>
+  </div>
+`;
+
+// --- Render Table View ---
+tableView.innerHTML = `
+  <div class="table-section">
+    <div class="search-bar">
+      <label for="searchInput">Buscar por nombre:</label>
+      <input type="text" id="searchInput" placeholder="Ej: Ana Pérez...">
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="userTable">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Ciudad</th>
+            <th>Estado</th>
+            <th>Género</th>
+            <th>Colegio</th>
+            <th>¿Cómo supo?</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+`;
+
+// --- Render Chatbot View ---
+chatbotView.innerHTML = `
+  <div class="chatbot-container">
+    <div class="chatbot-messages" id="chatbot-messages"></div>
+    <form id="chatbot-form">
+      <input type="text" id="chatbot-input" placeholder="Haz una pregunta sobre los datos..." autocomplete="off" />
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+`;
+
+// --- Chatbot Logic (Mock) ---
+const chatbotMessages = document.getElementById('chatbot-messages');
+const chatbotForm = document.getElementById('chatbot-form');
+const chatbotInput = document.getElementById('chatbot-input');
+function addChatMessage(sender, text) {
+  const msg = document.createElement('div');
+  msg.className = 'chatbot-msg ' + sender;
+  msg.innerText = text;
+  chatbotMessages.appendChild(msg);
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+function mockChatbotResponse(question) {
+  const q = question.toLowerCase();
+  if (q.includes('usuarios')) return `Hay ${users.length} usuarios registrados.`;
+  if (q.includes('estado')) return `El estado más frecuente es ${getMetrics(users).mostCommonState}.`;
+  if (q.includes('colegio')) return `El colegio más frecuente es ${getMetrics(users).mostCommonSchool}.`;
+  if (q.includes('género') || q.includes('genero')) return `El género más frecuente es ${Object.entries(getMetrics(users).genderCounts).sort((a,b)=>b[1]-a[1])[0][0]}.`;
+  if (q.includes('redes')) return `Unos ${getMetrics(users).heardCounts['Redes Sociales'] || 0} usuarios supieron por redes sociales.`;
+  return 'Lo siento, soy un bot de demostración y solo puedo responder preguntas básicas sobre los datos.';
+}
+chatbotForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const question = chatbotInput.value.trim();
+  if (!question) return;
+  addChatMessage('user', question);
+  setTimeout(() => {
+    addChatMessage('bot', mockChatbotResponse(question));
+  }, 600);
+  chatbotInput.value = '';
+});
+
+// --- Style for Chatbot ---
+const style = document.createElement('style');
+style.innerHTML = `
+#vocacional-dashboard .dashboard-nav {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+#vocacional-dashboard .nav-btn {
+  background: #f1f5fa;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.05rem;
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+#vocacional-dashboard .nav-btn.active, #vocacional-dashboard .nav-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}
+#vocacional-dashboard .dashboard-view-section { min-height: 320px; }
+#vocacional-dashboard .chatbot-container {
+  background: #f8fafc;
+  border-radius: 12px;
+  max-width: 420px;
+  margin: 0 auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  padding: 18px 18px 12px 18px;
+  display: flex;
+  flex-direction: column;
+  height: 420px;
+}
+#vocacional-dashboard .chatbot-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+}
+#vocacional-dashboard .chatbot-msg {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 80%;
+  word-break: break-word;
+}
+#vocacional-dashboard .chatbot-msg.user {
+  background: #2563eb;
+  color: #fff;
+  align-self: flex-end;
+}
+#vocacional-dashboard .chatbot-msg.bot {
+  background: #e9ecef;
+  color: #222;
+  align-self: flex-start;
+}
+#vocacional-dashboard #chatbot-form {
+  display: flex;
+  gap: 8px;
+}
+#vocacional-dashboard #chatbot-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+}
+#vocacional-dashboard #chatbot-form button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+`;
+document.head.appendChild(style);
+
+// --- End Style for Chatbot ---
+// --- Init ---
+const metrics = getMetrics(users);
+renderMetrics(metrics);
+renderCharts(users, metrics);
+renderTable(users);
+setupTableSearch();
+showView('dashboard');
+</script>
+</body>
+</html>

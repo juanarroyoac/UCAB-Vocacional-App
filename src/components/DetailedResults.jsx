@@ -73,10 +73,11 @@ function DetailedResults({ results, user, onBack, onRestart }) {
     <div className="detailed-results-container">
       {/* Navigation */}
       <nav className="detailed-nav">
-        <div className="nav-bar-left">
-          <button onClick={onBack} className="nav-back-arrow" aria-label="Volver">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 24L10 16L18 8" stroke="#343434" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        <div className="nav-bar-left" style={{ paddingLeft: '16px' }}>
+          <button onClick={onBack} className="nav-back-arrow" aria-label="Volver" style={{ background: 'transparent', border: 'none', padding: 0, margin: 0 }}>
+            {/* Flecha completamente transparente (solo borde y línea, sin fondo) */}
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 8L12 16L20 24" stroke="#343434" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
         </div>
@@ -90,19 +91,32 @@ function DetailedResults({ results, user, onBack, onRestart }) {
               key={section.id}
               className={`nav-button ${activeSection === section.id ? 'active' : ''}`}
               onClick={() => setActiveSection(section.id)}
+              style={{
+                fontSize: '1.15rem',
+                padding: '0.85rem 2.2rem',
+                borderRadius: '18px',
+                transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+                marginRight: '1.2rem',
+                boxShadow: activeSection === section.id ? '0 2px 12px 0 rgba(0, 180, 255, 0.10)' : 'none',
+                transform: activeSection === section.id ? 'scale(1.08)' : 'scale(1)',
+                borderWidth: activeSection === section.id ? '2.5px' : '2px',
+                borderColor: activeSection === section.id ? '#222' : '#29B6F6',
+                background: activeSection === section.id ? '#29B6F6' : '#fff',
+                color: activeSection === section.id ? '#fff' : '#29B6F6',
+                fontWeight: 700,
+                outline: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
             >
               <span className="nav-icon">{section.icon}</span>
               <span className="nav-label">{section.label}</span>
             </button>
           ))}
         </div>
-        <div className="nav-bar-right">
-          <img
-            src="/OrientaUcab.png"
-            alt="OrientaUCAB Logo"
-            className="header-logo"
-          />
-        </div>
+        {/* Logo eliminado */}
       </nav>
 
       {/* Main Content */}
@@ -184,35 +198,32 @@ function DetailedResults({ results, user, onBack, onRestart }) {
                 {enrichedCareers.map((career, index) => (
                   <div 
                     key={index} 
-                    className={`career-item ${selectedCareer === index ? 'selected' : ''}`}
+                    className={`career-item${selectedCareer === index ? ' selected' : ''}`}
                     onClick={() => setSelectedCareer(selectedCareer === index ? null : index)}
                     style={{ animationDelay: `${index * 0.2}s` }}
                   >
                     <div className="career-header">
-                      <div className="career-rank">#{index + 1}</div>
+                      {/* Circulo eliminado */}
                       <div className="career-info">
-                        <h3>{career.name}</h3>
+                        <h3 className="career-title">{career.name}</h3>
                         <span className="career-faculty">{career.facultad}</span>
                       </div>
                     </div>
-                    
                     <div className="career-body">
                       <p className="career-explanation">{career.explanation}</p>
-                      
-                      {selectedCareer === index && (
-                        <div className="career-details">
-                          <a href={career.url} target="_blank" rel="noopener noreferrer" className="career-link">
-                            Ver Pénsum
-                          </a>
-                        </div>
-                      )}
+                      {/* Botón Ver Pensum siempre visible */}
+                      <div className="career-details" style={{ marginTop: '1rem' }}>
+                        <a href={career.url} target="_blank" rel="noopener noreferrer" className="career-link">
+                          Ver Pénsum
+                        </a>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
               <div className="careers-summary">
-                <h3>¿Cómo se seleccionaron estas carreras?</h3>
+                <h3 className="como-seleccionaron-title" style={{ color: '#343434' }}>¿Cómo se seleccionaron estas carreras?</h3>
                 <p>Las carreras recomendadas se basan en un análisis de tus respuestas, alineando tus intereses y aptitudes con los perfiles profesionales de la oferta académica de la UCAB.</p>
               </div>
             </div>

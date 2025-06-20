@@ -684,13 +684,13 @@ const UcabHomePage = ({ onStartTest }) => {
           width: 100%;
           display: flex;
           justify-content: center;
-          align-items: center;
+          align-items: flex-start;
           position: absolute;
           left: 0;
           right: 0;
-          top: 100%;
-          margin-top: -18px;
-          z-index: 10;
+          top: 0; /* Corte exacto con el borde superior */
+          margin: 0;
+          z-index: 20;
           pointer-events: none;
         }
         .scroll-down-indicator {
@@ -704,12 +704,18 @@ const UcabHomePage = ({ onStartTest }) => {
           align-items: center;
           justify-content: center;
           transition: transform 0.2s;
+          width: 56px;
+          height: 56px;
+          position: relative;
+          top: -28px; /* La mitad del alto del botón para que sobresalga */
         }
         .scroll-down-indicator:hover {
           transform: translateY(4px) scale(1.08);
         }
         .arrow-down-svg svg {
           display: block;
+          width: 40px;
+          height: 40px;
         }
         @media (max-width: 992px) {
           .scroll-down-indicator-wrapper {
@@ -755,26 +761,25 @@ const UcabHomePage = ({ onStartTest }) => {
           </main>
         </div>
 
-        <div className="scroll-down-indicator-wrapper">
-          <button
-            className="scroll-down-indicator"
-            aria-label="Bajar a la sección ¿Cómo funciona?"
-            onClick={() => {
-              const section = document.getElementById('como-funciona-section');
-              if (section) section.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            <span className="arrow-down-svg" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <circle cx="14" cy="14" r="13" stroke="#40B4E5" strokeWidth="2" fill="#fff" />
-                <path d="M9 13l5 5 5-5" stroke="#40B4E5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </span>
-          </button>
-        </div>
-
         {/* Modern How it works section */}
-        <section id="como-funciona-section" className="modern-section how-it-works-section">
+        <section id="como-funciona-section" className="modern-section how-it-works-section" style={{ position: "relative" }}>
+          <div className="scroll-down-indicator-wrapper">
+            <button
+              className="scroll-down-indicator"
+              aria-label="Bajar a la sección ¿Cómo funciona?"
+              onClick={() => {
+                const section = document.getElementById('como-funciona-section');
+                if (section) section.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <span className="arrow-down-svg" aria-hidden="true">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <circle cx="20" cy="20" r="18" stroke="#40B4E5" strokeWidth="2.5" fill="#fff" />
+                  <path d="M13 19l7 8 7-8" stroke="#40B4E5" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </div>
           <div className="section-container">
             <h2 className="section-title">¿CÓMO FUNCIONA?</h2>
             <div className="steps-row">

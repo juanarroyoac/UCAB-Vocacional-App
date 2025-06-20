@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Analítico - Vocacional UCAB</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Salesforce-like UI styles for dashboard */
+    @import url('https://fonts.googleapis.com/css2?family=Salesforce+Sans:wght@400;600;700&display=swap');
+    #vocacional-dashboard {
+      font-family: 'Salesforce Sans', 'Segoe UI', Arial, sans-serif;
+      background: #f7f9fb;
+      color: #222;
+      padding: 32px 0;
+      min-height: 100vh;
+    }
+    #vocacional-dashboard .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    #vocacional-dashboard .sf-header {
+      background: linear-gradient(90deg, #0176d3 0%, #032d60 100%);
+      color: #fff;
+      padding: 28px 40px 18px 40px;
+      border-bottom: 1px solid #e3e6ea;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #vocacional-dashboard .sf-header h1 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+    #vocacional-dashboard .sf-header .disclaimer {
+      background: rgba(255,255,255,0.13);
+      color: #e3e6ea;
+      font-size: 0.98rem;
+      padding: 4px 14px;
+      border-radius: 6px;
+      border: 1px solid #e3e6ea33;
+      align-self: flex-end;
+      margin: 0;
+      position: static;
+    }
+    #vocacional-dashboard .sf-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid #e3e6ea;
+      background: #f7f9fb;
+      padding-left: 40px;
+    }
+    #vocacional-dashboard .sf-tab {
+      padding: 14px 32px 10px 32px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      color: #032d60;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: border 0.2s, color 0.2s;
+      outline: none;
+    }
+    #vocacional-dashboard .sf-tab.active {
+      border-bottom: 3px solid #0176d3;
+      color: #0176d3;
+      background: #fff;
+    }
+    #vocacional-dashboard .sf-tab:not(.active):hover {
+      color: #0b5cab;
+      background: #f1f5fa;
+    }
+    #vocacional-dashboard .sf-tab-content {
+      display: none;
+      padding: 32px 40px 40px 40px;
+    }
+    #vocacional-dashboard .sf-tab-content.active {
+      display: block;
+    }
+    /* Metrics, charts, table: keep original styles, but adjust padding for tab content */
+    #vocacional-dashboard .metrics {
+      margin: 32px 0 24px 0;
+    }
+    #vocacional-dashboard .charts {
+      margin-bottom: 36px;
+    }
+    #vocacional-dashboard .table-section {
+      margin-top: 32px;
+    }
+    /* Responsive tweaks */
+    @media (max-width: 900px) {
+      #vocacional-dashboard .sf-header, #vocacional-dashboard .sf-tab-content {
+        padding-left: 4vw;
+        padding-right: 4vw;
+      }
+      #vocacional-dashboard .sf-tabs {
+        padding-left: 4vw;
+      }
+    }
+    @media (max-width: 600px) {
+      #vocacional-dashboard .sf-header, #vocacional-dashboard .sf-tab-content {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      #vocacional-dashboard .sf-tabs {
+        padding-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="vocacional-dashboard">
+  <div class="dashboard-container">
+    <div class="sf-header">
+      <h1>Dashboard Analítico de Usuarios</h1>
+      <div class="disclaimer">Este es un demostrativo usando datos simulados.</div>
+    </div>
+    <div class="sf-tabs">
+      <button class="sf-tab active" data-tab="metrics">Métricas</button>
+      <button class="sf-tab" data-tab="charts">Gráficas</button>
+      <button class="sf-tab" data-tab="table">Tabla</button>
+    </div>
+    <div class="sf-tab-content active" id="tab-metrics">
+      <div class="metrics" id="metrics"></div>
+    </div>
+    <div class="sf-tab-content" id="tab-charts">
+      <div class="charts">
+        <div class="chart-block">
+          <h3>Distribución por Estado</h3>
+          <canvas id="stateChart" height="180"></canvas>
+        </div>
+        <div class="chart-block">
+          <h3>Distribución por Género</h3>
+          <canvas id="genderChart" height="180"></canvas>
+        </div>
+        <div class="chart-block">
+          <h3>¿Cómo supieron de nosotros?</h3>
+          <canvas id="heardChart" height="180"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="sf-tab-content" id="tab-table">
+      <div class="table-section">
+        <div class="search-bar">
+          <label for="searchInput">Buscar por nombre:</label>
+          <input type="text" id="searchInput" placeholder="Ej: Ana Pérez...">
+        </div>
+        <div style="overflow-x:auto;">
+          <table id="userTable">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Ciudad</th>
+                <th>Estado</th>
+                <th>Género</th>
+                <th>Colegio</th>
+                <th>¿Cómo supo?</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// --- Mock Data Generation ---
+const STATES = [
+  'Amazonas', 'Anzoátegui', 'Apure', 'Aragua', 'Barinas', 'Bolívar', 'Carabobo',
+  'Cojedes', 'Delta Amacuro', 'Distrito Capital', 'Falcón', 'Guárico', 'Lara',
+  'Mérida', 'Miranda', 'Monagas', 'Nueva Esparta', 'Portuguesa', 'Sucre',
+  'Táchira', 'Trujillo', 'La Guaira', 'Yaracuy', 'Zulia'
+];
+const GENDERS = ['Masculino', 'Femenino', 'Otro', 'Prefiero no decirlo'];
+const HEARD_ABOUT_US = ['Redes Sociales', 'Colegio', 'Amigo/a', 'Otro'];
+const SCHOOLS = [
+  'Colegio San Ignacio', 'Colegio Champagnat', 'Colegio La Salle', 'Colegio El Peñón',
+  'Colegio Santa Rosa', 'Colegio Humboldt', 'Colegio Los Arcos', 'Colegio Jefferson',
+  'Colegio San José', 'Colegio María Auxiliadora', 'Colegio San Agustín', 'Colegio Cristo Rey',
+  'Colegio San Luis', 'Colegio San Francisco', 'Colegio San Pedro', 'Colegio San Gabriel',
+  'Colegio San Juan', 'Colegio San Pablo', 'Colegio San Rafael', 'Colegio San Antonio'
+];
+const CITIES = [
+  'Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana',
+  'Barcelona', 'Maturín', 'Puerto La Cruz', 'San Cristóbal', 'Mérida', 'Cumaná',
+  'Cabimas', 'Barinas', 'Los Teques', 'Guarenas', 'Punto Fijo', 'Acarigua', 'Turmero', 'Guacara'
+];
+const NAMES = [
+  'Ana Pérez', 'Luis Rodríguez', 'María González', 'Carlos Hernández', 'Andrea Romero',
+  'José Martínez', 'Valentina Torres', 'Miguel López', 'Gabriela Díaz', 'Juan Castro',
+  'Sofía Morales', 'Pedro Rivas', 'Daniela Mendoza', 'Alejandro Vargas', 'Camila Herrera',
+  'Diego Silva', 'Lucía Figueroa', 'Javier Peña', 'Isabella Soto', 'Samuel Ortega',
+  'Victoria Ruiz', 'Emilio Blanco', 'Martina Gil', 'Sebastián León', 'Paula Méndez',
+  'Tomás Paredes', 'Renata Salazar', 'David Cordero', 'Natalia Acosta', 'Matías Guzmán',
+  'Julieta Ponce', 'Santiago Ferrer', 'Marina Rojas', 'Agustín Bravo', 'Elena Duarte',
+  'Maximiliano Vera', 'Sara Zambrano', 'Emmanuel Parra', 'Ariana Lugo', 'Bruno Molina',
+  'Isabel Rangel', 'Felipe Sosa', 'Carolina Méndez', 'Ignacio Torres', 'Mía Peña',
+  'Francisco Rivas', 'Martín Suárez', 'Julia Cordero', 'Emilia Paredes', 'Gabriel León'
+];
+function randomFrom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function randomEmail(name) {
+  const base = name.toLowerCase().replace(/[^a-záéíóúüñ ]/gi, '').replace(/ /g, '.');
+  const domains = ['gmail.com', 'hotmail.com', 'ucab.edu.ve', 'yahoo.com'];
+  return `${base}${Math.floor(Math.random()*100)}@${randomFrom(domains)}`;
+}
+function generateMockUsers(n = 100) {
+  const users = [];
+  for (let i = 0; i < n; i++) {
+    const name = randomFrom(NAMES);
+    const email = randomEmail(name);
+    const city = randomFrom(CITIES);
+    const state = randomFrom(STATES);
+    const gender = randomFrom(GENDERS);
+    const school = randomFrom(SCHOOLS);
+    const heardAbout = randomFrom(HEARD_ABOUT_US);
+    users.push({ name, email, city, state, gender, school, heardAbout });
+  }
+  return users;
+}
+const users = generateMockUsers(100);
+
+// --- Metrics ---
+function getMetrics(users) {
+  const total = users.length;
+  const genderCounts = {};
+  const stateCounts = {};
+  const heardCounts = {};
+  let mostCommonState = '';
+  let mostCommonSchool = '';
+  let schoolCounts = {};
+  users.forEach(u => {
+    genderCounts[u.gender] = (genderCounts[u.gender] || 0) + 1;
+    stateCounts[u.state] = (stateCounts[u.state] || 0) + 1;
+    heardCounts[u.heardAbout] = (heardCounts[u.heardAbout] || 0) + 1;
+    schoolCounts[u.school] = (schoolCounts[u.school] || 0) + 1;
+  });
+  mostCommonState = Object.entries(stateCounts).sort((a,b)=>b[1]-a[1])[0][0];
+  mostCommonSchool = Object.entries(schoolCounts).sort((a,b)=>b[1]-a[1])[0][0];
+  return {
+    total,
+    genderCounts,
+    stateCounts,
+    heardCounts,
+    mostCommonState,
+    mostCommonSchool
+  };
+}
+function renderMetrics(metrics) {
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric">
+      <div class="metric-title">Total de usuarios</div>
+      <div class="metric-value">${metrics.total}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Estado más frecuente</div>
+      <div class="metric-value">${metrics.mostCommonState}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Colegio más frecuente</div>
+      <div class="metric-value">${metrics.mostCommonSchool}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-title">Género más frecuente</div>
+      <div class="metric-value">${Object.entries(metrics.genderCounts).sort((a,b)=>b[1]-a[1])[0][0]}</div>
+    </div>
+  `;
+}
+
+// --- Charts ---
+function renderCharts(users, metrics) {
+  // Estado
+  new Chart(document.getElementById('stateChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(metrics.stateCounts),
+      datasets: [{
+        label: 'Usuarios',
+        data: Object.values(metrics.stateCounts),
+        backgroundColor: '#2563eb',
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { autoSkip: false } } }
+    }
+  });
+  // Género
+  new Chart(document.getElementById('genderChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(metrics.genderCounts),
+      datasets: [{
+        data: Object.values(metrics.genderCounts),
+        backgroundColor: ['#2563eb', '#f59e42', '#10b981', '#a1a1aa'],
+      }]
+    },
+    options: {
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+  // ¿Cómo supo?
+  new Chart(document.getElementById('heardChart').getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: Object.keys(metrics.heardCounts),
+      datasets: [{
+        data: Object.values(metrics.heardCounts),
+        backgroundColor: ['#2563eb', '#f59e42', '#10b981', '#a1a1aa'],
+      }]
+    },
+    options: {
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+}
+
+// --- Table ---
+let filteredUsers = users;
+function renderTable(users) {
+  const tbody = document.querySelector('#userTable tbody');
+  if (!users.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="no-results">No se encontraron resultados.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = users.slice(0, 30).map(u => `
+    <tr>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>${u.city}</td>
+      <td>${u.state}</td>
+      <td>${u.gender}</td>
+      <td>${u.school}</td>
+      <td>${u.heardAbout}</td>
+    </tr>
+  `).join('');
+}
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  const val = e.target.value.trim().toLowerCase();
+  filteredUsers = users.filter(u => u.name.toLowerCase().includes(val));
+  renderTable(filteredUsers);
+});
+
+// --- Init ---
+const metrics = getMetrics(users);
+renderMetrics(metrics);
+renderCharts(users, metrics);
+renderTable(users);
+
+// --- Salesforce-like Tabs Logic ---
+const tabButtons = document.querySelectorAll('.sf-tab');
+const tabContents = document.querySelectorAll('.sf-tab-content');
+tabButtons.forEach(btn => {
+  btn.addEventListener('click', function() {
+    tabButtons.forEach(b => b.classList.remove('active'));
+    tabContents.forEach(tc => tc.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -296,8 +296,8 @@ function ResultsScreen({ results, isLoading, onRestart, user, onShowDetailed }) 
             </div>
             <div className="career-card">
               <div className="career-rank">#{slide.content.rank}</div>
-              <h3>{slide.content.name}</h3>
-              <p className="career-explanation">{slide.content.explanation}</p>
+              <h3 style={{ textTransform: 'uppercase' }}>{slide.content.name}</h3>
+              <p className="career-explanation" style={{ color: '#fff' }}>{slide.content.explanation}</p>
               {slide.content.url && (
                 <a href={slide.content.url} target="_blank" rel="noopener noreferrer" className="career-link">
                   Ver más información
