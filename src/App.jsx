@@ -324,14 +324,20 @@ function AppRoutes() {
       setResults(parsedResults)
       setShowLoadingScreen(false)
       setIsLoading(false)
-      // Only navigate after results are set
-      navigate("/results")
+      // navigation to /results is now handled by useEffect below
     } catch (error) {
       setShowLoadingScreen(false)
       setIsLoading(false)
       // handle error
     }
   }
+
+  // Navigate to /results when results and userData are set
+  useEffect(() => {
+    if (results && userData) {
+      navigate("/results");
+    }
+  }, [results, userData, navigate]);
 
   const handleAnswer = (questionId, answerValue) => {
     const newAnswers = { ...answers, [questionId]: answerValue }
