@@ -315,38 +315,21 @@ function AppRoutes() {
   }
 
   const handleSubmitForAnalysis = async (finalAnswers) => {
-    // Show loading screen immediately
     setShowLoadingScreen(true)
-    setIsLoading(true) // Set loading state for ResultsScreen
+    setIsLoading(true)
 
     try {
-      // Start both analysis and a 10-second timer
-      const analysisPromise = (async () => {
-        const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name)
-        const parsedResults = await analyzeWithGemini(prompt)
-        console.log("Gemini raw response:", parsedResults)
-        setResults(parsedResults)
-      })()
-
-      const timerPromise = new Promise(resolve => setTimeout(resolve, 10000))
-
-      // Wait for both to complete
-      await Promise.all([analysisPromise, timerPromise])
-
-      // Navigate to results and hide loading screen after analysis is complete
-      navigate("/results")
-      setShowLoadingScreen(false)
-      
-      // Small delay to ensure smooth transition on results screen
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 100)
-    } catch (error) {
-      console.error("Error analyzing results:", error)
-      // Hide loading screen on error and show error state
+      const prompt = generateAnalysisPrompt(finalAnswers, closedQuestions, careers, userData?.name)
+      const parsedResults = await analyzeWithGemini(prompt)
+      setResults(parsedResults)
       setShowLoadingScreen(false)
       setIsLoading(false)
-      // You might want to show an error message here
+      // Only navigate after results are set
+      navigate("/results")
+    } catch (error) {
+      setShowLoadingScreen(false)
+      setIsLoading(false)
+      // handle error
     }
   }
 
