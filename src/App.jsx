@@ -10,6 +10,7 @@ import DetailedResults from "./components/DetailedResults"
 import UcabHomePage from "./components/UcabHomePage"
 import LoadingScreen from "./components/LoadingScreen"
 import AdminDashboard from "./components/AdminDashboard"
+import "./components/AdminDashboard.css"
 import { createTestSession, saveTestProgress, loadTestProgress } from "./testSessionApi"
 
 // ===================================================================================

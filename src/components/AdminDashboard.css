@@ -1,0 +1,316 @@
+/*
+  AdminDashboard.css
+  Corporate white/gray CRM-style dashboard for admin panel.
+  Adjust colors and spacing to match your brand.
+*/
+
+.admin-dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f7f8fa;
+  color: #23272f;
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-sidebar {
+  width: 260px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+}
+
+.sidebar-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.sidebar-logo img {
+  width: 56px;
+  margin-bottom: 10px;
+}
+.sidebar-logo h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #23272f;
+  font-family: 'Inter', sans-serif;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+.sidebar-nav button {
+  background: none;
+  border: none;
+  color: #7a7f87;
+  font-size: 1rem;
+  padding: 12px 0;
+  width: 100%;
+  text-align: left;
+  padding-left: 32px;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.sidebar-nav button.active, .sidebar-nav button:hover {
+  color: #23272f;
+  border-left: 4px solid #3b82f6;
+  background: #f0f2f5;
+}
+
+.admin-main-content {
+  flex: 1;
+  padding: 40px 48px;
+  background: #f7f8fa;
+  min-width: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.dashboard-overview h1,
+.students-section h1,
+.stats-section h1,
+.settings-section h1 {
+  font-size: 2rem;
+  margin-bottom: 28px;
+  color: #3b82f6;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 0;
+  align-items: stretch;
+  flex-wrap: wrap;
+  row-gap: 32px; /* Agrega separación vertical entre filas de tarjetas */
+}
+.dashboard-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 40px;
+  min-width: 180px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dashboard-card h3 {
+  font-size: 1.1rem;
+  color: #7a7f87;
+  margin-bottom: 10px;
+}
+.dashboard-card p {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #23272f;
+}
+
+.dashboard-graph {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 24px 32px;
+  margin-bottom: 32px;
+  border: 1px solid #e5e7eb;
+}
+.dashboard-graph-inline {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 18px 18px 8px 18px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  max-width: 260px;
+  margin-left: 32px;
+}
+.dashboard-graph-inline h3 {
+  color: #7a7f87;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #e5e7eb;
+}
+.students-table th, .students-table td {
+  padding: 16px 12px;
+  text-align: left;
+}
+.students-table th {
+  background: #f0f2f5;
+  color: #3b82f6;
+  font-weight: 600;
+}
+.students-table tr:nth-child(even) {
+  background: #f7f8fa;
+}
+.students-table tr:nth-child(odd) {
+  background: #fff;
+}
+
+.stats-charts {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.chart-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 32px;
+  min-width: 280px;
+  flex: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #e5e7eb;
+}
+.chart-card h3 {
+  color: #7a7f87;
+  margin-bottom: 18px;
+}
+.chart-placeholder {
+  background: #f7f8fa;
+  border-radius: 10px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7a7f87;
+  font-size: 1.1rem;
+}
+
+.settings-section {
+  max-width: 400px;
+}
+.logout-btn {
+  margin-top: 24px;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.logout-btn:hover {
+  background: #2563eb;
+}
+
+.dashboard-panel-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+@media (max-width: 1200px) {
+  .dashboard-panel-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+.dashboard-panel-section {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #e5e7eb;
+  padding: 28px 32px;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+.dashboard-panel-section h3 {
+  color: #3b82f6;
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.dashboard-panel-section .mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+  margin-top: 8px;
+}
+.dashboard-panel-section .mini-table th, .dashboard-panel-section .mini-table td {
+  padding: 8px 6px;
+  text-align: left;
+}
+.dashboard-panel-section .mini-table th {
+  background: #f0f2f5;
+  color: #3b82f6;
+  font-weight: 600;
+}
+.dashboard-panel-section .mini-table tr:nth-child(even) {
+  background: #f7f8fa;
+}
+.dashboard-panel-section .mini-table tr:nth-child(odd) {
+  background: #fff;
+}
+.dashboard-panel-section .panel-cta {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+}
+.dashboard-panel-section .panel-cta button {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.98rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.dashboard-panel-section .panel-cta button:hover {
+  background: #2563eb;
+}
+.dashboard-panel-section.chart-fixed-height {
+  height: 260px;
+  min-height: 220px;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dashboard-panel-section.chart-fixed-height canvas {
+  max-height: 200px !important;
+}
+
+@media (max-width: 900px) {
+  .dashboard-cards, .stats-charts {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .admin-main-content {
+    padding: 24px 8px;
+  }
+  .admin-sidebar {
+    width: 100px;
+    padding: 16px 0;
+  }
+  .sidebar-logo h2 {
+    display: none;
+  }
+  .sidebar-nav button {
+    padding-left: 10px;
+    font-size: 0.95rem;
+  }
+}
